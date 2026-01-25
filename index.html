@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poker de Quinta - Menu Principal</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #0d1b0d;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* LOGO SECTION */
+.logo-section {
+  text-align: center;
+  padding: 30px 20px 20px;
+  background: linear-gradient(180deg, #102810 0%, #0d1b0d 100%);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid #d4a121;
+}
+
+.logo-img {
+  max-width: 200px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-title {
+  font-family: 'Anton';
+  font-size: 2.5em;
+  color: #d4a121;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-subtitle {
+  font-size: 1.1em;
+  color: #d4a121;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+/* LAYOUT PRINCIPAL */
+.main-container {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  gap: 30px;
+  min-height: calc(100vh - 180px);
+}
+
+/* MENU LATERAL */
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #d4a121;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d4a121;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* SIDEBAR CARD */
+.sidebar-card {
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  border: 2px solid #d4a121;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.sidebar-card:hover::before {
+  left: 100%;
+}
+
+.sidebar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(212, 161, 33, 0.5);
+  border-color: #f4c141;
+}
+
+.sidebar-icon {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  display: block;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+}
+
+.sidebar-title-text {
+  font-family: 'Anton';
+  font-size: 1.3em;
+  color: #d4a121;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.sidebar-description {
+  font-size: 0.9em;
+  line-height: 1.5;
+  opacity: 0.9;
+  color: #fff;
+}
+
+/* BADGE LATERAL */
+.sidebar-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #d4a121;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ÁREA PRINCIPAL */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-family: 'Anton';
+  font-size: 2.2em;
+  color: #d4a121;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
+}
+
+/* GRID DE CARDS DE DESTAQUE */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* CARD DE DESTAQUE */
+.highlight-card {
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  border: 2px solid #d4a121;
+  border-radius: 15px;
+  padding: 25px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight-card.destaque {
+  background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
+  border-color: #fff;
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 8px 40px rgba(212, 161, 33, 0.4);
+  }
+  50% {
+    box-shadow: 0 12px 50px rgba(212, 161, 33, 0.8);
+  }
+}
+
+.highlight-card.destaque .highlight-title {
+  color: #000;
+}
+
+.highlight-card.destaque .highlight-description {
+  color: #000;
+  opacity: 0.9;
+}
+
+/* BADGE DA ETAPA */
+.badge-etapa {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  color: #d4a121;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: bold;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  border: 1px solid #d4a121;
+  font-family: 'Anton';
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+.highlight-card.destaque .badge-etapa {
+  background: #102810;
+  color: #f4c141;
+}
+
+/* SEÇÃO DE FOTO */
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 15px;
+}
+
+.photo-container {
+  position: relative;
+  display: inline-block;
+}
+
+.player-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #d4a121;
+  object-fit: cover;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  background: #102810;
+}
+
+.highlight-card.destaque .player-photo {
+  border-color: #102810;
+}
+
+.trophy-icon {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  font-size: 2.5em;
+  color: #ffd700;
+  filter: drop-shadow(0 4px 6px rgba(255, 215, 0, 0.5));
+  animation: trophyGlow 2s infinite;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  padding: 8px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes trophyGlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.highlight-title {
+  font-family: 'Anton';
+  font-size: 1.5em;
+  color: #d4a121;
+  text-align: center;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.highlight-name {
+  color: #f4c141;
+  font-weight: bold;
+  font-size: 1.3em;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  display: block;
+  margin-top: 5px;
+}
+
+.highlight-card.destaque .highlight-name {
+  color: #102810;
+}
+
+.highlight-description {
+  font-size: 1em;
+  line-height: 1.5;
+  opacity: 0.9;
+  margin-top: 10px;
+}
+
+/* INFO DA ETAPA */
+.event-info {
+  background: rgba(26, 61, 26, 0.9);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+  border: 1px solid #d4a121;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  color: #fff;
+  font-size: 0.95em;
+  justify-content: flex-start;
+}
+
+.info-item .icon {
+  color: #d4a121;
+  font-size: 1.2em;
+  min-width: 25px;
+  text-align: center;
+}
+
+.info-date {
+  color: #f4c141;
+  font-weight: bold;
+}
+
+.info-time {
+  color: #f4c141;
+  font-weight: bold;
+}
+
+.info-value {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.info-registration {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.info-label {
+  flex: 1;
+  text-align: left;
+}
+
+.info-value-container {
+  font-weight: bold;
+  margin-left: auto;
+}
+
+/* BADGE DE INSCRIÇÕES ABERTAS PISCANDO */
+.inscricoes-badge {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 40, 16, 0.95);
+  padding: 10px 20px;
+  border-radius: 25px;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 0 2px #d4a121;
+  display: none;
+  z-index: 5;
+  min-width: 220px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.inscricoes-badge .badge-text {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3em;
+  color: #d4a121;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 
+    2px 2px 0px #000,
+    3px 3px 5px rgba(0, 0, 0, 0.5);
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 
+      2px 2px 0px #000,
+      3px 3px 5px rgba(0, 0, 0, 0.5),
+      0 0 10px rgba(212, 161, 33, 0.3);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: 
+      2px 2px 0px #000,
+      3px 3px 5px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(212, 161, 33, 0.6);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes badgeAppear {
+  from {
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.sidebar-card.has-badge {
+  padding-bottom: 50px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-top: 2px solid #d4a121;
+  background: #102810;
+}
+
+.footer-text {
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.footer-icons {
+  font-size: 1.8em;
+  color: #d4a121;
+  margin: 15px 0;
+  letter-spacing: 12px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .sidebar {
+    width: 100%;
+  }
+  
+  .sidebar-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-title {
+    font-size: 2em;
+  }
+  
+  .logo-subtitle {
+    font-size: 1em;
+  }
+  
+  .section-title {
+    font-size: 1.8em;
+  }
+  
+  .highlight-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .highlight-card {
+    padding: 20px;
+  }
+  
+  .player-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .trophy-icon {
+    font-size: 2em;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .sidebar-menu {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-title {
+    font-size: 1.8em;
+    letter-spacing: 3px;
+  }
+  
+  .logo-img {
+    max-width: 150px;
+  }
+  
+  .section-title {
+    font-size: 1.6em;
+  }
+  
+  .highlight-title {
+    font-size: 1.3em;
+  }
+  
+  .player-photo {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .inscricoes-badge {
+    min-width: 200px;
+    padding: 8px 15px;
+  }
+  
+  .inscricoes-badge .badge-text {
+    font-size: 1.1em;
+    letter-spacing: 1.5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGO SECTION -->
+<div class="logo-section">
+  <img src="logo pdq.png" class="logo-img" onerror="this.style.display='none'" alt="Logo Poker de Quinta">
+  <h1 class="logo-title">POKER DE QUINTA</h1>
+  <p class="logo-subtitle">Bem-vindo ao Site Oficial do Poker de Quinta.</p>
+</div>
+
+<!-- CONTAINER PRINCIPAL -->
+<div class="main-container">
+  
+  <!-- MENU LATERAL -->
+  <div class="sidebar">
+    <h2 class="sidebar-title">MENU</h2>
+    <div class="sidebar-menu">
+      
+      <!-- CONFIRMAÇÃO DE PRESENÇA -->
+      <a href="https://pokerdequinta.github.io/confirma/" class="sidebar-card" id="confirmacao-card">
+        <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO -->
+        <div class="inscricoes-badge" id="inscricoes-badge">
+          <div class="badge-text">INSCRIÇÕES ABERTAS</div>
+        </div>
+        
+        <span class="sidebar-badge">🔥 NOVO</span>
+        <span class="sidebar-icon">✅</span>
+        <h3 class="sidebar-title-text">CONFIRMAÇÃO DE PRESENÇA</h3>
+        <p class="sidebar-description">Faça Aqui sua Inscrição para a próxima etapa!</p>
+      </a>
+      
+      <!-- ENQUETES -->
+      <a href="https://pokerdequinta.github.io/enquete/" class="sidebar-card">
+        <span class="sidebar-icon">📊</span>
+        <h3 class="sidebar-title-text">ENQUETES</h3>
+        <p class="sidebar-description">Participe das votações da janta e das mãos da etapa</p>
+      </a>
+      
+      <!-- CALENDÁRIO -->
+      <a href="https://pokerdequinta.github.io/calendario/" class="sidebar-card">
+        <span class="sidebar-icon">📆</span>
+        <h3 class="sidebar-title-text">CALENDÁRIO</h3>
+        <p class="sidebar-description">Veja aqui todas as datas do ano e adicione as datas ao seu calendário</p>
+      </a>
+      
+      <!-- REGULAMENTO -->
+      <a href="https://pokerdequinta.github.io/regulamento/" class="sidebar-card">
+        <span class="sidebar-icon">📋</span>
+        <h3 class="sidebar-title-text">REGULAMENTO</h3>
+        <p class="sidebar-description">Confira todas as regras oficiais do Poker de Quinta</p>
+      </a>
+      
+      <!-- NOVIDADES 2026 -->
+      <a href="https://pokerdequinta.github.io/novidades/" class="sidebar-card">
+        <span class="sidebar-icon">🎉</span>
+        <h3 class="sidebar-title-text">NOVIDADES TEMPORADA 2026</h3>
+        <p class="sidebar-description">Veja o que mudou na nova temporada de 2026</p>
+      </a>
+      
+      <!-- DEALER PID -->
+      <a href="https://pokerdequinta.github.io/dealer/" class="sidebar-card">
+        <span class="sidebar-icon">🎲</span>
+        <h3 class="sidebar-title-text">DEALER - PID</h3>
+        <p class="sidebar-description">Área do Dealer</p>
+      </a>
+      
+      <!-- CADASTRO PIX E FOTO -->
+      <a href="https://forms.gle/yG2MAeQvSco46DK49" class="sidebar-card">
+        <span class="sidebar-icon">📸</span>
+        <h3 class="sidebar-title-text">CADASTRO DE PIX E FOTO</h3>
+        <p class="sidebar-description">Atualize seus dados para pagamentos e premiações</p>
+      </a>
+      
+      <!-- RANKING -->
+      <a href="https://pokerdequinta.github.io/ranking/" class="sidebar-card">
+        <span class="sidebar-icon">🏆</span>
+        <h3 class="sidebar-title-text">RANKING</h3>
+        <p class="sidebar-description">Acompanhe a classificação geral dos jogadores</p>
+      </a>
+      
+      <!-- LOJA -->
+      <a href="https://pokerdequinta.github.io/loja/" class="sidebar-card">
+        <span class="sidebar-icon">🛒</span>
+        <h3 class="sidebar-title-text">LOJA</h3>
+        <p class="sidebar-description">Adquira aqui sua camiseta oficial do Poker de Quinta</p>
+      </a>
+      
+      <!-- LOCALIZAÇÃO -->
+      <a href="https://pokerdequinta.github.io/endereco/" class="sidebar-card">
+        <span class="sidebar-icon">📍</span>
+        <h3 class="sidebar-title-text">LOCALIZAÇÃO</h3>
+        <p class="sidebar-description">Veja Aqui o Endereço onde se encontram os baralhões</p>
+      </a>
+      
+    </div>
+  </div>
+  
+  <!-- ÁREA PRINCIPAL -->
+  <div class="main-content">
+    <h2 class="section-title">DESTAQUES DA 1ª ETAPA</h2>
+    
+    <div class="highlight-grid">
+      
+      <!-- PRÓXIMA ETAPA - DESTAQUE -->
+      <div class="highlight-card destaque">
+        <div class="badge-etapa">1ª ETAPA</div>
+        
+        <span class="sidebar-icon">📅</span>
+        <h3 class="highlight-title">PRÓXIMA ETAPA</h3>
+        
+        <!-- SEÇÃO DO REI DA MESA -->
+        <div class="photo-section">
+          <div class="photo-container">
+            <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
+                 alt="Rei da Mesa - Gaspar" 
+                 class="player-photo"
+                 onerror="this.src='https://via.placeholder.com/120/FFD700/102810?text=G'">
+            <span class="trophy-icon">👑</span>
+          </div>
+          <p class="highlight-title">REI DA MESA<br><span class="highlight-name">GASPAR</span></p>
+        </div>
+        
+        <!-- INFORMAÇÕES DA PRÓXIMA ETAPA -->
+        <div class="event-info">
+          <div class="info-item">
+            <span class="icon">📅</span>
+            <span class="info-label">Próxima etapa:</span>
+            <span class="info-value-container">
+              <span class="info-date">29/01</span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="icon">⏰</span>
+            <span class="info-label">Horário:</span>
+            <span class="info-value-container">
+              <span class="info-time">20 horas</span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="icon">💰</span>
+            <span class="info-label">Valor:</span>
+            <span class="info-value-container">
+              <span class="info-value">R$ 100</span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="icon">🎫</span>
+            <span class="info-label">Inscrições abrem:</span>
+            <span class="info-value-container">
+              <span class="info-registration">26/01 às 7h</span>
+            </span>
+          </div>
+        </div>
+        
+        <p class="highlight-description" style="margin-top: 15px; font-weight: bold; color: #000;">Confirme sua presença!</p>
+      </div>
+      
+      <!-- CAMPEÃO DA 1ª ETAPA -->
+      <div class="highlight-card">
+        <div class="badge-etapa">1ª ETAPA</div>
+        
+        <span class="sidebar-icon">🏆</span>
+        <h3 class="highlight-title">CAMPEÃO DA<br>1ª ETAPA</h3>
+        
+        <div class="photo-section">
+          <div class="photo-container">
+            <img src="https://via.placeholder.com/120/FFD700/102810?text=CAMPEÃO" 
+                 alt="Campeão da 1ª Etapa" 
+                 class="player-photo"
+                 onerror="this.src='https://via.placeholder.com/120/FFD700/102810?text=C'">
+            <span class="trophy-icon">🥇</span>
+          </div>
+          <p class="highlight-title">CAMPEÃO<br><span class="highlight-name">(A DEFINIR)</span></p>
+        </div>
+        
+        <p class="highlight-description">O grande vencedor da primeira etapa do Poker de Quinta 2026.</p>
+      </div>
+      
+      <!-- MELHOR MÃO DA ETAPA -->
+      <div class="highlight-card">
+        <div class="badge-etapa">1ª ETAPA</div>
+        
+        <span class="sidebar-icon">🃏</span>
+        <h3 class="highlight-title">MELHOR MÃO<br>DA ETAPA</h3>
+        
+        <div class="photo-section">
+          <div class="photo-container">
+            <img src="https://via.placeholder.com/120/FFD700/102810?text=MÃO" 
+                 alt="Melhor Mão da Etapa" 
+                 class="player-photo"
+                 onerror="this.src='https://via.placeholder.com/120/FFD700/102810?text=M'">
+            <span class="trophy-icon">♠️</span>
+          </div>
+          <p class="highlight-title">MELHOR MÃO<br><span class="highlight-name">(A DEFINIR)</span></p>
+        </div>
+        
+        <p class="highlight-description">Jogador que fez a mão mais impressionante da primeira etapa.</p>
+      </div>
+      
+      <!-- MATADOR DE KO -->
+      <div class="highlight-card">
+        <div class="badge-etapa">1ª ETAPA</div>
+        
+        <span class="sidebar-icon">💥</span>
+        <h3 class="highlight-title">MATADOR<br>DE KO</h3>
+        
+        <div class="photo-section">
+          <div class="photo-container">
+            <img src="https://via.placeholder.com/120/FFD700/102810?text=MATADOR" 
+                 alt="Matador de KO" 
+                 class="player-photo"
+                 onerror="this.src='https://via.placeholder.com/120/FFD700/102810?text=K'">
+            <span class="trophy-icon">👊</span>
+          </div>
+          <p class="highlight-title">MATADOR DE KO<br><span class="highlight-name">(A DEFINIR)</span></p>
+        </div>
+        
+        <p class="highlight-description">Jogador que eliminou mais adversários durante a etapa.</p>
+      </div>
+      
+      <!-- VENCEDOR DA ROLETA DA SORTE -->
+      <div class="highlight-card">
+        <div class="badge-etapa">1ª ETAPA</div>
+        
+        <span class="sidebar-icon">🎰</span>
+        <h3 class="highlight-title">VENCEDOR DA<br>ROLETA DA SORTE</h3>
+        
+        <div class="photo-section">
+          <div class="photo-container">
+            <img src="https://via.placeholder.com/120/FFD700/102810?text=ROLETA" 
+                 alt="Vencedor da Roleta da Sorte" 
+                 class="player-photo"
+                 onerror="this.src='https://via.placeholder.com/120/FFD700/102810?text=R'">
+            <span class="trophy-icon">🎁</span>
+          </div>
+          <p class="highlight-title">ROLETA DA SORTE<br><span class="highlight-name">(A DEFINIR)</span></p>
+        </div>
+        
+        <p class="highlight-description">O sortudo que venceu a roleta da sorte da primeira etapa.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p class="footer-text">© 2026 Poker de Quinta - Todos os direitos reservados</p>
+  <div class="footer-icons">♠ ♥ ♦ ♣</div>
+  <p class="footer-text" style="opacity: 0.6; font-size: 0.9em;">Desenvolvido pelo Presida.</p>
+</div>
+
+<script>
+// Função para verificar se deve mostrar o badge de inscrições abertas
+function verificarBadgeInscricoes() {
+  const badge = document.getElementById('inscricoes-badge');
+  const card = document.getElementById('confirmacao-card');
+  
+  if (!badge || !card) return;
+  
+  const agora = new Date();
+  const dataAlvo = new Date('2026-01-26T07:00:00'); // 26 de janeiro às 7h
+  
+  // Se já passou do horário alvo, mostrar o badge
+  if (agora >= dataAlvo) {
+    badge.style.display = 'block';
+    card.classList.add('has-badge');
+    
+    // Adicionar animação de entrada
+    badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
+    
+  } else {
+    badge.style.display = 'none';
+    card.classList.remove('has-badge');
+    badge.style.animation = 'none';
+  }
+}
+
+// Executar ao carregar a página
+verificarBadgeInscricoes();
+
+// Verificar a cada minuto (caso a página fique aberta)
+setInterval(verificarBadgeInscricoes, 60000);
+
+// Adicionar evento para reaplicar animação ao badge quando ele for exibido
+const observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+      const badge = document.getElementById('inscricoes-badge');
+      const card = document.getElementById('confirmacao-card');
+      
+      if (badge && badge.style.display === 'block') {
+        badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
+        card.classList.add('has-badge');
+      } else if (badge && badge.style.display === 'none' && card) {
+        card.classList.remove('has-badge');
+        badge.style.animation = 'none';
+      }
+    }
+  });
+});
+
+// Observar mudanças no estilo do badge
+const badgeElement = document.getElementById('inscricoes-badge');
+if (badgeElement) {
+  observer.observe(badgeElement, { attributes: true });
+}
+
+// Função para carregar imagens com fallback
+function carregarImagens() {
+  const imagens = document.querySelectorAll('img[onerror]');
+  imagens.forEach(img => {
+    if (!img.complete || img.naturalWidth === 0) {
+      img.onerror.call(img);
+    }
+  });
+}
+
+// Carregar imagens quando a página carregar
+window.addEventListener('load', carregarImagens);
+</script>
+
+</body>
+</html>
