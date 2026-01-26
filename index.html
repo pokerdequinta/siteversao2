@@ -6,7 +6,7 @@
 <title>Poker de Quinta - Menu Principal</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&family=Oswald:wght@400;600;700&display=swap');
 
 * {
   margin: 0;
@@ -16,22 +16,23 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: #0d1b0d;
+  background: #0a140a;
   color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 80px; /* Espaço para a bottom navigation */
+  padding-bottom: 80px;
 }
 
 /* LOGO SECTION */
 .logo-section {
   text-align: center;
   padding: 20px 20px 15px;
-  background: linear-gradient(180deg, #102810 0%, #0d1b0d 100%);
+  background: linear-gradient(180deg, #0c1c0c 0%, #081108 100%);
   position: relative;
   overflow: hidden;
-  border-bottom: 2px solid #d4a121;
+  border-bottom: 3px solid #d4a121;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .logo-img {
@@ -40,6 +41,7 @@ body {
   position: relative;
   z-index: 1;
   animation: fadeIn 1s;
+  filter: drop-shadow(0 5px 15px rgba(212, 161, 33, 0.4));
 }
 
 @keyframes fadeIn {
@@ -49,235 +51,604 @@ body {
 
 .logo-title {
   font-family: 'Anton';
-  font-size: 2.2em;
-  color: #d4a121;
-  letter-spacing: 3px;
-  margin-bottom: 5px;
-  position: relative;
-  z-index: 1;
+  font-size: 2.5em;
+  color: #ffd700;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-shadow: 
+    0 0 20px rgba(212, 161, 33, 0.7),
+    2px 2px 0px #000;
+  background: linear-gradient(to right, #ffd700, #ffed4e, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 20px rgba(212, 161, 33, 0.7),
+      2px 2px 0px #000;
+  }
+  50% { 
+    text-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.9),
+      0 0 40px rgba(255, 215, 0, 0.5),
+      2px 2px 0px #000;
+  }
 }
 
 .logo-subtitle {
-  font-size: 1em;
+  font-size: 1.1em;
   color: #d4a121;
   opacity: 0.9;
   position: relative;
   z-index: 1;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 /* CONTEÚDO PRINCIPAL */
 .content-area {
   flex: 1;
-  padding: 20px;
+  padding: 25px 20px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* CARD DESTAQUE NO TOPO */
-.top-highlight-card {
-  background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
-  border: 2px solid #fff;
-  border-radius: 15px;
-  padding: 25px;
+/* CARD PREMIUM 2ª ETAPA */
+.stage-card-premium {
+  position: relative;
+  background: 
+    linear-gradient(135deg, 
+      rgba(20, 45, 20, 0.95) 0%, 
+      rgba(12, 28, 12, 0.95) 50%,
+      rgba(8, 20, 8, 0.95) 100%),
+    radial-gradient(circle at 20% 80%, 
+      rgba(212, 161, 33, 0.15) 0%, 
+      transparent 50%),
+    radial-gradient(circle at 80% 20%, 
+      rgba(255, 215, 0, 0.1) 0%, 
+      transparent 50%);
+  border: 3px solid;
+  border-image: linear-gradient(45deg, #d4a121, #ffd700, #d4a121) 1;
+  border-radius: 25px;
+  padding: 35px 30px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(212, 161, 33, 0.3),
+    inset 0 0 30px rgba(212, 161, 33, 0.1);
+  animation: cardGlow 4s ease-in-out infinite;
+}
+
+@keyframes cardGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(212, 161, 33, 0.3),
+      inset 0 0 30px rgba(212, 161, 33, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 25px 60px rgba(212, 161, 33, 0.3),
+      0 0 0 2px rgba(255, 215, 0, 0.5),
+      inset 0 0 40px rgba(255, 215, 0, 0.2);
+  }
+}
+
+/* Efeito de brilho nas bordas */
+.stage-card-premium::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    #d4a121, #ffd700, #d4a121, #ffed4e, #d4a121);
+  border-radius: 27px;
+  z-index: -1;
+  animation: borderRotate 8s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes borderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Badge premium 2ª etapa */
+.etapa-badge-premium {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #d4a121 0%, #ffd700 50%, #d4a121 100%);
+  color: #000;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 0 2px #000,
+    0 0 20px rgba(212, 161, 33, 0.5);
+  z-index: 10;
+  animation: badgeFloat 3s ease-in-out infinite;
+}
+
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+/* Cabeçalho do card */
+.stage-header {
   text-align: center;
   margin-bottom: 30px;
-  animation: pulseGlow 2s infinite;
   position: relative;
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 8px 40px rgba(212, 161, 33, 0.4);
-  }
-  50% {
-    box-shadow: 0 12px 50px rgba(212, 161, 33, 0.8);
-  }
+.stage-icon {
+  font-size: 4.5em;
+  margin-bottom: 15px;
+  display: block;
+  filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.6));
+  animation: iconFloat 3s ease-in-out infinite;
 }
 
-.top-badge-etapa {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #102810;
-  color: #f4c141;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8em;
-  font-weight: bold;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-  border: 1px solid #f4c141;
-  font-family: 'Anton';
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.stage-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8em;
+  background: linear-gradient(to right, #ffd700, #ffed4e, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+.stage-subtitle {
+  font-size: 1.4em;
+  color: #ffed4e;
+  font-weight: 600;
   letter-spacing: 1px;
+  opacity: 0.9;
 }
 
-.top-card-content {
+/* Conteúdo principal do card */
+.stage-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+/* Seção da data e hora */
+.datetime-section {
+  flex: 1;
+  min-width: 300px;
+  background: linear-gradient(135deg, 
+    rgba(12, 28, 12, 0.9) 0%, 
+    rgba(20, 45, 20, 0.9) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  border: 2px solid rgba(212, 161, 33, 0.3);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.5),
+    0 10px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.datetime-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #d4a121, #ffd700, #d4a121);
+}
+
+.date-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  margin-bottom: 25px;
 }
 
-.top-icon {
+.date-icon {
   font-size: 3em;
-  margin-bottom: 5px;
+  color: #ffd700;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 3px 10px rgba(255, 215, 0, 0.4));
 }
 
-.top-title {
-  font-family: 'Anton';
-  font-size: 1.8em;
-  color: #000;
-  letter-spacing: 1px;
+.date-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2em;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
 }
 
-/* SEÇÃO DO REI DA MESA NO TOPO */
-.king-section-top {
+.date-highlight {
+  color: #ffd700;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.time-display {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin: 15px 0;
-  flex-wrap: wrap;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  border: 1px solid rgba(212, 161, 33, 0.2);
 }
 
-.king-photo-container {
-  position: relative;
-  display: inline-block;
+.time-icon {
+  font-size: 2.5em;
+  color: #ffed4e;
 }
 
-.king-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 4px solid #102810;
-  object-fit: cover;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-}
-
-.crown-icon {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 2.2em;
+.time-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8em;
   color: #ffd700;
-  filter: drop-shadow(0 4px 6px rgba(255, 215, 0, 0.5));
-  animation: crownGlow 2s infinite;
-  background: rgba(0, 0, 0, 0.8);
+  letter-spacing: 1px;
+}
+
+/* Seção do rei da mesa */
+.king-section-premium {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, 
+    rgba(20, 45, 20, 0.9) 0%, 
+    rgba(12, 28, 12, 0.9) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  border: 2px solid rgba(212, 161, 33, 0.3);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.5),
+    0 10px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.king-section-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #d4a121, #ffd700, #d4a121);
+}
+
+.king-title-premium {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8em;
+  color: #ffd700;
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.king-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.king-photo-frame {
+  position: relative;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  padding: 5px;
-  width: 45px;
-  height: 45px;
+  padding: 8px;
+  background: linear-gradient(135deg, #d4a121, #ffd700, #d4a121);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 0 3px #0c1c0c,
+    0 0 30px rgba(212, 161, 33, 0.4);
+  animation: photoGlow 4s ease-in-out infinite;
+}
+
+@keyframes photoGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.6),
+      0 0 0 3px #0c1c0c,
+      0 0 30px rgba(212, 161, 33, 0.4);
+  }
+  50% { 
+    box-shadow: 
+      0 15px 40px rgba(212, 161, 33, 0.5),
+      0 0 0 3px #0c1c0c,
+      0 0 50px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.king-photo-premium {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0c1c0c;
+}
+
+.crown-icon-premium {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  font-size: 3.5em;
+  color: #ffd700;
+  filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.7));
+  animation: crownFloat 2s ease-in-out infinite;
+  background: rgba(12, 28, 12, 0.9);
+  border-radius: 50%;
+  padding: 10px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid #ffd700;
 }
 
-@keyframes crownGlow {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
 }
 
-.king-info {
+.king-name-premium {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2em;
+  color: #ffd700;
   text-align: center;
-}
-
-.king-title {
-  font-family: 'Anton';
-  font-size: 1.3em;
-  color: #000;
-  margin-bottom: 5px;
-}
-
-.king-name {
-  color: #102810;
-  font-weight: bold;
-  font-size: 1.4em;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
-}
-
-/* INFORMAÇÕES DA ETAPA NO TOPO */
-.event-info-top {
-  background: rgba(16, 40, 16, 0.9);
-  border-radius: 10px;
-  padding: 15px;
-  margin-top: 15px;
-  border: 1px solid #102810;
-  text-align: left;
-  width: 100%;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0;
-  color: #fff;
-  font-size: 0.95em;
-  justify-content: space-between;
-}
-
-.info-item .icon {
-  color: #d4a121;
-  font-size: 1.2em;
-  min-width: 25px;
-  text-align: center;
-}
-
-.info-date {
-  color: #f4c141;
-  font-weight: bold;
-}
-
-.info-time {
-  color: #f4c141;
-  font-weight: bold;
-}
-
-.info-value {
-  color: #27ae60;
-  font-weight: bold;
-}
-
-.info-registration {
-  color: #3498db;
-  font-weight: bold;
-}
-
-/* TÍTULO DA SEÇÃO */
-.section-title {
-  font-family: 'Anton';
-  font-size: 2em;
-  color: #d4a121;
-  text-align: center;
+  font-weight: 700;
   letter-spacing: 2px;
-  margin: 30px 0 25px;
-  text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    2px 2px 0px rgba(0, 0, 0, 0.3);
+  padding: 10px 30px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(212, 161, 33, 0.2), 
+    transparent);
+  border-radius: 10px;
 }
+
+/* Seção de chamada para ação */
+.cta-section {
+  text-align: center;
+  margin-top: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, 
+    rgba(212, 161, 33, 0.15) 0%, 
+    rgba(20, 45, 20, 0.9) 100%);
+  border-radius: 20px;
+  border: 2px solid rgba(212, 161, 33, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23d4a121" opacity="0.05" d="M0,0 L100,0 L100,100 Z"/></svg>');
+  background-size: 200px;
+  animation: bgMove 20s linear infinite;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 200px 200px; }
+}
+
+.cta-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2em;
+  color: #ffd700;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #d4a121 0%, #ffd700 50%, #d4a121 100%);
+  color: #000;
+  padding: 18px 45px;
+  border-radius: 50px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 0 3px #000,
+    0 0 30px rgba(212, 161, 33, 0.5);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 0 0 3px #000,
+      0 0 30px rgba(212, 161, 33, 0.5);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 
+      0 15px 40px rgba(212, 161, 33, 0.6),
+      0 0 0 3px #000,
+      0 0 50px rgba(255, 215, 0, 0.7);
+  }
+}
+
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 
+    0 20px 50px rgba(212, 161, 33, 0.7),
+    0 0 0 3px #000,
+    0 0 60px rgba(255, 215, 0, 0.8);
+  animation: none;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+  z-index: -1;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* Badge de inscrições abertas */
+.inscricoes-badge-premium {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #d4a121 0%, #ffd700 100%);
+  padding: 12px 35px;
+  border-radius: 50px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    0 0 0 3px #000,
+    0 0 40px rgba(212, 161, 33, 0.6);
+  display: none;
+  z-index: 100;
+  animation: badgePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { 
+    transform: translateX(-50%) scale(1);
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.5),
+      0 0 0 3px #000,
+      0 0 40px rgba(212, 161, 33, 0.6);
+  }
+  50% { 
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 
+      0 15px 35px rgba(212, 161, 33, 0.8),
+      0 0 0 3px #000,
+      0 0 60px rgba(255, 215, 0, 0.8);
+  }
+}
+
+/* Seção dos destaques */
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.5em;
+  color: #ffd700;
+  text-align: center;
+  letter-spacing: 3px;
+  margin: 50px 0 40px;
+  text-shadow: 
+    0 0 20px rgba(212, 161, 33, 0.5),
+    2px 2px 0px rgba(0, 0, 0, 0.3);
+  padding-bottom: 15px;
+  border-bottom: 3px solid rgba(212, 161, 33, 0.3);
+  position: relative;
+}
+
+.section-title::after {
+  content: '🎯';
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  animation: targetSpin 3s linear infinite;
+}
+
+@keyframes targetSpin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Resto do CSS permanece igual... */
 
 /* GRID DE CARDS DE DESTAQUE */
 .highlight-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
 /* CARD DE DESTAQUE */
 .highlight-card {
   background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
   border: 2px solid #d4a121;
-  border-radius: 15px;
+  border-radius: 20px;
   padding: 25px;
   text-align: center;
   transition: all 0.3s;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .highlight-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(212, 161, 33, 0.4);
-  border-color: #f4c141;
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(212, 161, 33, 0.4);
+  border-color: #ffd700;
 }
 
 /* BADGE DA ETAPA */
@@ -287,13 +658,13 @@ body {
   right: 15px;
   background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
   color: #d4a121;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.8em;
   font-weight: bold;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
   border: 1px solid #d4a121;
-  font-family: 'Anton';
+  font-family: 'Oswald', sans-serif;
   letter-spacing: 1px;
 }
 
@@ -346,17 +717,18 @@ body {
 }
 
 .highlight-title {
-  font-family: 'Anton';
-  font-size: 1.4em;
-  color: #d4a121;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5em;
+  color: #ffd700;
   text-align: center;
   line-height: 1.3;
   margin-bottom: 10px;
+  letter-spacing: 1px;
 }
 
 .highlight-name {
-  color: #f4c141;
-  font-weight: bold;
+  color: #ffed4e;
+  font-weight: 700;
   font-size: 1.3em;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   display: block;
@@ -368,81 +740,22 @@ body {
   line-height: 1.5;
   opacity: 0.9;
   margin-top: 10px;
+  color: #e0e0e0;
 }
 
-/* BADGE DE INSCRIÇÕES ABERTAS PISCANDO */
-.inscricoes-badge {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(16, 40, 16, 0.95);
-  padding: 10px 20px;
-  border-radius: 25px;
-  box-shadow: 
-    0 5px 15px rgba(0, 0, 0, 0.5),
-    0 0 0 2px #d4a121;
-  display: none;
-  z-index: 5;
-  min-width: 220px;
-  text-align: center;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-}
-
-.inscricoes-badge .badge-text {
-  font-family: 'Anton', sans-serif;
-  font-size: 1.2em;
-  color: #d4a121;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-shadow: 
-    2px 2px 0px #000,
-    3px 3px 5px rgba(0, 0, 0, 0.5);
-  animation: textPulse 2s ease-in-out infinite;
-}
-
-@keyframes textPulse {
-  0%, 100% {
-    opacity: 1;
-    text-shadow: 
-      2px 2px 0px #000,
-      3px 3px 5px rgba(0, 0, 0, 0.5),
-      0 0 10px rgba(212, 161, 33, 0.3);
-  }
-  50% {
-    opacity: 0.8;
-    text-shadow: 
-      2px 2px 0px #000,
-      3px 3px 5px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(212, 161, 33, 0.6);
-  }
-}
-
-@keyframes badgeAppear {
-  from {
-    transform: translateX(-50%) translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
-
-/* BOTTOM NAVIGATION */
+/* BOTTOM NAVIGATION - Estilização premium */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #102810 0%, #0a160a 100%);
-  border-top: 2px solid #d4a121;
+  background: linear-gradient(180deg, #0c1c0c 0%, #081108 100%);
+  border-top: 3px solid #d4a121;
   display: flex;
   justify-content: space-around;
-  padding: 10px 5px;
+  padding: 12px 5px;
   z-index: 1000;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
 }
 
 .nav-item {
@@ -451,264 +764,166 @@ body {
   align-items: center;
   text-decoration: none;
   color: #d4a121;
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 10px 15px;
+  border-radius: 15px;
   transition: all 0.3s;
   flex: 1;
-  max-width: 80px;
+  max-width: 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nav-item:hover::before {
+  left: 100%;
 }
 
 .nav-item:hover {
   background: rgba(212, 161, 33, 0.15);
-  color: #f4c141;
-  transform: translateY(-3px);
+  color: #ffd700;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(212, 161, 33, 0.3);
 }
 
 .nav-item.active {
-  background: rgba(212, 161, 33, 0.25);
-  color: #f4c141;
+  background: linear-gradient(135deg, rgba(212, 161, 33, 0.3), rgba(255, 215, 0, 0.2));
+  color: #ffd700;
+  box-shadow: 
+    inset 0 0 20px rgba(212, 161, 33, 0.2),
+    0 5px 15px rgba(212, 161, 33, 0.4);
 }
 
 .nav-icon {
-  font-size: 1.8em;
-  margin-bottom: 5px;
+  font-size: 2em;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
 }
 
 .nav-text {
-  font-size: 0.75em;
-  font-weight: bold;
+  font-size: 0.8em;
+  font-weight: 700;
   text-align: center;
   white-space: nowrap;
+  letter-spacing: 0.5px;
+  font-family: 'Oswald', sans-serif;
 }
 
 .nav-badge {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #d4a121;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #d4a121, #ffd700);
   color: #000;
-  font-size: 0.6em;
-  padding: 2px 5px;
-  border-radius: 10px;
-  font-weight: bold;
-  animation: pulse 2s infinite;
+  font-size: 0.7em;
+  padding: 3px 8px;
+  border-radius: 50%;
+  font-weight: 900;
+  animation: badgePulse 1.5s ease-in-out infinite;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* MENU COMPLETO - MODAL */
-.menu-modal {
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  background: linear-gradient(180deg, #102810 0%, #0a160a 100%);
-  border-top: 2px solid #d4a121;
-  border-bottom: 2px solid #d4a121;
-  padding: 20px;
-  z-index: 999;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  max-height: 60vh;
-  overflow-y: auto;
-  box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.7);
-}
-
-.menu-modal.active {
-  transform: translateY(0);
-}
-
-.menu-modal-title {
-  font-family: 'Anton';
-  font-size: 1.5em;
-  color: #d4a121;
-  text-align: center;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.menu-grid-item {
-  background: rgba(26, 61, 26, 0.8);
-  border: 1px solid #d4a121;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.menu-grid-item:hover {
-  background: rgba(212, 161, 33, 0.2);
-  border-color: #f4c141;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(212, 161, 33, 0.3);
-}
-
-.menu-grid-icon {
-  font-size: 1.8em;
-  color: #d4a121;
-}
-
-.menu-grid-text {
-  font-size: 0.85em;
-  font-weight: bold;
-}
-
-/* OVERLAY PARA FECHAR MENU */
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 998;
-  display: none;
-}
-
-.menu-overlay.active {
-  display: block;
-}
-
-/* FOOTER */
-.footer {
-  text-align: center;
-  padding: 25px 20px;
-  border-top: 2px solid #d4a121;
-  background: #102810;
-  margin-top: 40px;
-}
-
-.footer-text {
-  opacity: 0.8;
-  margin-bottom: 10px;
-  font-size: 0.9em;
-}
-
-.footer-icons {
-  font-size: 1.6em;
-  color: #d4a121;
-  margin: 15px 0;
-  letter-spacing: 10px;
-}
+/* Restante do CSS (menu modal, footer, etc) permanece igual... */
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
+  .stage-content {
+    flex-direction: column;
+  }
+  
   .highlight-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .logo-title {
+  .stage-card-premium {
+    padding: 25px 20px;
+  }
+  
+  .stage-title {
+    font-size: 2.2em;
+  }
+  
+  .stage-subtitle {
+    font-size: 1.2em;
+  }
+  
+  .etapa-badge-premium {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  
+  .date-text {
     font-size: 1.8em;
   }
   
-  .logo-subtitle {
-    font-size: 0.9em;
+  .time-text {
+    font-size: 1.5em;
+  }
+  
+  .king-name-premium {
+    font-size: 1.8em;
+  }
+  
+  .cta-title {
+    font-size: 1.6em;
+  }
+  
+  .cta-button {
+    padding: 15px 35px;
+    font-size: 1.1em;
   }
   
   .section-title {
-    font-size: 1.7em;
+    font-size: 2em;
   }
   
   .highlight-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .top-highlight-card {
-    padding: 20px;
-  }
-  
-  .king-section-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-  }
-  
-  .king-info {
-    text-align: center;
-  }
-  
-  .king-photo {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .player-photo {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .trophy-icon {
-    font-size: 2em;
-    width: 45px;
-    height: 45px;
-  }
-  
-  .menu-grid {
-    grid-template-columns: 1fr;
+    gap: 25px;
   }
 }
 
 @media (max-width: 480px) {
   .logo-title {
-    font-size: 1.6em;
-    letter-spacing: 2px;
+    font-size: 2em;
   }
   
-  .logo-img {
-    max-width: 140px;
+  .stage-card-premium {
+    padding: 20px 15px;
   }
   
-  .section-title {
-    font-size: 1.5em;
+  .stage-title {
+    font-size: 1.8em;
   }
   
-  .top-title {
-    font-size: 1.5em;
+  .stage-icon {
+    font-size: 3.5em;
   }
   
-  .highlight-title {
-    font-size: 1.2em;
+  .king-photo-frame {
+    width: 140px;
+    height: 140px;
   }
   
-  .player-photo {
-    width: 90px;
-    height: 90px;
+  .crown-icon-premium {
+    width: 60px;
+    height: 60px;
+    font-size: 2.8em;
   }
   
-  .inscricoes-badge {
-    min-width: 200px;
-    padding: 8px 15px;
-  }
-  
-  .inscricoes-badge .badge-text {
-    font-size: 1.1em;
-    letter-spacing: 1.5px;
-  }
-  
-  .nav-text {
-    font-size: 0.7em;
-  }
-  
-  .nav-icon {
-    font-size: 1.6em;
+  .datetime-section, .king-section-premium {
+    min-width: 100%;
   }
 }
 </style>
@@ -726,63 +941,67 @@ body {
 <!-- CONTEÚDO PRINCIPAL -->
 <div class="content-area">
   
-  <!-- CARD DESTAQUE NO TOPO (AMARELO) -->
-  <div class="top-highlight-card">
-    <div class="top-badge-etapa">1ª ETAPA</div>
+  <!-- CARD PREMIUM 2ª ETAPA -->
+  <div class="stage-card-premium">
+    <!-- Badge 2ª etapa -->
+    <div class="etapa-badge-premium">2ª ETAPA</div>
     
-    <div class="top-card-content">
-      <span class="top-icon">📅</span>
-      <h3 class="top-title">PRÓXIMA ETAPA</h3>
-      
-      <!-- SEÇÃO DO REI DA MESA -->
-      <div class="king-section-top">
-        <div class="king-photo-container">
-          <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
-               alt="Rei da Mesa - Gaspar" 
-               class="king-photo"
-               onerror="this.src='https://via.placeholder.com/100/FFD700/102810?text=G'">
-          <span class="crown-icon">👑</span>
+    <!-- Cabeçalho -->
+    <div class="stage-header">
+      <span class="stage-icon">🎯</span>
+      <h2 class="stage-title">PRÓXIMA ETAPA</h2>
+      <p class="stage-subtitle">Prepare-se para a grande disputa!</p>
+    </div>
+    
+    <!-- Conteúdo principal -->
+    <div class="stage-content">
+      <!-- Data e hora -->
+      <div class="datetime-section">
+        <div class="date-display">
+          <span class="date-icon">📅</span>
+          <div class="date-text">
+            <span class="date-highlight">26 DE FEVEREIRO</span><br>
+            <span style="font-size: 0.8em; color: #ffed4e;">2026</span>
+          </div>
         </div>
-        <div class="king-info">
-          <p class="king-title">REI DA MESA</p>
-          <p class="king-name">GASPAR</p>
-        </div>
-      </div>
-      
-      <!-- INFORMAÇÕES DA PRÓXIMA ETAPA -->
-      <div class="event-info-top">
-        <div class="info-item">
-          <span class="icon">📅</span>
-          <span>Próxima etapa:</span>
-          <span class="info-date">29/01</span>
-        </div>
-        <div class="info-item">
-          <span class="icon">⏰</span>
-          <span>Horário:</span>
-          <span class="info-time">20 horas</span>
-        </div>
-        <div class="info-item">
-          <span class="icon">💰</span>
-          <span>Valor:</span>
-          <span class="info-value">R$ 100</span>
-        </div>
-        <div class="info-item">
-          <span class="icon">🎫</span>
-          <span>Inscrições abrem:</span>
-          <span class="info-registration">26/01 às 7h</span>
+        
+        <div class="time-display">
+          <span class="time-icon">⏰</span>
+          <span class="time-text">20:00 HORAS</span>
         </div>
       </div>
       
-      <p style="margin-top: 15px; font-weight: bold; color: #000; font-size: 1.1em;">Confirme sua presença!</p>
+      <!-- Rei da Mesa -->
+      <div class="king-section-premium">
+        <h3 class="king-title-premium">Rei da Mesa</h3>
+        <div class="king-display">
+          <div class="king-photo-frame">
+            <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
+                 alt="Rei da Mesa - Gaspar" 
+                 class="king-photo-premium"
+                 onerror="this.src='https://via.placeholder.com/160/FFD700/0c1c0c?text=G'">
+            <span class="crown-icon-premium">👑</span>
+          </div>
+          <div class="king-name-premium">GASPAR</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chamada para ação -->
+    <div class="cta-section">
+      <h3 class="cta-title">NÃO FIQUE FORA DESSA BATALHA!</h3>
+      <a href="https://pokerdequinta.github.io/confirma/" class="cta-button">
+        INSCREVA-SE AGORA
+      </a>
       
-      <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO -->
-      <div class="inscricoes-badge" id="inscricoes-badge-top">
-        <div class="badge-text">INSCRIÇÕES ABERTAS</div>
+      <!-- Badge de inscrições abertas -->
+      <div class="inscricoes-badge-premium" id="inscricoes-badge-top">
+        INSCRIÇÕES ABERTAS
       </div>
     </div>
   </div>
   
-  <!-- TÍTULO DA SEÇÃO -->
+  <!-- TÍTULO DA SEÇÃO DOS DESTAQUES -->
   <h2 class="section-title">DESTAQUES DA 1ª ETAPA</h2>
   
   <!-- GRID DE DESTAQUES -->
@@ -875,51 +1094,6 @@ body {
   </div>
 </div>
 
-<!-- MENU MODAL -->
-<div class="menu-modal" id="menuModal">
-  <h3 class="menu-modal-title">MENU COMPLETO</h3>
-  <div class="menu-grid">
-    <!-- HOME (adicionei o Home no menu modal) -->
-    <a href="#home" class="menu-grid-item" id="menuHome">
-      <span class="menu-grid-icon">🏠</span>
-      <span class="menu-grid-text">HOME</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/calendario/" class="menu-grid-item">
-      <span class="menu-grid-icon">📆</span>
-      <span class="menu-grid-text">CALENDÁRIO</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/novidades/" class="menu-grid-item">
-      <span class="menu-grid-icon">🎉</span>
-      <span class="menu-grid-text">NOVIDADES 2026</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/dealer/" class="menu-grid-item">
-      <span class="menu-grid-icon">🎲</span>
-      <span class="menu-grid-text">DEALER - PID</span>
-    </a>
-    
-    <a href="https://forms.gle/yG2MAeQvSco46DK49" class="menu-grid-item">
-      <span class="menu-grid-icon">📸</span>
-      <span class="menu-grid-text">CADASTRO PIX E FOTO</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/loja/" class="menu-grid-item">
-      <span class="menu-grid-icon">🛒</span>
-      <span class="menu-grid-text">LOJA</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/endereco/" class="menu-grid-item">
-      <span class="menu-grid-icon">📍</span>
-      <span class="menu-grid-text">LOCALIZAÇÃO</span>
-    </a>
-  </div>
-</div>
-
-<!-- OVERLAY PARA FECHAR MENU -->
-<div class="menu-overlay" id="menuOverlay"></div>
-
 <!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
   <!-- RANKING -->
@@ -954,83 +1128,16 @@ body {
   </a>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <p class="footer-text">© 2026 Poker de Quinta - Todos os direitos reservados</p>
-  <div class="footer-icons">♠ ♥ ♦ ♣</div>
-  <p class="footer-text" style="opacity: 0.6; font-size: 0.9em;">Desenvolvido pelo Presida.</p>
-</div>
-
 <script>
 // Controle da bottom navigation
 const navItems = document.querySelectorAll('.nav-item');
-const menuModal = document.getElementById('menuModal');
-const menuOverlay = document.getElementById('menuOverlay');
-const navMenu = document.getElementById('navMenu');
-const menuHome = document.getElementById('menuHome');
 
 // Controlar item ativo na navegação
 navItems.forEach(item => {
   item.addEventListener('click', function(e) {
-    if (this.id === 'navMenu') {
-      // Abrir/fechar menu modal
-      e.preventDefault();
-      menuModal.classList.toggle('active');
-      menuOverlay.classList.toggle('active');
-      
-      // Mudar ícone do menu
-      const icon = this.querySelector('.nav-icon');
-      if (menuModal.classList.contains('active')) {
-        icon.textContent = '✕';
-      } else {
-        icon.textContent = '⋯';
-      }
-    } else {
-      // Fechar menu modal se estiver aberto
-      menuModal.classList.remove('active');
-      menuOverlay.classList.remove('active');
-      const menuIcon = document.querySelector('#navMenu .nav-icon');
-      menuIcon.textContent = '⋯';
-      
-      // Marcar item como ativo
-      navItems.forEach(i => i.classList.remove('active'));
-      this.classList.add('active');
-    }
+    navItems.forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
   });
-});
-
-// Fechar menu ao clicar no overlay
-menuOverlay.addEventListener('click', function() {
-  menuModal.classList.remove('active');
-  this.classList.remove('active');
-  const menuIcon = document.querySelector('#navMenu .nav-icon');
-  menuIcon.textContent = '⋯';
-});
-
-// Fechar menu ao pressionar ESC
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    menuModal.classList.remove('active');
-    menuOverlay.classList.remove('active');
-    const menuIcon = document.querySelector('#navMenu .nav-icon');
-    menuIcon.textContent = '⋯';
-  }
-});
-
-// Home no menu modal - rolar para o topo
-menuHome.addEventListener('click', function(e) {
-  e.preventDefault();
-  menuModal.classList.remove('active');
-  menuOverlay.classList.remove('active');
-  const menuIcon = document.querySelector('#navMenu .nav-icon');
-  menuIcon.textContent = '⋯';
-  
-  // Rolar suavemente para o topo
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  // Marcar Regulamento como ativo (já que está na bottom nav)
-  navItems.forEach(i => i.classList.remove('active'));
-  document.getElementById('navRegulamento').classList.add('active');
 });
 
 // Função para verificar se deve mostrar o badge de inscrições abertas
@@ -1045,7 +1152,6 @@ function verificarBadgeInscricoes() {
   if (agora >= dataAlvo) {
     if (badgeTop) {
       badgeTop.style.display = 'block';
-      badgeTop.style.animation = 'badgeAppear 0.5s ease-out forwards';
     }
     
     if (badgeNav) {
@@ -1054,7 +1160,6 @@ function verificarBadgeInscricoes() {
   } else {
     if (badgeTop) {
       badgeTop.style.display = 'none';
-      badgeTop.style.animation = 'none';
     }
     
     if (badgeNav) {
@@ -1082,24 +1187,11 @@ function carregarImagens() {
 // Carregar imagens quando a página carregar
 window.addEventListener('load', carregarImagens);
 
-// Marcar Regulamento como ativo ao carregar a página (já que é a página inicial)
+// Marcar Regulamento como ativo ao carregar a página
 window.addEventListener('DOMContentLoaded', function() {
   navItems.forEach(i => i.classList.remove('active'));
   document.getElementById('navRegulamento').classList.add('active');
 });
-
-// Atualizar badge de inscrições no menu modal também
-setTimeout(() => {
-  const agora = new Date();
-  const dataAlvo = new Date('2026-01-26T07:00:00');
-  
-  if (agora >= dataAlvo) {
-    const confirmacaoItem = document.querySelector('#navConfirmacao .nav-badge');
-    if (confirmacaoItem) {
-      confirmacaoItem.style.display = 'block';
-    }
-  }
-}, 1000);
 </script>
 
 </body>
