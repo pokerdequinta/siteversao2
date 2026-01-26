@@ -6,7 +6,7 @@
 <title>Poker de Quinta - Menu Principal</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&family=Oswald:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
 
 * {
   margin: 0;
@@ -16,7 +16,7 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: #0a140a;
+  background: #0d1b0d;
   color: #fff;
   min-height: 100vh;
   display: flex;
@@ -28,11 +28,10 @@ body {
 .logo-section {
   text-align: center;
   padding: 20px 20px 15px;
-  background: linear-gradient(180deg, #0c1c0c 0%, #081108 100%);
+  background: linear-gradient(180deg, #102810 0%, #0d1b0d 100%);
   position: relative;
   overflow: hidden;
-  border-bottom: 3px solid #d4a121;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid #d4a121;
 }
 
 .logo-img {
@@ -41,7 +40,6 @@ body {
   position: relative;
   z-index: 1;
   animation: fadeIn 1s;
-  filter: drop-shadow(0 5px 15px rgba(212, 161, 33, 0.4));
 }
 
 @keyframes fadeIn {
@@ -51,604 +49,461 @@ body {
 
 .logo-title {
   font-family: 'Anton';
-  font-size: 2.5em;
-  color: #ffd700;
-  letter-spacing: 4px;
-  margin-bottom: 8px;
-  text-shadow: 
-    0 0 20px rgba(212, 161, 33, 0.7),
-    2px 2px 0px #000;
-  background: linear-gradient(to right, #ffd700, #ffed4e, #ffd700);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: titleGlow 3s ease-in-out infinite;
-}
-
-@keyframes titleGlow {
-  0%, 100% { 
-    text-shadow: 
-      0 0 20px rgba(212, 161, 33, 0.7),
-      2px 2px 0px #000;
-  }
-  50% { 
-    text-shadow: 
-      0 0 30px rgba(255, 215, 0, 0.9),
-      0 0 40px rgba(255, 215, 0, 0.5),
-      2px 2px 0px #000;
-  }
+  font-size: 2.2em;
+  color: #d4a121;
+  letter-spacing: 3px;
+  margin-bottom: 5px;
+  position: relative;
+  z-index: 1;
 }
 
 .logo-subtitle {
-  font-size: 1.1em;
+  font-size: 1em;
   color: #d4a121;
   opacity: 0.9;
   position: relative;
   z-index: 1;
-  font-weight: 600;
-  letter-spacing: 1px;
 }
 
 /* CONTEÚDO PRINCIPAL */
 .content-area {
   flex: 1;
-  padding: 25px 20px;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* CARD PREMIUM 2ª ETAPA */
-.stage-card-premium {
-  position: relative;
-  background: 
-    linear-gradient(135deg, 
-      rgba(20, 45, 20, 0.95) 0%, 
-      rgba(12, 28, 12, 0.95) 50%,
-      rgba(8, 20, 8, 0.95) 100%),
-    radial-gradient(circle at 20% 80%, 
-      rgba(212, 161, 33, 0.15) 0%, 
-      transparent 50%),
-    radial-gradient(circle at 80% 20%, 
-      rgba(255, 215, 0, 0.1) 0%, 
-      transparent 50%);
-  border: 3px solid;
-  border-image: linear-gradient(45deg, #d4a121, #ffd700, #d4a121) 1;
-  border-radius: 25px;
-  padding: 35px 30px;
+/* CARD ESPECIAL 2ª ETAPA */
+.stage-card-special {
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  border: 3px solid transparent;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
   margin-bottom: 40px;
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(212, 161, 33, 0.3),
-    inset 0 0 30px rgba(212, 161, 33, 0.1);
-  animation: cardGlow 4s ease-in-out infinite;
+    0 15px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(212, 161, 33, 0.3);
+  animation: borderGlow 3s ease-in-out infinite;
 }
 
-@keyframes cardGlow {
+@keyframes borderGlow {
   0%, 100% { 
+    border-color: rgba(212, 161, 33, 0.5);
     box-shadow: 
-      0 20px 50px rgba(0, 0, 0, 0.7),
-      0 0 0 1px rgba(212, 161, 33, 0.3),
-      inset 0 0 30px rgba(212, 161, 33, 0.1);
+      0 15px 40px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(212, 161, 33, 0.3),
+      0 0 20px rgba(212, 161, 33, 0.2);
   }
   50% { 
+    border-color: rgba(244, 193, 65, 0.8);
     box-shadow: 
-      0 25px 60px rgba(212, 161, 33, 0.3),
-      0 0 0 2px rgba(255, 215, 0, 0.5),
-      inset 0 0 40px rgba(255, 215, 0, 0.2);
+      0 20px 50px rgba(212, 161, 33, 0.3),
+      inset 0 0 0 1px rgba(244, 193, 65, 0.5),
+      0 0 40px rgba(244, 193, 65, 0.4);
   }
 }
 
-/* Efeito de brilho nas bordas */
-.stage-card-premium::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    #d4a121, #ffd700, #d4a121, #ffed4e, #d4a121);
-  border-radius: 27px;
-  z-index: -1;
-  animation: borderRotate 8s linear infinite;
-  opacity: 0.5;
-}
-
-@keyframes borderRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Badge premium 2ª etapa */
-.etapa-badge-premium {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #d4a121 0%, #ffd700 50%, #d4a121 100%);
-  color: #000;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.1em;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  box-shadow: 
-    0 5px 15px rgba(0, 0, 0, 0.5),
-    0 0 0 2px #000,
-    0 0 20px rgba(212, 161, 33, 0.5);
-  z-index: 10;
-  animation: badgeFloat 3s ease-in-out infinite;
-}
-
-@keyframes badgeFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-5px) rotate(1deg); }
-}
-
-/* Cabeçalho do card */
-.stage-header {
-  text-align: center;
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.stage-icon {
-  font-size: 4.5em;
-  margin-bottom: 15px;
-  display: block;
-  filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.6));
-  animation: iconFloat 3s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-10px) scale(1.05); }
-}
-
-.stage-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.8em;
-  background: linear-gradient(to right, #ffd700, #ffed4e, #ffd700);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
-}
-
-.stage-subtitle {
-  font-size: 1.4em;
-  color: #ffed4e;
-  font-weight: 600;
-  letter-spacing: 1px;
-  opacity: 0.9;
-}
-
-/* Conteúdo principal do card */
-.stage-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  margin: 40px 0;
-  flex-wrap: wrap;
-}
-
-/* Seção da data e hora */
-.datetime-section {
-  flex: 1;
-  min-width: 300px;
-  background: linear-gradient(135deg, 
-    rgba(12, 28, 12, 0.9) 0%, 
-    rgba(20, 45, 20, 0.9) 100%);
-  border-radius: 20px;
-  padding: 30px;
-  border: 2px solid rgba(212, 161, 33, 0.3);
-  box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.5),
-    0 10px 30px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
-}
-
-.datetime-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(to right, #d4a121, #ffd700, #d4a121);
-}
-
-.date-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.date-icon {
-  font-size: 3em;
-  color: #ffd700;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 3px 10px rgba(255, 215, 0, 0.4));
-}
-
-.date-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.2em;
-  color: #fff;
-  text-align: center;
-  letter-spacing: 2px;
-}
-
-.date-highlight {
-  color: #ffd700;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.time-display {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  border: 1px solid rgba(212, 161, 33, 0.2);
-}
-
-.time-icon {
-  font-size: 2.5em;
-  color: #ffed4e;
-}
-
-.time-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8em;
-  color: #ffd700;
-  letter-spacing: 1px;
-}
-
-/* Seção do rei da mesa */
-.king-section-premium {
-  flex: 1;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(135deg, 
-    rgba(20, 45, 20, 0.9) 0%, 
-    rgba(12, 28, 12, 0.9) 100%);
-  border-radius: 20px;
-  padding: 30px;
-  border: 2px solid rgba(212, 161, 33, 0.3);
-  box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.5),
-    0 10px 30px rgba(0, 0, 0, 0.4);
-  position: relative;
-}
-
-.king-section-premium::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(to right, #d4a121, #ffd700, #d4a121);
-}
-
-.king-title-premium {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8em;
-  color: #ffd700;
-  margin-bottom: 20px;
-  text-align: center;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.king-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.king-photo-frame {
-  position: relative;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  padding: 8px;
-  background: linear-gradient(135deg, #d4a121, #ffd700, #d4a121);
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.6),
-    0 0 0 3px #0c1c0c,
-    0 0 30px rgba(212, 161, 33, 0.4);
-  animation: photoGlow 4s ease-in-out infinite;
-}
-
-@keyframes photoGlow {
-  0%, 100% { 
-    box-shadow: 
-      0 10px 30px rgba(0, 0, 0, 0.6),
-      0 0 0 3px #0c1c0c,
-      0 0 30px rgba(212, 161, 33, 0.4);
-  }
-  50% { 
-    box-shadow: 
-      0 15px 40px rgba(212, 161, 33, 0.5),
-      0 0 0 3px #0c1c0c,
-      0 0 50px rgba(255, 215, 0, 0.6);
-  }
-}
-
-.king-photo-premium {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #0c1c0c;
-}
-
-.crown-icon-premium {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  font-size: 3.5em;
-  color: #ffd700;
-  filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.7));
-  animation: crownFloat 2s ease-in-out infinite;
-  background: rgba(12, 28, 12, 0.9);
-  border-radius: 50%;
-  padding: 10px;
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #ffd700;
-}
-
-@keyframes crownFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(5deg); }
-}
-
-.king-name-premium {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.2em;
-  color: #ffd700;
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-shadow: 
-    0 0 10px rgba(255, 215, 0, 0.5),
-    2px 2px 0px rgba(0, 0, 0, 0.3);
-  padding: 10px 30px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(212, 161, 33, 0.2), 
-    transparent);
-  border-radius: 10px;
-}
-
-/* Seção de chamada para ação */
-.cta-section {
-  text-align: center;
-  margin-top: 40px;
-  padding: 30px;
-  background: linear-gradient(135deg, 
-    rgba(212, 161, 33, 0.15) 0%, 
-    rgba(20, 45, 20, 0.9) 100%);
-  border-radius: 20px;
-  border: 2px solid rgba(212, 161, 33, 0.4);
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-section::before {
+/* Efeito de brilho nos cantos */
+.stage-card-special::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23d4a121" opacity="0.05" d="M0,0 L100,0 L100,100 Z"/></svg>');
-  background-size: 200px;
-  animation: bgMove 20s linear infinite;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(212, 161, 33, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(244, 193, 65, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-@keyframes bgMove {
-  0% { background-position: 0 0; }
-  100% { background-position: 200px 200px; }
-}
-
-.cta-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2em;
-  color: #ffd700;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 1;
-}
-
-.cta-button {
-  display: inline-block;
-  background: linear-gradient(135deg, #d4a121 0%, #ffd700 50%, #d4a121 100%);
-  color: #000;
-  padding: 18px 45px;
-  border-radius: 50px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.3em;
-  font-weight: 700;
-  text-decoration: none;
+/* Badge especial 2ª etapa */
+.etapa-badge-special {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  color: #d4a121;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-family: 'Anton';
+  font-size: 1.1em;
+  font-weight: bold;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 0 3px #000,
-    0 0 30px rgba(212, 161, 33, 0.5);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  animation: buttonPulse 2s ease-in-out infinite;
-}
-
-@keyframes buttonPulse {
-  0%, 100% { 
-    transform: scale(1);
-    box-shadow: 
-      0 10px 30px rgba(0, 0, 0, 0.5),
-      0 0 0 3px #000,
-      0 0 30px rgba(212, 161, 33, 0.5);
-  }
-  50% { 
-    transform: scale(1.05);
-    box-shadow: 
-      0 15px 40px rgba(212, 161, 33, 0.6),
-      0 0 0 3px #000,
-      0 0 50px rgba(255, 215, 0, 0.7);
-  }
-}
-
-.cta-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 
-    0 20px 50px rgba(212, 161, 33, 0.7),
-    0 0 0 3px #000,
-    0 0 60px rgba(255, 215, 0, 0.8);
-  animation: none;
-}
-
-.cta-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
-  z-index: -1;
-}
-
-.cta-button:hover::before {
-  left: 100%;
-}
-
-/* Badge de inscrições abertas */
-.inscricoes-badge-premium {
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #d4a121 0%, #ffd700 100%);
-  padding: 12px 35px;
-  border-radius: 50px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.2em;
-  font-weight: 700;
-  color: #000;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.5),
-    0 0 0 3px #000,
-    0 0 40px rgba(212, 161, 33, 0.6);
-  display: none;
-  z-index: 100;
-  animation: badgePulse 1.5s ease-in-out infinite;
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 0 2px #d4a121;
+  z-index: 10;
+  animation: badgePulse 2s ease-in-out infinite;
+  border: 1px solid #d4a121;
 }
 
 @keyframes badgePulse {
   0%, 100% { 
-    transform: translateX(-50%) scale(1);
+    transform: scale(1);
     box-shadow: 
-      0 10px 25px rgba(0, 0, 0, 0.5),
-      0 0 0 3px #000,
-      0 0 40px rgba(212, 161, 33, 0.6);
+      0 5px 15px rgba(0, 0, 0, 0.5),
+      0 0 0 2px #d4a121;
   }
   50% { 
-    transform: translateX(-50%) scale(1.05);
+    transform: scale(1.05);
     box-shadow: 
-      0 15px 35px rgba(212, 161, 33, 0.8),
-      0 0 0 3px #000,
-      0 0 60px rgba(255, 215, 0, 0.8);
+      0 8px 20px rgba(212, 161, 33, 0.5),
+      0 0 0 2px #f4c141,
+      0 0 25px rgba(212, 161, 33, 0.4);
   }
 }
 
-/* Seção dos destaques */
-.section-title {
-  font-family: 'Oswald', sans-serif;
+/* Header do card */
+.stage-header-special {
+  text-align: center;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.stage-header-special::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #d4a121, transparent);
+}
+
+.stage-icon-special {
+  font-size: 3.5em;
+  margin-bottom: 15px;
+  display: block;
+  color: #d4a121;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+  animation: iconBounce 3s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(-5deg); }
+  75% { transform: translateY(-5px) rotate(5deg); }
+}
+
+.stage-title-special {
+  font-family: 'Anton';
+  font-size: 2.2em;
+  color: #d4a121;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stage-subtitle-special {
+  font-size: 1.2em;
+  color: #f4c141;
+  font-weight: 600;
+}
+
+/* Conteúdo principal */
+.stage-content-special {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 30px 0;
+  justify-content: center;
+}
+
+/* Data e hora especial */
+.datetime-special {
+  flex: 1;
+  min-width: 300px;
+  background: rgba(26, 61, 26, 0.7);
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid rgba(212, 161, 33, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.datetime-special::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #d4a121, #f4c141, #d4a121);
+}
+
+.date-box-special {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.date-icon-special {
+  font-size: 2.5em;
+  color: #f4c141;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.date-text-special {
+  font-family: 'Anton';
+  font-size: 2em;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.date-highlight-special {
+  color: #f4c141;
+  display: block;
+  font-size: 1.2em;
+}
+
+.time-box-special {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(16, 40, 16, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 161, 33, 0.3);
+}
+
+.time-icon-special {
+  font-size: 2em;
+  color: #d4a121;
+}
+
+.time-text-special {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #f4c141;
+  letter-spacing: 1px;
+}
+
+/* Rei da mesa especial */
+.king-special {
+  flex: 1;
+  min-width: 300px;
+  background: rgba(26, 61, 26, 0.7);
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid rgba(212, 161, 33, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.king-special::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, #d4a121, #f4c141, #d4a121);
+}
+
+.king-title-special {
+  font-family: 'Anton';
+  font-size: 1.6em;
+  color: #d4a121;
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.king-display-special {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.king-frame-special {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(135deg, #d4a121, #f4c141, #d4a121);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.5),
+    0 0 0 3px #102810;
+}
+
+.king-photo-special {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #102810;
+}
+
+.crown-special {
+  position: absolute;
+  top: -10px;
+  right: -10px;
   font-size: 2.5em;
   color: #ffd700;
+  filter: drop-shadow(0 3px 8px rgba(255, 215, 0, 0.5));
+  background: rgba(16, 40, 16, 0.9);
+  border-radius: 50%;
+  padding: 8px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #d4a121;
+  animation: crownSpin 4s linear infinite;
+}
+
+@keyframes crownSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.king-name-special {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #f4c141;
   text-align: center;
-  letter-spacing: 3px;
-  margin: 50px 0 40px;
-  text-shadow: 
-    0 0 20px rgba(212, 161, 33, 0.5),
-    2px 2px 0px rgba(0, 0, 0, 0.3);
-  padding-bottom: 15px;
-  border-bottom: 3px solid rgba(212, 161, 33, 0.3);
+  font-weight: bold;
+  padding: 10px 25px;
+  background: rgba(16, 40, 16, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 161, 33, 0.3);
+}
+
+/* Seção de ação */
+.action-section-special {
+  text-align: center;
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(26, 61, 26, 0.8);
+  border-radius: 15px;
+  border: 2px solid rgba(212, 161, 33, 0.4);
   position: relative;
 }
 
-.section-title::after {
-  content: '🎯';
+.action-title-special {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #d4a121;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.action-button-special {
+  display: inline-block;
+  background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
+  color: #000;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-family: 'Anton';
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 1px;
+  border: 3px solid #102810;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 4px 0 #b38c1b;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button-special:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 25px rgba(212, 161, 33, 0.4),
+    0 6px 0 #b38c1b;
+}
+
+.action-button-special:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 4px 15px rgba(212, 161, 33, 0.3),
+    0 2px 0 #b38c1b;
+}
+
+/* Badge de inscrições */
+.inscricoes-badge-special {
   position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.8em;
-  animation: targetSpin 3s linear infinite;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-family: 'Anton';
+  font-size: 1.1em;
+  color: #d4a121;
+  letter-spacing: 2px;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 0 2px #d4a121;
+  display: none;
+  z-index: 100;
+  border: 1px solid #d4a121;
+  animation: badgeSlide 0.5s ease-out;
 }
 
-@keyframes targetSpin {
-  0% { transform: translateY(-50%) rotate(0deg); }
-  100% { transform: translateY(-50%) rotate(360deg); }
+@keyframes badgeSlide {
+  from {
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
 }
 
-/* Resto do CSS permanece igual... */
+/* Título da seção dos destaques */
+.section-title {
+  font-family: 'Anton';
+  font-size: 2em;
+  color: #d4a121;
+  text-align: center;
+  letter-spacing: 2px;
+  margin: 40px 0 25px;
+  text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d4a121;
+}
 
 /* GRID DE CARDS DE DESTAQUE */
 .highlight-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
 /* CARD DE DESTAQUE */
 .highlight-card {
   background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
   border: 2px solid #d4a121;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 25px;
   text-align: center;
   transition: all 0.3s;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .highlight-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 50px rgba(212, 161, 33, 0.4);
-  border-color: #ffd700;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(212, 161, 33, 0.4);
+  border-color: #f4c141;
 }
 
 /* BADGE DA ETAPA */
@@ -658,13 +513,13 @@ body {
   right: 15px;
   background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
   color: #d4a121;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.8em;
   font-weight: bold;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
   border: 1px solid #d4a121;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Anton';
   letter-spacing: 1px;
 }
 
@@ -717,18 +572,17 @@ body {
 }
 
 .highlight-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.5em;
-  color: #ffd700;
+  font-family: 'Anton';
+  font-size: 1.4em;
+  color: #d4a121;
   text-align: center;
   line-height: 1.3;
   margin-bottom: 10px;
-  letter-spacing: 1px;
 }
 
 .highlight-name {
-  color: #ffed4e;
-  font-weight: 700;
+  color: #f4c141;
+  font-weight: bold;
   font-size: 1.3em;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   display: block;
@@ -740,22 +594,21 @@ body {
   line-height: 1.5;
   opacity: 0.9;
   margin-top: 10px;
-  color: #e0e0e0;
 }
 
-/* BOTTOM NAVIGATION - Estilização premium */
+/* BOTTOM NAVIGATION */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #0c1c0c 0%, #081108 100%);
-  border-top: 3px solid #d4a121;
+  background: linear-gradient(180deg, #102810 0%, #0a160a 100%);
+  border-top: 2px solid #d4a121;
   display: flex;
   justify-content: space-around;
-  padding: 12px 5px;
+  padding: 10px 5px;
   z-index: 1000;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .nav-item {
@@ -764,80 +617,59 @@ body {
   align-items: center;
   text-decoration: none;
   color: #d4a121;
-  padding: 10px 15px;
-  border-radius: 15px;
+  padding: 8px 12px;
+  border-radius: 10px;
   transition: all 0.3s;
   flex: 1;
-  max-width: 90px;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.nav-item:hover::before {
-  left: 100%;
+  max-width: 80px;
 }
 
 .nav-item:hover {
   background: rgba(212, 161, 33, 0.15);
-  color: #ffd700;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(212, 161, 33, 0.3);
+  color: #f4c141;
+  transform: translateY(-3px);
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(212, 161, 33, 0.3), rgba(255, 215, 0, 0.2));
-  color: #ffd700;
-  box-shadow: 
-    inset 0 0 20px rgba(212, 161, 33, 0.2),
-    0 5px 15px rgba(212, 161, 33, 0.4);
+  background: rgba(212, 161, 33, 0.25);
+  color: #f4c141;
 }
 
 .nav-icon {
-  font-size: 2em;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+  font-size: 1.8em;
+  margin-bottom: 5px;
 }
 
 .nav-text {
-  font-size: 0.8em;
-  font-weight: 700;
+  font-size: 0.75em;
+  font-weight: bold;
   text-align: center;
   white-space: nowrap;
-  letter-spacing: 0.5px;
-  font-family: 'Oswald', sans-serif;
 }
 
 .nav-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  background: linear-gradient(135deg, #d4a121, #ffd700);
+  top: 5px;
+  right: 5px;
+  background: #d4a121;
   color: #000;
-  font-size: 0.7em;
-  padding: 3px 8px;
-  border-radius: 50%;
-  font-weight: 900;
-  animation: badgePulse 1.5s ease-in-out infinite;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  font-size: 0.6em;
+  padding: 2px 5px;
+  border-radius: 10px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
 }
 
-/* Restante do CSS (menu modal, footer, etc) permanece igual... */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-  .stage-content {
+  .stage-content-special {
     flex-direction: column;
+    align-items: center;
   }
   
   .highlight-grid {
@@ -846,84 +678,45 @@ body {
 }
 
 @media (max-width: 768px) {
-  .stage-card-premium {
+  .stage-card-special {
     padding: 25px 20px;
   }
   
-  .stage-title {
-    font-size: 2.2em;
-  }
-  
-  .stage-subtitle {
-    font-size: 1.2em;
-  }
-  
-  .etapa-badge-premium {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-  
-  .date-text {
+  .stage-title-special {
     font-size: 1.8em;
   }
   
-  .time-text {
-    font-size: 1.5em;
+  .stage-icon-special {
+    font-size: 3em;
   }
   
-  .king-name-premium {
-    font-size: 1.8em;
+  .datetime-special,
+  .king-special {
+    min-width: 100%;
   }
   
-  .cta-title {
-    font-size: 1.6em;
+  .date-text-special {
+    font-size: 1.7em;
   }
   
-  .cta-button {
-    padding: 15px 35px;
-    font-size: 1.1em;
+  .king-frame-special {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .crown-special {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
   
   .section-title {
-    font-size: 2em;
+    font-size: 1.7em;
   }
   
   .highlight-grid {
     grid-template-columns: 1fr;
-    gap: 25px;
-  }
-}
-
-@media (max-width: 480px) {
-  .logo-title {
-    font-size: 2em;
-  }
-  
-  .stage-card-premium {
-    padding: 20px 15px;
-  }
-  
-  .stage-title {
-    font-size: 1.8em;
-  }
-  
-  .stage-icon {
-    font-size: 3.5em;
-  }
-  
-  .king-photo-frame {
-    width: 140px;
-    height: 140px;
-  }
-  
-  .crown-icon-premium {
-    width: 60px;
-    height: 60px;
-    font-size: 2.8em;
-  }
-  
-  .datetime-section, .king-section-premium {
-    min-width: 100%;
+    gap: 20px;
   }
 }
 </style>
@@ -941,61 +734,61 @@ body {
 <!-- CONTEÚDO PRINCIPAL -->
 <div class="content-area">
   
-  <!-- CARD PREMIUM 2ª ETAPA -->
-  <div class="stage-card-premium">
+  <!-- CARD ESPECIAL 2ª ETAPA -->
+  <div class="stage-card-special">
     <!-- Badge 2ª etapa -->
-    <div class="etapa-badge-premium">2ª ETAPA</div>
+    <div class="etapa-badge-special">2ª ETAPA</div>
     
     <!-- Cabeçalho -->
-    <div class="stage-header">
-      <span class="stage-icon">🎯</span>
-      <h2 class="stage-title">PRÓXIMA ETAPA</h2>
-      <p class="stage-subtitle">Prepare-se para a grande disputa!</p>
+    <div class="stage-header-special">
+      <span class="stage-icon-special">🔥</span>
+      <h2 class="stage-title-special">PRÓXIMA ETAPA</h2>
+      <p class="stage-subtitle-special">A batalha continua! Não fique fora dessa.</p>
     </div>
     
     <!-- Conteúdo principal -->
-    <div class="stage-content">
+    <div class="stage-content-special">
       <!-- Data e hora -->
-      <div class="datetime-section">
-        <div class="date-display">
-          <span class="date-icon">📅</span>
-          <div class="date-text">
-            <span class="date-highlight">26 DE FEVEREIRO</span><br>
-            <span style="font-size: 0.8em; color: #ffed4e;">2026</span>
+      <div class="datetime-special">
+        <div class="date-box-special">
+          <span class="date-icon-special">📅</span>
+          <div class="date-text-special">
+            <span class="date-highlight-special">26 DE FEVEREIRO</span>
+            <span style="font-size: 0.8em; display: block; margin-top: 5px; color: #d4a121;">2026</span>
           </div>
         </div>
         
-        <div class="time-display">
-          <span class="time-icon">⏰</span>
-          <span class="time-text">20:00 HORAS</span>
+        <div class="time-box-special">
+          <span class="time-icon-special">⏰</span>
+          <span class="time-text-special">20:00 HORAS</span>
         </div>
       </div>
       
       <!-- Rei da Mesa -->
-      <div class="king-section-premium">
-        <h3 class="king-title-premium">Rei da Mesa</h3>
-        <div class="king-display">
-          <div class="king-photo-frame">
+      <div class="king-special">
+        <h3 class="king-title-special">REI DA MESA</h3>
+        <div class="king-display-special">
+          <div class="king-frame-special">
             <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
                  alt="Rei da Mesa - Gaspar" 
-                 class="king-photo-premium"
-                 onerror="this.src='https://via.placeholder.com/160/FFD700/0c1c0c?text=G'">
-            <span class="crown-icon-premium">👑</span>
+                 class="king-photo-special"
+                 onerror="this.src='https://via.placeholder.com/140/FFD700/102810?text=G'">
+            <span class="crown-special">👑</span>
           </div>
-          <div class="king-name-premium">GASPAR</div>
+          <div class="king-name-special">GASPAR</div>
         </div>
       </div>
     </div>
     
     <!-- Chamada para ação -->
-    <div class="cta-section">
-      <h3 class="cta-title">NÃO FIQUE FORA DESSA BATALHA!</h3>
-      <a href="https://pokerdequinta.github.io/confirma/" class="cta-button">
-        INSCREVA-SE AGORA
+    <div class="action-section-special">
+      <h3 class="action-title-special">GARANTA SEU LUGAR NA MESA!</h3>
+      <a href="https://pokerdequinta.github.io/confirma/" class="action-button-special">
+        CONFIRMAR PRESENÇA
       </a>
       
       <!-- Badge de inscrições abertas -->
-      <div class="inscricoes-badge-premium" id="inscricoes-badge-top">
+      <div class="inscricoes-badge-special" id="inscricoes-badge-top">
         INSCRIÇÕES ABERTAS
       </div>
     </div>
