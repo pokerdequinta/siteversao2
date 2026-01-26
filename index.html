@@ -879,6 +879,12 @@ body {
 <div class="menu-modal" id="menuModal">
   <h3 class="menu-modal-title">MENU COMPLETO</h3>
   <div class="menu-grid">
+    <!-- HOME (adicionei o Home no menu modal) -->
+    <a href="#home" class="menu-grid-item" id="menuHome">
+      <span class="menu-grid-icon">🏠</span>
+      <span class="menu-grid-text">HOME</span>
+    </a>
+    
     <a href="https://pokerdequinta.github.io/calendario/" class="menu-grid-item">
       <span class="menu-grid-icon">📆</span>
       <span class="menu-grid-text">CALENDÁRIO</span>
@@ -916,12 +922,6 @@ body {
 
 <!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
-  <!-- HOME -->
-  <a href="#home" class="nav-item active" id="navHome">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-text">HOME</span>
-  </a>
-  
   <!-- RANKING -->
   <a href="https://pokerdequinta.github.io/ranking/" class="nav-item" id="navRanking">
     <span class="nav-icon">🏆</span>
@@ -941,10 +941,16 @@ body {
     <span class="nav-text">ENQUETE</span>
   </a>
   
+  <!-- REGULAMENTO -->
+  <a href="https://pokerdequinta.github.io/regulamento/" class="nav-item active" id="navRegulamento">
+    <span class="nav-icon">📋</span>
+    <span class="nav-text">REGULAMENTO</span>
+  </a>
+  
   <!-- MENU (PARA MAIS OPÇÕES) -->
   <a href="#menu" class="nav-item" id="navMenu">
-    <span class="nav-icon">📋</span>
-    <span class="nav-text">MENU</span>
+    <span class="nav-icon">⋯</span>
+    <span class="nav-text">MAIS</span>
   </a>
 </div>
 
@@ -961,6 +967,7 @@ const navItems = document.querySelectorAll('.nav-item');
 const menuModal = document.getElementById('menuModal');
 const menuOverlay = document.getElementById('menuOverlay');
 const navMenu = document.getElementById('navMenu');
+const menuHome = document.getElementById('menuHome');
 
 // Controlar item ativo na navegação
 navItems.forEach(item => {
@@ -976,24 +983,18 @@ navItems.forEach(item => {
       if (menuModal.classList.contains('active')) {
         icon.textContent = '✕';
       } else {
-        icon.textContent = '📋';
+        icon.textContent = '⋯';
       }
     } else {
       // Fechar menu modal se estiver aberto
       menuModal.classList.remove('active');
       menuOverlay.classList.remove('active');
       const menuIcon = document.querySelector('#navMenu .nav-icon');
-      menuIcon.textContent = '📋';
+      menuIcon.textContent = '⋯';
       
       // Marcar item como ativo
       navItems.forEach(i => i.classList.remove('active'));
       this.classList.add('active');
-      
-      // Para o Home (que não tem link externo)
-      if (this.id === 'navHome') {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
     }
   });
 });
@@ -1003,7 +1004,7 @@ menuOverlay.addEventListener('click', function() {
   menuModal.classList.remove('active');
   this.classList.remove('active');
   const menuIcon = document.querySelector('#navMenu .nav-icon');
-  menuIcon.textContent = '📋';
+  menuIcon.textContent = '⋯';
 });
 
 // Fechar menu ao pressionar ESC
@@ -1012,8 +1013,24 @@ document.addEventListener('keydown', function(e) {
     menuModal.classList.remove('active');
     menuOverlay.classList.remove('active');
     const menuIcon = document.querySelector('#navMenu .nav-icon');
-    menuIcon.textContent = '📋';
+    menuIcon.textContent = '⋯';
   }
+});
+
+// Home no menu modal - rolar para o topo
+menuHome.addEventListener('click', function(e) {
+  e.preventDefault();
+  menuModal.classList.remove('active');
+  menuOverlay.classList.remove('active');
+  const menuIcon = document.querySelector('#navMenu .nav-icon');
+  menuIcon.textContent = '⋯';
+  
+  // Rolar suavemente para o topo
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // Marcar Regulamento como ativo (já que está na bottom nav)
+  navItems.forEach(i => i.classList.remove('active'));
+  document.getElementById('navRegulamento').classList.add('active');
 });
 
 // Função para verificar se deve mostrar o badge de inscrições abertas
@@ -1065,27 +1082,24 @@ function carregarImagens() {
 // Carregar imagens quando a página carregar
 window.addEventListener('load', carregarImagens);
 
-// Suavizar rolagem para âncoras
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const targetId = this.getAttribute('href');
-    if (targetId === '#home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
+// Marcar Regulamento como ativo ao carregar a página (já que é a página inicial)
+window.addEventListener('DOMContentLoaded', function() {
+  navItems.forEach(i => i.classList.remove('active'));
+  document.getElementById('navRegulamento').classList.add('active');
 });
 
-// Marcar item de navegação ativo baseado na posição de rolagem
-window.addEventListener('scroll', function() {
-  const scrollPosition = window.scrollY;
+// Atualizar badge de inscrições no menu modal também
+setTimeout(() => {
+  const agora = new Date();
+  const dataAlvo = new Date('2026-01-26T07:00:00');
   
-  // Se estiver no topo da página, marcar Home como ativo
-  if (scrollPosition < 100) {
-    navItems.forEach(item => item.classList.remove('active'));
-    document.getElementById('navHome').classList.add('active');
+  if (agora >= dataAlvo) {
+    const confirmacaoItem = document.querySelector('#navConfirmacao .nav-badge');
+    if (confirmacaoItem) {
+      confirmacaoItem.style.display = 'block';
+    }
   }
-});
+}, 1000);
 </script>
 
 </body>
