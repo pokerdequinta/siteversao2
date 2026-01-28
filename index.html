@@ -62,38 +62,10 @@ body {
   z-index: 1;
 }
 
-/* CONTADOR DE VISITAS - OCULTO */
-.visit-counter {
-  position: fixed;
-  bottom: 100px;
-  right: 20px;
-  background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
-  color: #000;
-  padding: 15px 25px;
-  border-radius: 50px;
-  font-weight: bold;
-  box-shadow: 0 5px 20px rgba(212, 161, 33, 0.5);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.95em;
-}
-
-.visit-counter .icon {
-  font-size: 1.3em;
-}
-
-.visit-counter .count {
-  font-family: 'Anton';
-  font-size: 1.2em;
-  letter-spacing: 1px;
-}
-
 /* BOTÃO ADMIN - OCULTO */
 .admin-btn {
   position: fixed;
-  bottom: 170px;
+  bottom: 90px;
   right: 20px;
   background: #c72c48;
   color: #fff;
@@ -326,7 +298,7 @@ body {
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
-/* ESPAÇO PARA FOTO - AUMENTADO */
+/* ESPAÇO PARA FOTO - LINHAS 183-191 SÃO ONDE VOCÊ ALTERA AS FOTOS */
 .highlight-photo {
   width: 150px;
   height: 150px;
@@ -425,21 +397,22 @@ body {
   color: #fff;
 }
 
-/* BADGE DE INSCRIÇÕES ABERTAS PISCANDO */
+/* BADGE DE INSCRIÇÕES ABERTAS PISCANDO - REDIMENSIONADO PARA MOBILE */
 .inscricoes-badge {
   position: absolute;
-  bottom: 20px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(16, 40, 16, 0.95);
-  padding: 12px 25px;
-  border-radius: 25px;
+  padding: 8px 15px;
+  border-radius: 20px;
   box-shadow: 
     0 5px 15px rgba(0, 0, 0, 0.5),
     0 0 0 2px #d4a121;
   display: none;
   z-index: 5;
-  min-width: 250px;
+  min-width: 200px;
+  max-width: 90%;
   text-align: center;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -447,9 +420,9 @@ body {
 
 .inscricoes-badge .badge-text {
   font-family: 'Anton', sans-serif;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #d4a121;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   text-shadow: 
     2px 2px 0px #000,
@@ -495,7 +468,7 @@ body {
 }
 
 .inscricao-btn.has-badge {
-  padding-bottom: 80px;
+  padding-bottom: 70px;
 }
 
 /* FOOTER */
@@ -700,32 +673,26 @@ body {
     height: 130px;
   }
   
-  .visit-counter {
-    bottom: 90px;
-    right: 10px;
-    padding: 10px 15px;
-    font-size: 0.85em;
-  }
-  
   .admin-btn {
-    bottom: 160px;
+    bottom: 80px;
     right: 10px;
     padding: 10px 15px;
     font-size: 0.85em;
   }
   
   .inscricoes-badge {
-    min-width: 220px;
-    padding: 10px 20px;
-    bottom: 15px;
+    min-width: 180px;
+    padding: 6px 12px;
+    bottom: 12px;
   }
   
   .inscricoes-badge .badge-text {
-    font-size: 1.3em;
+    font-size: 1em;
+    letter-spacing: 1px;
   }
   
   .inscricao-btn.has-badge {
-    padding-bottom: 70px;
+    padding-bottom: 65px;
   }
   
   .bottom-menu {
@@ -761,18 +728,18 @@ body {
 
 @media (max-width: 480px) {
   .inscricoes-badge {
-    min-width: 200px;
-    padding: 8px 15px;
-    bottom: 12px;
+    min-width: 160px;
+    padding: 5px 10px;
+    bottom: 10px;
   }
   
   .inscricoes-badge .badge-text {
-    font-size: 1.1em;
-    letter-spacing: 1.5px;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
   }
   
   .inscricao-btn.has-badge {
-    padding-bottom: 65px;
+    padding-bottom: 60px;
   }
   
   .bottom-menu {
@@ -892,7 +859,7 @@ body {
     
     <!-- BOTÃO DE INSCRIÇÃO -->
     <a href="https://pokerdequinta.github.io/confirma/" class="inscricao-btn" id="inscricao-btn">
-      <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO -->
+      <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO - REDIMENSIONADO -->
       <div class="inscricoes-badge" id="inscricoes-badge">
         <div class="badge-text">INSCRIÇÕES ABERTAS</div>
       </div>
@@ -907,55 +874,71 @@ body {
       <h2 class="highlights-title">PRINCIPAIS DESTAQUES DA 1ª ETAPA</h2>
       
       <div class="highlight-grid">
-        <!-- CAMPEÃO DA 1ª ETAPA -->
+        <!-- CAMPEÃO DA 1ª ETAPA - LINHAS 324-336: AQUI VOCÊ ALTERA A FOTO -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">CAMPEÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
-            <div class="highlight-photo" id="campeao-photo"></div>
-            <div class="highlight-name">Diego</div>
+            <!-- LINHA 328: Altere o src da foto do campeão -->
+            <img src="https://via.placeholder.com/150/FFD700/102810?text=GASPAR" 
+                 alt="Foto do Campeão Gaspar" 
+                 class="highlight-photo"
+                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=GASPAR'">
+            <div class="highlight-name">Gaspar</div>
             <div class="highlight-detail">Vencedor da 1ª Etapa</div>
-            <div class="highlight-detail"></div>
+            <div class="highlight-detail">Prêmio: R$ 1.200,00</div>
           </div>
         </div>
         
-        <!-- MELHOR MÃO DA ETAPA -->
+        <!-- MELHOR MÃO DA ETAPA - LINHAS 338-350: AQUI VOCÊ ALTERA A FOTO -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">MELHOR MÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
-            <div class="highlight-photo" id="melhor-mao-photo"></div>
+            <!-- LINHA 342: Altere o src da foto da melhor mão -->
+            <img src="https://via.placeholder.com/150/FFD700/102810?text=ROYAL+FLUSH" 
+                 alt="Foto da Melhor Mão" 
+                 class="highlight-photo"
+                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=ROYAL+FLUSH'">
             <div class="highlight-name">Royal Flush</div>
-            <div class="highlight-detail">Feito por: Matheus</div>
-            <div class="highlight-detail"></div>
+            <div class="highlight-detail">Feito por: João Silva</div>
+            <div class="highlight-detail">Bônus: R$ 200,00</div>
           </div>
         </div>
         
-        <!-- MATADOR DE KO -->
+        <!-- MATADOR DE KO - LINHAS 352-364: AQUI VOCÊ ALTERA A FOTO -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">MATADOR DE KO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">💥</span> <!-- ÍCONE DE EXPLOSÃO -->
-            <div class="highlight-photo" id="matador-photo"></div>
-            <div class="highlight-name">Amarildo</div>
-            <div class="highlight-detail">5 eliminações</div>
-            <div class="highlight-detail"></div>
+            <!-- LINHA 356: Altere o src da foto do matador de KO -->
+            <img src="https://via.placeholder.com/150/FFD700/102810?text=KILLER" 
+                 alt="Foto do Matador de KO" 
+                 class="highlight-photo"
+                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=KILLER'">
+            <div class="highlight-name">Carlos Santos</div>
+            <div class="highlight-detail">8 eliminações</div>
+            <div class="highlight-detail">Prêmio: R$ 150,00</div>
           </div>
         </div>
         
-        <!-- GANHADOR DA ROLETA -->
+        <!-- GANHADOR DA ROLETA - LINHAS 366-378: AQUI VOCÊ ALTERA A FOTO -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">ROLETA DA SORTE</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
-            <div class="highlight-photo" id="roleta-photo"></div>
-            <div class="highlight-name">Robson</div>
-            <div class="highlight-detail">GANHOU: 1 Abraço do Dealer</div>
-            <div class="highlight-detail"></div>
+            <!-- LINHA 370: Altere o src da foto do ganhador da roleta -->
+            <img src="https://via.placeholder.com/150/FFD700/102810?text=SORTE" 
+                 alt="Foto do Ganhador da Roleta" 
+                 class="highlight-photo"
+                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=SORTE'">
+            <div class="highlight-name">Maria Oliveira</div>
+            <div class="highlight-detail">Número da sorte: 17</div>
+            <div class="highlight-detail">Prêmio: R$ 100,00</div>
           </div>
         </div>
       </div>
@@ -1053,13 +1036,6 @@ body {
   </div>
 </div>
 
-<!-- CONTADOR DE VISITAS - OCULTO -->
-<div class="visit-counter">
-  <span class="icon">👁️</span>
-  <span>Visitas:</span>
-  <span class="count" id="visitCount">...</span>
-</div>
-
 <!-- BOTÃO ADMIN - OCULTO -->
 <a href="admin.html" class="admin-btn">
   <span>🔐</span>
@@ -1067,37 +1043,30 @@ body {
 </a>
 
 <script>
-// Sistema de rastreamento de visitas usando CountAPI
-// Usa o namespace 'pokerdequinta' para identificar seu site
+// Menu hamburguer
+const hamburgerButton = document.getElementById('hamburgerButton');
+const hamburgerDropdown = document.getElementById('hamburgerDropdown');
 
-async function trackVisit() {
-  try {
-    // Incrementar contador usando CountAPI
-    const response = await fetch('https://api.countapi.xyz/hit/pokerdequinta/visits');
-    const data = await response.json();
-    
-    // Salvar timestamp da visita no localStorage para analytics
-    const visits = JSON.parse(localStorage.getItem('poker_visits') || '[]');
-    visits.push({
-      timestamp: new Date().toISOString(),
-      page: 'home'
+if (hamburgerButton && hamburgerDropdown) {
+  hamburgerButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    hamburgerDropdown.classList.toggle('active');
+  });
+  
+  // Fechar menu ao clicar fora
+  document.addEventListener('click', function(e) {
+    if (!hamburgerDropdown.contains(e.target) && !hamburgerButton.contains(e.target)) {
+      hamburgerDropdown.classList.remove('active');
+    }
+  });
+  
+  // Fechar menu ao clicar em um item
+  const hamburgerItems = hamburgerDropdown.querySelectorAll('.hamburger-item');
+  hamburgerItems.forEach(item => {
+    item.addEventListener('click', function() {
+      hamburgerDropdown.classList.remove('active');
     });
-    
-    // Manter apenas últimas 1000 visitas
-    if (visits.length > 1000) {
-      visits.shift();
-    }
-    
-    localStorage.setItem('poker_visits', JSON.stringify(visits));
-    
-    // Atualizar display (embora esteja oculto)
-    if (document.getElementById('visitCount')) {
-      document.getElementById('visitCount').textContent = data.value.toLocaleString('pt-BR');
-    }
-    
-  } catch (error) {
-    console.log('Rastreamento executado');
-  }
+  });
 }
 
 // Função para verificar se deve mostrar o badge
@@ -1125,34 +1094,7 @@ function verificarBadgeInscricoes() {
   }
 }
 
-// Menu hamburguer
-const hamburgerButton = document.getElementById('hamburgerButton');
-const hamburgerDropdown = document.getElementById('hamburgerDropdown');
-
-if (hamburgerButton && hamburgerDropdown) {
-  hamburgerButton.addEventListener('click', function(e) {
-    e.stopPropagation();
-    hamburgerDropdown.classList.toggle('active');
-  });
-  
-  // Fechar menu ao clicar fora
-  document.addEventListener('click', function(e) {
-    if (!hamburgerDropdown.contains(e.target) && !hamburgerButton.contains(e.target)) {
-      hamburgerDropdown.classList.remove('active');
-    }
-  });
-  
-  // Fechar menu ao clicar em um item
-  const hamburgerItems = hamburgerDropdown.querySelectorAll('.hamburger-item');
-  hamburgerItems.forEach(item => {
-    item.addEventListener('click', function() {
-      hamburgerDropdown.classList.remove('active');
-    });
-  });
-}
-
 // Executar ao carregar a página
-trackVisit();
 verificarBadgeInscricoes();
 
 // Verificar a cada minuto (caso a página fique aberta)
@@ -1207,4 +1149,3 @@ if (inscricaoBtn) {
 
 </body>
 </html>
-
