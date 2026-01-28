@@ -256,6 +256,7 @@ body {
   border-color: #fff;
   animation: pulseGlow 2s infinite;
   grid-column: 1 / -1;
+  padding: 30px 25px;
 }
 
 @keyframes pulseGlow {
@@ -267,35 +268,21 @@ body {
   }
 }
 
-.next-stage-card .menu-title {
-  color: #000;
-  font-size: 2em;
-  margin-bottom: 5px;
+.next-stage-card .stage-title {
+  font-family: 'Anton';
+  font-size: 2.2em;
+  color: #102810; /* Verde escuro do fundo */
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .next-stage-card .menu-description {
   color: #000;
-  opacity: 0.8;
+  opacity: 0.9;
   font-size: 1.1em;
-  margin-bottom: 20px;
-}
-
-/* BADGE DA ETAPA */
-.badge-etapa {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  color: #d4a121;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: bold;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-  border: 1px solid #d4a121;
-  font-family: 'Anton';
-  letter-spacing: 1px;
-  z-index: 2;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 /* INFORMAÇÕES DA ETAPA - ESTILO MODERNO */
@@ -304,17 +291,16 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
   margin-top: 20px;
-  text-align: left;
 }
 
 .info-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.15);
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .info-item .icon {
@@ -327,16 +313,19 @@ body {
 .info-content {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .info-label {
-  font-size: 0.85em;
-  color: #333;
-  font-weight: 600;
-  margin-bottom: 3px;
+  font-family: 'Anton', sans-serif;
+  font-size: 1em;
+  color: #102810;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
 }
 
 .info-value {
+  font-family: 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   color: #000;
@@ -362,6 +351,21 @@ body {
   color: #8e44ad;
 }
 
+/* SEÇÃO DE DESTAQUES DA 1ª ETAPA ABAIXO DO CARD AMARELO */
+.highlights-section {
+  margin-top: 40px;
+}
+
+.highlights-title {
+  font-family: 'Anton';
+  font-size: 2em;
+  color: #d4a121;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
+}
+
 /* CARDS DOS DESTAQUES */
 .highlight-card {
   background: linear-gradient(135deg, #1a3d1a 0%, #0d1b0d 100%);
@@ -371,6 +375,7 @@ body {
   text-align: center;
   transition: all 0.3s;
   height: 100%;
+  position: relative;
 }
 
 .highlight-card:hover {
@@ -378,44 +383,74 @@ body {
   box-shadow: 0 10px 30px rgba(212, 161, 33, 0.4);
 }
 
+/* BADGE PARA A 1ª ETAPA */
+.etapa-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #d4a121;
+  color: #000;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-family: 'Anton';
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  font-weight: bold;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
 .highlight-title {
   font-family: 'Anton';
-  font-size: 1.3em;
+  font-size: 1.4em;
   color: #d4a121;
   letter-spacing: 1px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #d4a121;
   padding-bottom: 8px;
+  border-bottom: 1px solid #d4a121;
 }
 
 .highlight-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding-top: 10px;
 }
 
 .highlight-icon {
-  font-size: 2.5em;
+  font-size: 2.8em;
   margin-bottom: 10px;
 }
 
+.highlight-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 3px solid #d4a121;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background: #102810;
+}
+
 .highlight-name {
-  font-size: 1.2em;
+  font-family: 'Anton';
+  font-size: 1.3em;
   font-weight: bold;
   color: #f4c141;
+  letter-spacing: 1px;
 }
 
 .highlight-detail {
-  font-size: 0.9em;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.95em;
   color: #ccc;
   font-style: italic;
 }
 
 .highlight-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
   margin-top: 20px;
 }
 
@@ -545,10 +580,110 @@ body {
   background: linear-gradient(135deg, #102810 0%, #0d1b0d 100%);
   border-top: 2px solid #d4a121;
   display: flex;
-  justify-content: space-around;
-  padding: 15px 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
   z-index: 1000;
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Menu principal (4 itens à esquerda) */
+.main-menu-items {
+  display: flex;
+  gap: 25px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+/* Menu hamburguer (à direita) */
+.hamburger-menu {
+  position: relative;
+}
+
+.hamburger-button {
+  background: #d4a121;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.8em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.hamburger-button:hover {
+  background: #f4c141;
+  transform: scale(1.1);
+}
+
+.hamburger-dropdown {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background: linear-gradient(135deg, #1a3d1a 0%, #102810 100%);
+  border: 2px solid #d4a121;
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 250px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 1001;
+}
+
+.hamburger-dropdown.active {
+  display: block;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hamburger-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 15px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+}
+
+.hamburger-item:hover {
+  background: rgba(212, 161, 33, 0.2);
+  transform: translateX(5px);
+}
+
+.hamburger-item:last-child {
+  margin-bottom: 0;
+}
+
+.hamburger-icon {
+  font-size: 1.5em;
+  color: #d4a121;
+  min-width: 30px;
+  text-align: center;
+}
+
+.hamburger-text {
+  font-family: 'Anton';
+  font-size: 1em;
+  letter-spacing: 1px;
+  color: #d4a121;
 }
 
 .bottom-menu-item {
@@ -588,6 +723,10 @@ body {
   
   .side-menu {
     min-width: 100%;
+  }
+  
+  .stage-info {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -645,7 +784,11 @@ body {
   }
   
   .bottom-menu {
-    padding: 12px 5px;
+    padding: 12px 15px;
+  }
+  
+  .main-menu-items {
+    gap: 15px;
   }
   
   .bottom-menu-item {
@@ -655,6 +798,17 @@ body {
   
   .bottom-menu-icon {
     font-size: 1.5em;
+  }
+  
+  .hamburger-button {
+    width: 45px;
+    height: 45px;
+    font-size: 1.5em;
+  }
+  
+  .hamburger-dropdown {
+    min-width: 220px;
+    right: -10px;
   }
 }
 
@@ -675,7 +829,11 @@ body {
   }
   
   .bottom-menu {
-    padding: 10px 5px;
+    padding: 10px;
+  }
+  
+  .main-menu-items {
+    gap: 10px;
   }
   
   .bottom-menu-item {
@@ -686,6 +844,23 @@ body {
   
   .bottom-menu-icon {
     font-size: 1.3em;
+  }
+  
+  .hamburger-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3em;
+  }
+  
+  .hamburger-dropdown {
+    min-width: 200px;
+    right: -15px;
+    padding: 15px;
+  }
+  
+  .hamburger-item {
+    padding: 10px;
+    font-size: 0.9em;
   }
 }
 </style>
@@ -708,11 +883,7 @@ body {
     <h2 class="section-title">PRÓXIMA ETAPA</h2>
     
     <a href="https://pokerdequinta.github.io/confirma/" class="menu-card next-stage-card">
-      <!-- BADGE DA ETAPA NO CANTO SUPERIOR DIREITO -->
-      <div class="badge-etapa">2ª ETAPA</div>
-      
-      <span class="menu-icon">📅</span>
-      <h3 class="menu-title">2ª ETAPA - 26/02</h3>
+      <h3 class="stage-title">2ª ETAPA - 26/02</h3>
       <p class="menu-description">Prepare-se para mais uma noite emocionante de poker!</p>
       
       <!-- INFORMAÇÕES DA PRÓXIMA ETAPA -->
@@ -765,9 +936,66 @@ body {
           </div>
         </div>
       </div>
-      
-      <p class="menu-description" style="margin-top: 20px; font-weight: bold; color: #000;">Confirme sua presença e garanta seu lugar!</p>
     </a>
+    
+    <!-- DESTAQUES DA 1ª ETAPA -->
+    <div class="highlights-section">
+      <h2 class="highlights-title">PRINCIPAIS DESTAQUES DA 1ª ETAPA</h2>
+      
+      <div class="highlight-grid">
+        <!-- CAMPEÃO DA 1ª ETAPA -->
+        <div class="highlight-card">
+          <div class="etapa-badge">1ª ETAPA</div>
+          <h3 class="highlight-title">CAMPEÃO</h3>
+          <div class="highlight-content">
+            <span class="highlight-icon">👑</span>
+            <div class="highlight-photo" id="campeao-photo"></div>
+            <div class="highlight-name">Gaspar</div>
+            <div class="highlight-detail">Vencedor da 1ª Etapa</div>
+            <div class="highlight-detail">Prêmio: R$ 1.200,00</div>
+          </div>
+        </div>
+        
+        <!-- MELHOR MÃO DA ETAPA -->
+        <div class="highlight-card">
+          <div class="etapa-badge">1ª ETAPA</div>
+          <h3 class="highlight-title">MELHOR MÃO</h3>
+          <div class="highlight-content">
+            <span class="highlight-icon">🃏</span>
+            <div class="highlight-photo" id="melhor-mao-photo"></div>
+            <div class="highlight-name">Royal Flush</div>
+            <div class="highlight-detail">Feito por: João Silva</div>
+            <div class="highlight-detail">Bônus: R$ 200,00</div>
+          </div>
+        </div>
+        
+        <!-- MATADOR DE KO -->
+        <div class="highlight-card">
+          <div class="etapa-badge">1ª ETAPA</div>
+          <h3 class="highlight-title">MATADOR DE KO</h3>
+          <div class="highlight-content">
+            <span class="highlight-icon">💀</span>
+            <div class="highlight-photo" id="matador-photo"></div>
+            <div class="highlight-name">Carlos Santos</div>
+            <div class="highlight-detail">8 eliminações</div>
+            <div class="highlight-detail">Prêmio: R$ 150,00</div>
+          </div>
+        </div>
+        
+        <!-- GANHADOR DA ROLETA -->
+        <div class="highlight-card">
+          <div class="etapa-badge">1ª ETAPA</div>
+          <h3 class="highlight-title">ROLETA DA SORTE</h3>
+          <div class="highlight-content">
+            <span class="highlight-icon">🎡</span>
+            <div class="highlight-photo" id="roleta-photo"></div>
+            <div class="highlight-name">Maria Oliveira</div>
+            <div class="highlight-detail">Número da sorte: 17</div>
+            <div class="highlight-detail">Prêmio: R$ 100,00</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   
   <!-- LAYOUT COM MENU PRINCIPAL E LATERAL -->
@@ -813,58 +1041,9 @@ body {
       </div>
     </div>
     
-    <!-- MENU LATERAL COM DESTAQUES DA 1ª ETAPA -->
+    <!-- MENU LATERAL -->
     <div class="side-menu">
-      <h2 class="side-title">DESTAQUES 1ª ETAPA</h2>
-      
-      <div class="highlight-grid">
-        <!-- CAMPEÃO DA 1ª ETAPA -->
-        <div class="highlight-card">
-          <h3 class="highlight-title">CAMPEÃO</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">👑</span>
-            <div class="highlight-name">Gaspar</div>
-            <div class="highlight-detail">Vencedor da 1ª Etapa</div>
-            <div class="highlight-detail">Prêmio: R$ 1.200,00</div>
-          </div>
-        </div>
-        
-        <!-- MELHOR MÃO DA ETAPA -->
-        <div class="highlight-card">
-          <h3 class="highlight-title">MELHOR MÃO</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">🃏</span>
-            <div class="highlight-name">Royal Flush</div>
-            <div class="highlight-detail">Feito por: João Silva</div>
-            <div class="highlight-detail">Bônus: R$ 200,00</div>
-          </div>
-        </div>
-        
-        <!-- MATADOR DE KO -->
-        <div class="highlight-card">
-          <h3 class="highlight-title">MATADOR DE KO</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">💀</span>
-            <div class="highlight-name">Carlos Santos</div>
-            <div class="highlight-detail">8 eliminações</div>
-            <div class="highlight-detail">Prêmio: R$ 150,00</div>
-          </div>
-        </div>
-        
-        <!-- GANHADOR DA ROLETA -->
-        <div class="highlight-card">
-          <h3 class="highlight-title">ROLETA DA SORTE</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">🎡</span>
-            <div class="highlight-name">Maria Oliveira</div>
-            <div class="highlight-detail">Número da sorte: 17</div>
-            <div class="highlight-detail">Prêmio: R$ 100,00</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- OUTROS LINKS -->
-      <h2 class="side-title" style="margin-top: 40px;">OUTRAS OPÇÕES</h2>
+      <h2 class="side-title">OUTRAS OPÇÕES</h2>
       
       <div class="side-grid">
         <!-- CALENDÁRIO -->
@@ -922,25 +1101,64 @@ body {
 
 <!-- BOTTOM MENU -->
 <div class="bottom-menu">
-  <a href="https://pokerdequinta.github.io/ranking/" class="bottom-menu-item">
-    <span class="bottom-menu-icon">🏆</span>
-    <span class="bottom-menu-text">RANKING</span>
-  </a>
+  <!-- 4 ITENS À ESQUERDA -->
+  <div class="main-menu-items">
+    <a href="https://pokerdequinta.github.io/ranking/" class="bottom-menu-item">
+      <span class="bottom-menu-icon">🏆</span>
+      <span class="bottom-menu-text">RANKING</span>
+    </a>
+    
+    <a href="https://pokerdequinta.github.io/confirma/" class="bottom-menu-item">
+      <span class="bottom-menu-icon">✅</span>
+      <span class="bottom-menu-text">INSCRIÇÕES</span>
+    </a>
+    
+    <a href="https://pokerdequinta.github.io/enquete/" class="bottom-menu-item">
+      <span class="bottom-menu-icon">📊</span>
+      <span class="bottom-menu-text">ENQUETE</span>
+    </a>
+    
+    <a href="https://pokerdequinta.github.io/regulamento/" class="bottom-menu-item">
+      <span class="bottom-menu-icon">📋</span>
+      <span class="bottom-menu-text">REGULAMENTO</span>
+    </a>
+  </div>
   
-  <a href="https://pokerdequinta.github.io/confirma/" class="bottom-menu-item">
-    <span class="bottom-menu-icon">✅</span>
-    <span class="bottom-menu-text">INSCRIÇÕES</span>
-  </a>
-  
-  <a href="https://pokerdequinta.github.io/enquete/" class="bottom-menu-item">
-    <span class="bottom-menu-icon">📊</span>
-    <span class="bottom-menu-text">ENQUETE</span>
-  </a>
-  
-  <a href="https://pokerdequinta.github.io/regulamento/" class="bottom-menu-item">
-    <span class="bottom-menu-icon">📋</span>
-    <span class="bottom-menu-text">REGULAMENTO</span>
-  </a>
+  <!-- MENU HAMBURGUER À DIREITA -->
+  <div class="hamburger-menu">
+    <button class="hamburger-button" id="hamburgerButton">+</button>
+    <div class="hamburger-dropdown" id="hamburgerDropdown">
+      <a href="https://pokerdequinta.github.io/calendario/" class="hamburger-item">
+        <span class="hamburger-icon">📆</span>
+        <span class="hamburger-text">CALENDÁRIO</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/novidades/" class="hamburger-item">
+        <span class="hamburger-icon">🎉</span>
+        <span class="hamburger-text">NOVIDADES 2026</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/dealer/" class="hamburger-item">
+        <span class="hamburger-icon">🎲</span>
+        <span class="hamburger-text">DEALER PID</span>
+      </a>
+      
+      <a href="https://forms.gle/yG2MAeQvSco46DK49" class="hamburger-item">
+        <span class="hamburger-icon">📸</span>
+        <span class="hamburger-text">CADASTRO PIX</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/loja/" class="hamburger-item">
+        <span class="hamburger-icon">🛒</span>
+        <span class="hamburger-text">LOJA</span>
+      </a>
+
+      <a href="https://pokerdequinta.github.io/endereco/" class="hamburger-item">
+        <span class="hamburger-icon">📍</span>
+        <span class="hamburger-text">LOCALIZAÇÃO</span>
+      </a>
+    </div>
+  </div>
 </div>
 
 <!-- CONTADOR DE VISITAS - OCULTO -->
@@ -1013,6 +1231,32 @@ function verificarBadgeInscricoes() {
     card.classList.remove('has-badge');
     badge.style.animation = 'none';
   }
+}
+
+// Menu hamburguer
+const hamburgerButton = document.getElementById('hamburgerButton');
+const hamburgerDropdown = document.getElementById('hamburgerDropdown');
+
+if (hamburgerButton && hamburgerDropdown) {
+  hamburgerButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    hamburgerDropdown.classList.toggle('active');
+  });
+  
+  // Fechar menu ao clicar fora
+  document.addEventListener('click', function(e) {
+    if (!hamburgerDropdown.contains(e.target) && !hamburgerButton.contains(e.target)) {
+      hamburgerDropdown.classList.remove('active');
+    }
+  });
+  
+  // Fechar menu ao clicar em um item
+  const hamburgerItems = hamburgerDropdown.querySelectorAll('.hamburger-item');
+  hamburgerItems.forEach(item => {
+    item.addEventListener('click', function() {
+      hamburgerDropdown.classList.remove('active');
+    });
+  });
 }
 
 // Executar ao carregar a página
