@@ -334,7 +334,7 @@ body {
   font-size: 1.6em;
   color: #d4a121;
   letter-spacing: 1.5px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   padding-bottom: 12px;
   border-bottom: 2px solid #d4a121;
   width: 100%;
@@ -344,8 +344,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  padding-top: 10px;
+  gap: 10px;
+  padding-top: 5px;
   width: 100%;
   flex: 1;
 }
@@ -356,20 +356,21 @@ body {
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
-/* ESPAÇO PARA FOTO - AUMENTADO */
+/* ESPAÇO PARA FOTO - AUMENTADO CONSIDERAVELMENTE */
 .highlight-photo-container {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0 15px 0;
+  margin: 5px 0 15px 0;
   flex: 1;
-  min-height: 180px;
+  min-height: 220px; /* Aumentado de 180px para 220px */
 }
 
+/* FOTO AUMENTADA - AGORA FICA GRANDE NO CARD */
 .highlight-photo {
-  width: 500px;
-  height: 500px;
+  width: 220px;  /* Aumentado de 170px para 220px - FOTO GRANDE */
+  height: 220px; /* Aumentado de 170px para 220px - FOTO GRANDE */
   border-radius: 20px;
   object-fit: cover;
   border: 4px solid #d4a121;
@@ -611,8 +612,12 @@ body {
   }
   
   .highlight-photo {
-    width: 160px;
-    height: 160px;
+    width: 200px;  /* Ajustado para tablet */
+    height: 200px; /* Ajustado para tablet */
+  }
+  
+  .highlight-photo-container {
+    min-height: 210px; /* Ajustado para tablet */
   }
   
   .admin-btn {
@@ -681,6 +686,15 @@ body {
     letter-spacing: 1.5px;
   }
   
+  .highlight-photo {
+    width: 180px;  /* Ajustado para mobile */
+    height: 180px; /* Ajustado para mobile */
+  }
+  
+  .highlight-photo-container {
+    min-height: 190px; /* Ajustado para mobile */
+  }
+  
   .bottom-menu {
     padding: 8px 10px;
   }
@@ -714,11 +728,6 @@ body {
   .hamburger-item {
     padding: 10px;
     font-size: 0.9em;
-  }
-  
-  .highlight-photo {
-    width: 150px;
-    height: 150px;
   }
 }
 </style>
@@ -822,11 +831,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
             <div class="highlight-photo-container">
-              <!-- ALTERE A FOTO AQUI -->
+              <!-- FOTO GRANDE NO CARD -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Diego%20Campeao%201%20etapa.jpg?raw=true" 
                    alt="Foto do Campeão Diego" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=GASPAR'">
+                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=DIEGO'">
             </div>
             <div class="highlight-name">Diego</div>
             <div class="highlight-detail">Vencedor da 1ª Etapa</div>
@@ -845,11 +854,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
             <div class="highlight-photo-container">
-              <!-- ALTERE A FOTO AQUI -->
+              <!-- FOTO GRANDE NO CARD -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Melhor%20mao.jpg?raw=true" 
                    alt="Foto da Melhor Mão" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=ROYAL+FLUSH'">
+                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=MATHEUS'">
             </div>
             <div class="highlight-name">Street Flush</div>
             <div class="highlight-detail">Feito por: Matheus</div>
@@ -868,11 +877,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">💥</span>
             <div class="highlight-photo-container">
-              <!-- ALTERE A FOTO AQUI -->
+              <!-- FOTO GRANDE NO CARD -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Matheus%20KO.jpg?raw=true" 
                    alt="Foto do Matador de KO" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=KILLER'">
+                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=MATHEUS'">
             </div>
             <div class="highlight-name">Matheus</div>
             <div class="highlight-detail">8 eliminações</div>
@@ -891,11 +900,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
             <div class="highlight-photo-container">
-              <!-- ALTERE A FOTO AQUI -->
+              <!-- FOTO GRANDE NO CARD -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
                    alt="Foto do Ganhador da Roleta" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=SORTE'">
+                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=GASPAR'">
             </div>
             <div class="highlight-name">Gaspar</div>
             <div class="highlight-detail">Ganhou:50K EM FICHAS</div>
@@ -1055,8 +1064,3 @@ if (inscricaoBtn) {
 
 </body>
 </html>
-
-
-
-
-
