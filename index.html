@@ -127,23 +127,6 @@ body {
   gap: 40px;
 }
 
-/* LAYOUT COM MENU LATERAL */
-.content-wrapper {
-  display: flex;
-  gap: 30px;
-}
-
-/* MENU PRINCIPAL */
-.main-menu {
-  flex: 3;
-}
-
-/* MENU LATERAL */
-.side-menu {
-  flex: 1;
-  min-width: 300px;
-}
-
 /* SECTION TITLE */
 .section-title {
   font-family: 'Anton';
@@ -155,107 +138,15 @@ body {
   text-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
 }
 
-.side-title {
-  font-family: 'Anton';
-  font-size: 1.8em;
-  color: #d4a121;
-  letter-spacing: 2px;
-  margin-bottom: 25px;
-  text-align: center;
-  border-bottom: 2px solid #d4a121;
-  padding-bottom: 10px;
-}
-
-/* MENU GRID */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-/* SIDE GRID */
-.side-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* MENU CARD */
-.menu-card {
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  border: 2px solid #d4a121;
-  border-radius: 15px;
-  padding: 25px 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: block;
-}
-
-.menu-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.menu-card:hover::before {
-  left: 100%;
-}
-
-.menu-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 60px rgba(212, 161, 33, 0.6);
-  border-color: #f4c141;
-}
-
-.menu-icon {
-  font-size: 3.5em;
-  margin-bottom: 15px;
-  display: block;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.menu-card:hover .menu-icon {
-  animation: none;
-  transform: scale(1.1);
-}
-
-.menu-title {
-  font-family: 'Anton';
-  font-size: 1.5em;
-  color: #d4a121;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-
-.menu-description {
-  font-size: 0.95em;
-  line-height: 1.6;
-  opacity: 0.9;
-  color: #fff;
-}
-
 /* CARD DA PRÓXIMA ETAPA EM AMARELO */
 .next-stage-card {
   background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
-  border-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 35px 30px;
   animation: pulseGlow 2s infinite;
-  grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
 }
 
 @keyframes pulseGlow {
@@ -269,33 +160,18 @@ body {
 
 .next-stage-card .menu-title {
   color: #000;
-  font-size: 2em;
-  margin-bottom: 5px;
+  font-size: 2.2em;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .next-stage-card .menu-description {
   color: #000;
-  opacity: 0.8;
-  font-size: 1.1em;
-  margin-bottom: 20px;
-}
-
-/* BADGE DA ETAPA */
-.badge-etapa {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  color: #d4a121;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: bold;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-  border: 1px solid #d4a121;
-  font-family: 'Anton';
-  letter-spacing: 1px;
-  z-index: 2;
+  opacity: 0.9;
+  font-size: 1.2em;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 700;
 }
 
 /* INFORMAÇÕES DA ETAPA - ESTILO MODERNO */
@@ -366,107 +242,187 @@ body {
 
 /* SEÇÃO DE DESTAQUES DA 1ª ETAPA ABAIXO DO CARD AMARELO */
 .highlights-section {
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
 .highlights-title {
   font-family: 'Anton';
-  font-size: 2em;
+  font-size: 2.2em;
   color: #d4a121;
   letter-spacing: 2px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-align: center;
   text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
+  padding-bottom: 15px;
+  border-bottom: 3px solid #d4a121;
 }
 
 /* CARDS DOS DESTAQUES */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
 .highlight-card {
   background: linear-gradient(135deg, #1a3d1a 0%, #0d1b0d 100%);
-  border: 2px solid #d4a121;
-  border-radius: 12px;
-  padding: 20px 15px;
+  border: 3px solid #d4a121;
+  border-radius: 20px;
+  padding: 25px 20px;
   text-align: center;
   transition: all 0.3s;
   height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .highlight-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(212, 161, 33, 0.4);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(212, 161, 33, 0.4);
 }
 
 /* BADGE PARA A 1ª ETAPA */
 .etapa-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background: #d4a121;
   color: #000;
-  padding: 5px 12px;
-  border-radius: 15px;
+  padding: 8px 18px;
+  border-radius: 20px;
   font-family: 'Anton';
-  font-size: 0.8em;
-  letter-spacing: 1px;
+  font-size: 0.9em;
+  letter-spacing: 1.5px;
   font-weight: bold;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 .highlight-title {
   font-family: 'Anton';
-  font-size: 1.4em;
+  font-size: 1.6em;
   color: #d4a121;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #d4a121;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d4a121;
+  width: 100%;
 }
 
 .highlight-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   padding-top: 10px;
+  width: 100%;
 }
 
 .highlight-icon {
-  font-size: 2.8em;
-  margin-bottom: 10px;
+  font-size: 3.5em;
+  margin-bottom: 5px;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
+/* ESPAÇO PARA FOTO - AUMENTADO */
 .highlight-photo {
   width: 150px;
   height: 150px;
   border-radius: 20px;
   object-fit: cover;
-  border: 3px solid #d4a121;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 4px solid #d4a121;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   background: #102810;
   margin: 10px 0;
 }
 
 .highlight-name {
   font-family: 'Anton';
-  font-size: 1.3em;
+  font-size: 1.5em;
   font-weight: bold;
   color: #f4c141;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  margin-top: 10px;
 }
 
 .highlight-detail {
   font-family: 'Roboto', sans-serif;
-  font-size: 0.95em;
+  font-size: 1.05em;
   color: #fff;
   font-weight: 700;
   line-height: 1.5;
 }
 
-.highlight-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
+/* BOTÃO DE INSCRIÇÃO */
+.inscricao-btn {
+  display: block;
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  border: 2px solid #d4a121;
+  border-radius: 15px;
+  padding: 25px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  margin-top: 40px;
+}
+
+.inscricao-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.inscricao-btn:hover::before {
+  left: 100%;
+}
+
+.inscricao-btn:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 60px rgba(212, 161, 33, 0.6);
+  border-color: #f4c141;
+}
+
+.inscricao-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+  display: block;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.inscricao-btn:hover .inscricao-icon {
+  animation: none;
+  transform: scale(1.1);
+}
+
+.inscricao-title {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #d4a121;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.inscricao-description {
+  font-size: 1.1em;
+  line-height: 1.6;
+  opacity: 0.9;
+  color: #fff;
 }
 
 /* BADGE DE INSCRIÇÕES ABERTAS PISCANDO */
@@ -489,7 +445,6 @@ body {
   -webkit-backdrop-filter: blur(5px);
 }
 
-/* Texto do badge piscando suavemente */
 .inscricoes-badge .badge-text {
   font-family: 'Anton', sans-serif;
   font-size: 1.5em;
@@ -502,7 +457,6 @@ body {
   animation: textPulse 2s ease-in-out infinite;
 }
 
-/* Animação de piscar suave */
 @keyframes textPulse {
   0%, 100% {
     opacity: 1;
@@ -520,25 +474,6 @@ body {
   }
 }
 
-/* Animação de brilho no badge */
-.inscricoes-badge::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(212, 161, 33, 0.2),
-    transparent
-  );
-  border-radius: 27px;
-  z-index: -1;
-  animation: borderGlow 3s ease-in-out infinite;
-}
-
 @keyframes borderGlow {
   0%, 100% {
     opacity: 0.3;
@@ -548,7 +483,6 @@ body {
   }
 }
 
-/* Animação de entrada do badge */
 @keyframes badgeAppear {
   from {
     transform: translateX(-50%) translateY(20px);
@@ -560,9 +494,8 @@ body {
   }
 }
 
-/* Ajuste do card para o badge */
-.menu-card.has-badge {
-  padding-bottom: 65px;
+.inscricao-btn.has-badge {
+  padding-bottom: 80px;
 }
 
 /* FOOTER */
@@ -622,7 +555,7 @@ body {
   border-radius: 50%;
   width: 45px;
   height: 45px;
-  font-size: 1.5em;
+  font-size: 1.8em;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -644,7 +577,7 @@ body {
   border: 2px solid #d4a121;
   border-radius: 15px;
   padding: 20px;
-  min-width: 250px;
+  min-width: 280px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   display: none;
   z-index: 1001;
@@ -732,15 +665,11 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 1100px) {
-  .content-wrapper {
-    flex-direction: column;
-  }
-  
-  .side-menu {
-    min-width: 100%;
-  }
-  
   .stage-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .highlight-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -754,12 +683,8 @@ body {
     font-size: 1.8em;
   }
   
-  .menu-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .menu-icon {
-    font-size: 3em;
+  .next-stage-card .menu-title {
+    font-size: 1.8em;
   }
   
   .stage-info {
@@ -768,6 +693,11 @@ body {
   
   .highlight-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .highlight-photo {
+    width: 130px;
+    height: 130px;
   }
   
   .visit-counter {
@@ -794,8 +724,8 @@ body {
     font-size: 1.3em;
   }
   
-  .menu-card.has-badge {
-    padding-bottom: 60px;
+  .inscricao-btn.has-badge {
+    padding-bottom: 70px;
   }
   
   .bottom-menu {
@@ -809,6 +739,7 @@ body {
   .bottom-menu-item {
     min-width: 60px;
     font-size: 0.75em;
+    padding: 4px 8px;
   }
   
   .bottom-menu-icon {
@@ -818,12 +749,13 @@ body {
   .hamburger-button {
     width: 40px;
     height: 40px;
-    font-size: 1.3em;
+    font-size: 1.5em;
   }
   
   .hamburger-dropdown {
-    min-width: 220px;
+    min-width: 250px;
     right: -10px;
+    padding: 15px;
   }
 }
 
@@ -839,8 +771,8 @@ body {
     letter-spacing: 1.5px;
   }
   
-  .menu-card.has-badge {
-    padding-bottom: 55px;
+  .inscricao-btn.has-badge {
+    padding-bottom: 65px;
   }
   
   .bottom-menu {
@@ -854,7 +786,7 @@ body {
   .bottom-menu-item {
     min-width: 50px;
     font-size: 0.7em;
-    padding: 4px 8px;
+    padding: 3px 6px;
   }
   
   .bottom-menu-icon {
@@ -864,18 +796,23 @@ body {
   .hamburger-button {
     width: 35px;
     height: 35px;
-    font-size: 1.1em;
+    font-size: 1.3em;
   }
   
   .hamburger-dropdown {
-    min-width: 200px;
+    min-width: 220px;
     right: -15px;
-    padding: 15px;
+    padding: 12px;
   }
   
   .hamburger-item {
     padding: 10px;
     font-size: 0.9em;
+  }
+  
+  .highlight-photo {
+    width: 120px;
+    height: 120px;
   }
 }
 </style>
@@ -894,10 +831,10 @@ body {
 <div class="main-container">
   
   <!-- PRÓXIMA ETAPA -->
-  <div class="main-menu">
+  <div>
     <h2 class="section-title">PRÓXIMA ETAPA</h2>
     
-    <a href="https://pokerdequinta.github.io/confirma/" class="menu-card next-stage-card">
+    <div class="next-stage-card">
       <h3 class="menu-title">2ª ETAPA - 26/02</h3>
       <p class="menu-description">Prepare-se para mais uma noite emocionante de poker!</p>
       
@@ -951,6 +888,18 @@ body {
           </div>
         </div>
       </div>
+    </div>
+    
+    <!-- BOTÃO DE INSCRIÇÃO -->
+    <a href="https://pokerdequinta.github.io/confirma/" class="inscricao-btn" id="inscricao-btn">
+      <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO -->
+      <div class="inscricoes-badge" id="inscricoes-badge">
+        <div class="badge-text">INSCRIÇÕES ABERTAS</div>
+      </div>
+      
+      <span class="inscricao-icon">✅</span>
+      <h3 class="inscricao-title">FAÇA SUA INSCRIÇÃO</h3>
+      <p class="inscricao-description">Garanta seu lugar na próxima etapa do Poker de Quinta!</p>
     </a>
     
     <!-- DESTAQUES DA 1ª ETAPA -->
@@ -989,7 +938,7 @@ body {
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">MATADOR DE KO</h3>
           <div class="highlight-content">
-            <span class="highlight-icon">💀</span>
+            <span class="highlight-icon">💥</span> <!-- ÍCONE DE EXPLOSÃO -->
             <div class="highlight-photo" id="matador-photo"></div>
             <div class="highlight-name">Carlos Santos</div>
             <div class="highlight-detail">8 eliminações</div>
@@ -1011,51 +960,6 @@ body {
         </div>
       </div>
     </div>
-  </div>
-  
-  <!-- LAYOUT COM MENU PRINCIPAL E LATERAL -->
-  <div class="content-wrapper">
-    
-    <!-- MENU PRINCIPAL -->
-    <div class="main-menu">
-      <h2 class="section-title">MENU PRINCIPAL</h2>
-      
-      <div class="menu-grid">
-        <!-- CONFIRMAÇÃO DE PRESENÇA -->
-        <a href="https://pokerdequinta.github.io/confirma/" class="menu-card" id="confirmacao-card">
-          <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO -->
-          <div class="inscricoes-badge" id="inscricoes-badge">
-            <div class="badge-text">INSCRIÇÕES ABERTAS</div>
-          </div>
-          
-          <span class="menu-icon">✅</span>
-          <h3 class="menu-title">INSCRIÇÕES</h3>
-          <p class="menu-description">Faça sua inscrição para a próxima etapa!</p>
-        </a>
-        
-        <!-- ENQUETES -->
-        <a href="https://pokerdequinta.github.io/enquete/" class="menu-card">
-          <span class="menu-icon">📊</span>
-          <h3 class="menu-title">ENQUETES</h3>
-          <p class="menu-description">Participe das votações da janta e das mãos da etapa</p>
-        </a>
-        
-        <!-- REGULAMENTO -->
-        <a href="https://pokerdequinta.github.io/regulamento/" class="menu-card">
-          <span class="menu-icon">📋</span>
-          <h3 class="menu-title">REGULAMENTO</h3>
-          <p class="menu-description">Confira todas as regras oficiais do Poker de Quinta</p>
-        </a>
-        
-        <!-- RANKING -->
-        <a href="https://pokerdequinta.github.io/ranking/" class="menu-card">
-          <span class="menu-icon">🏆</span>
-          <h3 class="menu-title">RANKING</h3>
-          <p class="menu-description">Acompanhe a classificação geral dos jogadores</p>
-        </a>
-      </div>
-    </div>
-    
   </div>
 </div>
 
@@ -1095,6 +999,27 @@ body {
   <div class="hamburger-menu">
     <button class="hamburger-button" id="hamburgerButton">+</button>
     <div class="hamburger-dropdown" id="hamburgerDropdown">
+      <!-- Todos os menus agora estão no hamburguer -->
+      <a href="https://pokerdequinta.github.io/ranking/" class="hamburger-item">
+        <span class="hamburger-icon">🏆</span>
+        <span class="hamburger-text">RANKING</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/confirma/" class="hamburger-item">
+        <span class="hamburger-icon">✅</span>
+        <span class="hamburger-text">INSCRIÇÕES</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/enquete/" class="hamburger-item">
+        <span class="hamburger-icon">📊</span>
+        <span class="hamburger-text">ENQUETES</span>
+      </a>
+      
+      <a href="https://pokerdequinta.github.io/regulamento/" class="hamburger-item">
+        <span class="hamburger-icon">📋</span>
+        <span class="hamburger-text">REGULAMENTO</span>
+      </a>
+      
       <a href="https://pokerdequinta.github.io/calendario/" class="hamburger-item">
         <span class="hamburger-icon">📆</span>
         <span class="hamburger-text">CALENDÁRIO</span>
@@ -1178,9 +1103,9 @@ async function trackVisit() {
 // Função para verificar se deve mostrar o badge
 function verificarBadgeInscricoes() {
   const badge = document.getElementById('inscricoes-badge');
-  const card = document.getElementById('confirmacao-card');
+  const btn = document.getElementById('inscricao-btn');
   
-  if (!badge || !card) return;
+  if (!badge || !btn) return;
   
   const agora = new Date();
   const dataAlvo = new Date('2026-02-20T07:00:00'); // 20 de fevereiro às 7h (alterado para 2ª etapa)
@@ -1188,14 +1113,14 @@ function verificarBadgeInscricoes() {
   // Se já passou do horário alvo, mostrar o badge
   if (agora >= dataAlvo) {
     badge.style.display = 'block';
-    card.classList.add('has-badge');
+    btn.classList.add('has-badge');
     
     // Adicionar animação de entrada
     badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
     
   } else {
     badge.style.display = 'none';
-    card.classList.remove('has-badge');
+    btn.classList.remove('has-badge');
     badge.style.animation = 'none';
   }
 }
@@ -1238,13 +1163,13 @@ const observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
       const badge = document.getElementById('inscricoes-badge');
-      const card = document.getElementById('confirmacao-card');
+      const btn = document.getElementById('inscricao-btn');
       
       if (badge && badge.style.display === 'block') {
         badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
-        card.classList.add('has-badge');
-      } else if (badge && badge.style.display === 'none' && card) {
-        card.classList.remove('has-badge');
+        btn.classList.add('has-badge');
+      } else if (badge && badge.style.display === 'none' && btn) {
+        btn.classList.remove('has-badge');
         badge.style.animation = 'none';
       }
     }
@@ -1267,6 +1192,17 @@ document.querySelectorAll('.highlight-card').forEach(card => {
     }, 200);
   });
 });
+
+// Adicionar interatividade ao botão de inscrição
+const inscricaoBtn = document.getElementById('inscricao-btn');
+if (inscricaoBtn) {
+  inscricaoBtn.addEventListener('click', function() {
+    this.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 200);
+  });
+}
 </script>
 
 </body>
