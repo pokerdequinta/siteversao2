@@ -130,11 +130,34 @@ body {
   }
 }
 
+/* BADGE VERTICAL DO LADO ESQUERDO */
+.stage-vertical-badge {
+  position: absolute;
+  top: 50%;
+  left: -15px;
+  transform: translateY(-50%) rotate(-90deg);
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  color: #d4a121;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-family: 'Anton';
+  font-size: 1.4em;
+  letter-spacing: 3px;
+  font-weight: bold;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid #d4a121;
+  z-index: 2;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
 .next-stage-card .menu-title {
+  font-family: 'Anton';
   color: #000;
-  font-size: 2.2em;
+  font-size: 2.5em;
   margin-bottom: 10px;
   text-align: center;
+  letter-spacing: 3px;
 }
 
 .next-stage-card .menu-description {
@@ -212,6 +235,30 @@ body {
   color: #8e44ad;
 }
 
+/* BOTÃO DE INSCRIÇÃO SIMPLES */
+.inscricao-simples {
+  display: inline-block;
+  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
+  color: #d4a121;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-family: 'Anton';
+  font-size: 1.4em;
+  letter-spacing: 2px;
+  text-decoration: none;
+  margin-top: 30px;
+  border: 2px solid #d4a121;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.inscricao-simples:hover {
+  background: linear-gradient(135deg, #1a3d1a 0%, #102810 100%);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(212, 161, 33, 0.4);
+  border-color: #f4c141;
+}
+
 /* SEÇÃO DE DESTAQUES DA 1ª ETAPA ABAIXO DO CARD AMARELO */
 .highlights-section {
   margin-top: 60px;
@@ -277,7 +324,7 @@ body {
   font-size: 1.6em;
   color: #d4a121;
   letter-spacing: 1.5px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 2px solid #d4a121;
   width: 100%;
@@ -287,9 +334,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   padding-top: 10px;
   width: 100%;
+  flex: 1;
 }
 
 .highlight-icon {
@@ -298,16 +346,25 @@ body {
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
-/* ESPAÇO PARA FOTO - LINHAS 183-191 SÃO ONDE VOCÊ ALTERA AS FOTOS */
+/* ESPAÇO PARA FOTO - AUMENTADO */
+.highlight-photo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 15px 0;
+  flex: 1;
+  min-height: 180px;
+}
+
 .highlight-photo {
-  width: 150px;
-  height: 150px;
+  width: 170px;
+  height: 170px;
   border-radius: 20px;
   object-fit: cover;
   border: 4px solid #d4a121;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   background: #102810;
-  margin: 10px 0;
 }
 
 .highlight-name {
@@ -316,7 +373,7 @@ body {
   font-weight: bold;
   color: #f4c141;
   letter-spacing: 1.5px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .highlight-detail {
@@ -325,150 +382,7 @@ body {
   color: #fff;
   font-weight: 700;
   line-height: 1.5;
-}
-
-/* BOTÃO DE INSCRIÇÃO */
-.inscricao-btn {
-  display: block;
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  border: 2px solid #d4a121;
-  border-radius: 15px;
-  padding: 25px 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  margin-top: 40px;
-}
-
-.inscricao-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(212, 161, 33, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.inscricao-btn:hover::before {
-  left: 100%;
-}
-
-.inscricao-btn:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 60px rgba(212, 161, 33, 0.6);
-  border-color: #f4c141;
-}
-
-.inscricao-icon {
-  font-size: 4em;
-  margin-bottom: 20px;
-  display: block;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.inscricao-btn:hover .inscricao-icon {
-  animation: none;
-  transform: scale(1.1);
-}
-
-.inscricao-title {
-  font-family: 'Anton';
-  font-size: 1.8em;
-  color: #d4a121;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-}
-
-.inscricao-description {
-  font-size: 1.1em;
-  line-height: 1.6;
-  opacity: 0.9;
-  color: #fff;
-}
-
-/* BADGE DE INSCRIÇÕES ABERTAS PISCANDO - REDIMENSIONADO PARA MOBILE */
-.inscricoes-badge {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(16, 40, 16, 0.95);
-  padding: 8px 15px;
-  border-radius: 20px;
-  box-shadow: 
-    0 5px 15px rgba(0, 0, 0, 0.5),
-    0 0 0 2px #d4a121;
-  display: none;
-  z-index: 5;
-  min-width: 200px;
-  max-width: 90%;
-  text-align: center;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-}
-
-.inscricoes-badge .badge-text {
-  font-family: 'Anton', sans-serif;
-  font-size: 1.2em;
-  color: #d4a121;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-shadow: 
-    2px 2px 0px #000,
-    3px 3px 5px rgba(0, 0, 0, 0.5);
-  animation: textPulse 2s ease-in-out infinite;
-}
-
-@keyframes textPulse {
-  0%, 100% {
-    opacity: 1;
-    text-shadow: 
-      2px 2px 0px #000,
-      3px 3px 5px rgba(0, 0, 0, 0.5),
-      0 0 10px rgba(212, 161, 33, 0.3);
-  }
-  50% {
-    opacity: 0.8;
-    text-shadow: 
-      2px 2px 0px #000,
-      3px 3px 5px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(212, 161, 33, 0.6);
-  }
-}
-
-@keyframes borderGlow {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@keyframes badgeAppear {
-  from {
-    transform: translateX(-50%) translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
-
-.inscricao-btn.has-badge {
-  padding-bottom: 70px;
+  margin-top: 5px;
 }
 
 /* FOOTER */
@@ -656,8 +570,15 @@ body {
     font-size: 1.8em;
   }
   
+  .stage-vertical-badge {
+    left: -25px;
+    font-size: 1.1em;
+    padding: 12px 20px;
+  }
+  
   .next-stage-card .menu-title {
-    font-size: 1.8em;
+    font-size: 2em;
+    margin-left: 20px;
   }
   
   .stage-info {
@@ -669,8 +590,8 @@ body {
   }
   
   .highlight-photo {
-    width: 130px;
-    height: 130px;
+    width: 160px;
+    height: 160px;
   }
   
   .admin-btn {
@@ -680,19 +601,9 @@ body {
     font-size: 0.85em;
   }
   
-  .inscricoes-badge {
-    min-width: 180px;
-    padding: 6px 12px;
-    bottom: 12px;
-  }
-  
-  .inscricoes-badge .badge-text {
-    font-size: 1em;
-    letter-spacing: 1px;
-  }
-  
-  .inscricao-btn.has-badge {
-    padding-bottom: 65px;
+  .inscricao-simples {
+    font-size: 1.2em;
+    padding: 12px 25px;
   }
   
   .bottom-menu {
@@ -727,19 +638,15 @@ body {
 }
 
 @media (max-width: 480px) {
-  .inscricoes-badge {
-    min-width: 160px;
-    padding: 5px 10px;
-    bottom: 10px;
+  .stage-vertical-badge {
+    left: -30px;
+    font-size: 1em;
+    padding: 10px 15px;
   }
   
-  .inscricoes-badge .badge-text {
-    font-size: 0.9em;
-    letter-spacing: 0.5px;
-  }
-  
-  .inscricao-btn.has-badge {
-    padding-bottom: 60px;
+  .next-stage-card .menu-title {
+    font-size: 1.7em;
+    margin-left: 25px;
   }
   
   .bottom-menu {
@@ -778,8 +685,8 @@ body {
   }
   
   .highlight-photo {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
   }
 }
 </style>
@@ -802,7 +709,10 @@ body {
     <h2 class="section-title">PRÓXIMA ETAPA</h2>
     
     <div class="next-stage-card">
-      <h3 class="menu-title">2ª ETAPA - 26/02</h3>
+      <!-- BADGE VERTICAL DO LADO ESQUERDO -->
+      <div class="stage-vertical-badge">2ª ETAPA</div>
+      
+      <h3 class="menu-title">26/02</h3>
       <p class="menu-description">Prepare-se para mais uma noite emocionante de poker!</p>
       
       <!-- INFORMAÇÕES DA PRÓXIMA ETAPA -->
@@ -855,87 +765,90 @@ body {
           </div>
         </div>
       </div>
-    </div>
-    
-    <!-- BOTÃO DE INSCRIÇÃO -->
-    <a href="https://pokerdequinta.github.io/confirma/" class="inscricao-btn" id="inscricao-btn">
-      <!-- BADGE DE INSCRIÇÕES ABERTAS PISCANDO - REDIMENSIONADO -->
-      <div class="inscricoes-badge" id="inscricoes-badge">
-        <div class="badge-text">INSCRIÇÕES ABERTAS</div>
-      </div>
       
-      <span class="inscricao-icon">✅</span>
-      <h3 class="inscricao-title">FAÇA SUA INSCRIÇÃO</h3>
-      <p class="inscricao-description">Garanta seu lugar na próxima etapa do Poker de Quinta!</p>
-    </a>
+      <!-- BOTÃO DE INSCRIÇÃO SIMPLES -->
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="https://pokerdequinta.github.io/confirma/" class="inscricao-simples">
+          FAZER INSCRIÇÃO
+        </a>
+      </div>
+    </div>
     
     <!-- DESTAQUES DA 1ª ETAPA -->
     <div class="highlights-section">
       <h2 class="highlights-title">PRINCIPAIS DESTAQUES DA 1ª ETAPA</h2>
       
       <div class="highlight-grid">
-        <!-- CAMPEÃO DA 1ª ETAPA - LINHAS 324-336: AQUI VOCÊ ALTERA A FOTO -->
+        <!-- CAMPEÃO DA 1ª ETAPA -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">CAMPEÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
-            <!-- LINHA 328: Altere o src da foto do campeão -->
-            <img src="https://via.placeholder.com/150/FFD700/102810?text=GASPAR" 
-                 alt="Foto do Campeão Gaspar" 
-                 class="highlight-photo"
-                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=GASPAR'">
+            <div class="highlight-photo-container">
+              <!-- ALTERE A FOTO AQUI -->
+              <img src="https://via.placeholder.com/170/FFD700/102810?text=GASPAR" 
+                   alt="Foto do Campeão Gaspar" 
+                   class="highlight-photo"
+                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=GASPAR'">
+            </div>
             <div class="highlight-name">Gaspar</div>
             <div class="highlight-detail">Vencedor da 1ª Etapa</div>
             <div class="highlight-detail">Prêmio: R$ 1.200,00</div>
           </div>
         </div>
         
-        <!-- MELHOR MÃO DA ETAPA - LINHAS 338-350: AQUI VOCÊ ALTERA A FOTO -->
+        <!-- MELHOR MÃO DA ETAPA -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">MELHOR MÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
-            <!-- LINHA 342: Altere o src da foto da melhor mão -->
-            <img src="https://via.placeholder.com/150/FFD700/102810?text=ROYAL+FLUSH" 
-                 alt="Foto da Melhor Mão" 
-                 class="highlight-photo"
-                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=ROYAL+FLUSH'">
+            <div class="highlight-photo-container">
+              <!-- ALTERE A FOTO AQUI -->
+              <img src="https://via.placeholder.com/170/FFD700/102810?text=ROYAL+FLUSH" 
+                   alt="Foto da Melhor Mão" 
+                   class="highlight-photo"
+                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=ROYAL+FLUSH'">
+            </div>
             <div class="highlight-name">Royal Flush</div>
             <div class="highlight-detail">Feito por: João Silva</div>
             <div class="highlight-detail">Bônus: R$ 200,00</div>
           </div>
         </div>
         
-        <!-- MATADOR DE KO - LINHAS 352-364: AQUI VOCÊ ALTERA A FOTO -->
+        <!-- MATADOR DE KO -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">MATADOR DE KO</h3>
           <div class="highlight-content">
-            <span class="highlight-icon">💥</span> <!-- ÍCONE DE EXPLOSÃO -->
-            <!-- LINHA 356: Altere o src da foto do matador de KO -->
-            <img src="https://via.placeholder.com/150/FFD700/102810?text=KILLER" 
-                 alt="Foto do Matador de KO" 
-                 class="highlight-photo"
-                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=KILLER'">
+            <span class="highlight-icon">💥</span>
+            <div class="highlight-photo-container">
+              <!-- ALTERE A FOTO AQUI -->
+              <img src="https://via.placeholder.com/170/FFD700/102810?text=KILLER" 
+                   alt="Foto do Matador de KO" 
+                   class="highlight-photo"
+                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=KILLER'">
+            </div>
             <div class="highlight-name">Carlos Santos</div>
             <div class="highlight-detail">8 eliminações</div>
             <div class="highlight-detail">Prêmio: R$ 150,00</div>
           </div>
         </div>
         
-        <!-- GANHADOR DA ROLETA - LINHAS 366-378: AQUI VOCÊ ALTERA A FOTO -->
+        <!-- GANHADOR DA ROLETA -->
         <div class="highlight-card">
           <div class="etapa-badge">1ª ETAPA</div>
           <h3 class="highlight-title">ROLETA DA SORTE</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
-            <!-- LINHA 370: Altere o src da foto do ganhador da roleta -->
-            <img src="https://via.placeholder.com/150/FFD700/102810?text=SORTE" 
-                 alt="Foto do Ganhador da Roleta" 
-                 class="highlight-photo"
-                 onerror="this.src='https://via.placeholder.com/150/FFD700/102810?text=SORTE'">
+            <div class="highlight-photo-container">
+              <!-- ALTERE A FOTO AQUI -->
+              <img src="https://via.placeholder.com/170/FFD700/102810?text=SORTE" 
+                   alt="Foto do Ganhador da Roleta" 
+                   class="highlight-photo"
+                   onerror="this.src='https://via.placeholder.com/170/FFD700/102810?text=SORTE'">
+            </div>
             <div class="highlight-name">Maria Oliveira</div>
             <div class="highlight-detail">Número da sorte: 17</div>
             <div class="highlight-detail">Prêmio: R$ 100,00</div>
@@ -1069,61 +982,6 @@ if (hamburgerButton && hamburgerDropdown) {
   });
 }
 
-// Função para verificar se deve mostrar o badge
-function verificarBadgeInscricoes() {
-  const badge = document.getElementById('inscricoes-badge');
-  const btn = document.getElementById('inscricao-btn');
-  
-  if (!badge || !btn) return;
-  
-  const agora = new Date();
-  const dataAlvo = new Date('2026-02-20T07:00:00'); // 20 de fevereiro às 7h (alterado para 2ª etapa)
-  
-  // Se já passou do horário alvo, mostrar o badge
-  if (agora >= dataAlvo) {
-    badge.style.display = 'block';
-    btn.classList.add('has-badge');
-    
-    // Adicionar animação de entrada
-    badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
-    
-  } else {
-    badge.style.display = 'none';
-    btn.classList.remove('has-badge');
-    badge.style.animation = 'none';
-  }
-}
-
-// Executar ao carregar a página
-verificarBadgeInscricoes();
-
-// Verificar a cada minuto (caso a página fique aberta)
-setInterval(verificarBadgeInscricoes, 60000);
-
-// Adicionar evento para reaplicar animação ao badge quando ele for exibido
-const observer = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-      const badge = document.getElementById('inscricoes-badge');
-      const btn = document.getElementById('inscricao-btn');
-      
-      if (badge && badge.style.display === 'block') {
-        badge.style.animation = 'badgeAppear 0.5s ease-out forwards';
-        btn.classList.add('has-badge');
-      } else if (badge && badge.style.display === 'none' && btn) {
-        btn.classList.remove('has-badge');
-        badge.style.animation = 'none';
-      }
-    }
-  });
-});
-
-// Observar mudanças no estilo do badge
-const badgeElement = document.getElementById('inscricoes-badge');
-if (badgeElement) {
-  observer.observe(badgeElement, { attributes: true });
-}
-
 // Adicionar interatividade aos cards de destaque
 document.querySelectorAll('.highlight-card').forEach(card => {
   card.addEventListener('click', function() {
@@ -1136,10 +994,10 @@ document.querySelectorAll('.highlight-card').forEach(card => {
 });
 
 // Adicionar interatividade ao botão de inscrição
-const inscricaoBtn = document.getElementById('inscricao-btn');
+const inscricaoBtn = document.querySelector('.inscricao-simples');
 if (inscricaoBtn) {
   inscricaoBtn.addEventListener('click', function() {
-    this.style.transform = 'scale(0.98)';
+    this.style.transform = 'scale(0.95)';
     setTimeout(() => {
       this.style.transform = '';
     }, 200);
