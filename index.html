@@ -130,24 +130,22 @@ body {
   }
 }
 
-/* BADGE VERTICAL DO LADO ESQUERDO */
-.stage-vertical-badge {
+/* BADGE NO TOPO ESQUERDO */
+.stage-top-badge {
   position: absolute;
-  top: 50%;
-  left: -15px;
-  transform: translateY(-50%) rotate(-90deg);
+  top: 15px;
+  left: 15px;
   background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
   color: #d4a121;
-  padding: 15px 25px;
+  padding: 10px 20px;
   border-radius: 10px;
   font-family: 'Anton';
-  font-size: 1.4em;
-  letter-spacing: 3px;
+  font-size: 1.3em;
+  letter-spacing: 2px;
   font-weight: bold;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border: 2px solid #d4a121;
   z-index: 2;
-  white-space: nowrap;
   text-transform: uppercase;
 }
 
@@ -288,7 +286,7 @@ body {
   background: linear-gradient(135deg, #1a3d1a 0%, #0d1b0d 100%);
   border: 3px solid #d4a121;
   border-radius: 20px;
-  padding: 25px 20px;
+  padding: 25px 20px 25px 40px; /* Mais padding à esquerda para a faixa */
   text-align: center;
   transition: all 0.3s;
   height: 100%;
@@ -296,6 +294,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 
 .highlight-card:hover {
@@ -303,20 +302,31 @@ body {
   box-shadow: 0 15px 40px rgba(212, 161, 33, 0.4);
 }
 
-/* BADGE PARA A 1ª ETAPA */
-.etapa-badge {
+/* FAIXA VERTICAL "1ª ETAPA" NO LADO ESQUERDO */
+.etapa-faixa {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #d4a121;
-  color: #000;
-  padding: 8px 18px;
-  border-radius: 20px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  background: linear-gradient(180deg, #d4a121 0%, #f4c141 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  z-index: 1;
+}
+
+.etapa-faixa-text {
   font-family: 'Anton';
-  font-size: 0.9em;
-  letter-spacing: 1.5px;
+  font-size: 1.1em;
+  color: #102810;
+  letter-spacing: 3px;
   font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .highlight-title {
@@ -570,15 +580,13 @@ body {
     font-size: 1.8em;
   }
   
-  .stage-vertical-badge {
-    left: -25px;
+  .stage-top-badge {
     font-size: 1.1em;
-    padding: 12px 20px;
+    padding: 8px 15px;
   }
   
   .next-stage-card .menu-title {
     font-size: 2em;
-    margin-left: 20px;
   }
   
   .stage-info {
@@ -587,6 +595,19 @@ body {
   
   .highlight-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .highlight-card {
+    padding: 25px 20px 25px 35px;
+  }
+  
+  .etapa-faixa {
+    width: 25px;
+  }
+  
+  .etapa-faixa-text {
+    font-size: 1em;
+    letter-spacing: 2px;
   }
   
   .highlight-photo {
@@ -638,15 +659,26 @@ body {
 }
 
 @media (max-width: 480px) {
-  .stage-vertical-badge {
-    left: -30px;
+  .stage-top-badge {
     font-size: 1em;
-    padding: 10px 15px;
+    padding: 6px 12px;
   }
   
   .next-stage-card .menu-title {
     font-size: 1.7em;
-    margin-left: 25px;
+  }
+  
+  .highlight-card {
+    padding: 20px 15px 20px 30px;
+  }
+  
+  .etapa-faixa {
+    width: 20px;
+  }
+  
+  .etapa-faixa-text {
+    font-size: 0.9em;
+    letter-spacing: 1.5px;
   }
   
   .bottom-menu {
@@ -709,8 +741,8 @@ body {
     <h2 class="section-title">PRÓXIMA ETAPA</h2>
     
     <div class="next-stage-card">
-      <!-- BADGE VERTICAL DO LADO ESQUERDO -->
-      <div class="stage-vertical-badge">2ª ETAPA</div>
+      <!-- BADGE NO TOPO ESQUERDO -->
+      <div class="stage-top-badge">2ª ETAPA</div>
       
       <h3 class="menu-title">26/02</h3>
       <p class="menu-description">Prepare-se para mais uma noite emocionante de poker!</p>
@@ -781,7 +813,11 @@ body {
       <div class="highlight-grid">
         <!-- CAMPEÃO DA 1ª ETAPA -->
         <div class="highlight-card">
-          <div class="etapa-badge">1ª ETAPA</div>
+          <!-- FAIXA VERTICAL "1ª ETAPA" -->
+          <div class="etapa-faixa">
+            <div class="etapa-faixa-text">1ª ETAPA</div>
+          </div>
+          
           <h3 class="highlight-title">CAMPEÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
@@ -800,7 +836,11 @@ body {
         
         <!-- MELHOR MÃO DA ETAPA -->
         <div class="highlight-card">
-          <div class="etapa-badge">1ª ETAPA</div>
+          <!-- FAIXA VERTICAL "1ª ETAPA" -->
+          <div class="etapa-faixa">
+            <div class="etapa-faixa-text">1ª ETAPA</div>
+          </div>
+          
           <h3 class="highlight-title">MELHOR MÃO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
@@ -819,7 +859,11 @@ body {
         
         <!-- MATADOR DE KO -->
         <div class="highlight-card">
-          <div class="etapa-badge">1ª ETAPA</div>
+          <!-- FAIXA VERTICAL "1ª ETAPA" -->
+          <div class="etapa-faixa">
+            <div class="etapa-faixa-text">1ª ETAPA</div>
+          </div>
+          
           <h3 class="highlight-title">MATADOR DE KO</h3>
           <div class="highlight-content">
             <span class="highlight-icon">💥</span>
@@ -838,7 +882,11 @@ body {
         
         <!-- GANHADOR DA ROLETA -->
         <div class="highlight-card">
-          <div class="etapa-badge">1ª ETAPA</div>
+          <!-- FAIXA VERTICAL "1ª ETAPA" -->
+          <div class="etapa-faixa">
+            <div class="etapa-faixa-text">1ª ETAPA</div>
+          </div>
+          
           <h3 class="highlight-title">ROLETA DA SORTE</h3>
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
