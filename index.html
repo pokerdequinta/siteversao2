@@ -62,33 +62,6 @@ body {
   z-index: 1;
 }
 
-/* BOTÃO ADMIN - OCULTO */
-.admin-btn {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: #c72c48;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 50px;
-  font-weight: bold;
-  box-shadow: 0 5px 20px rgba(199, 44, 72, 0.5);
-  z-index: 1000;
-  cursor: pointer;
-  text-decoration: none;
-  display: none;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s;
-  font-size: 0.9em;
-}
-
-.admin-btn:hover {
-  background: #e63950;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(199, 44, 72, 0.7);
-}
-
 /* CONTAINER PRINCIPAL */
 .main-container {
   max-width: 1300px;
@@ -356,7 +329,7 @@ body {
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
-/* ESPAÇO PARA FOTO - AUMENTADO CONSIDERAVELMENTE */
+/* ESPAÇO PARA FOTO - AUMENTADO EM 30% */
 .highlight-photo-container {
   width: 100%;
   display: flex;
@@ -364,18 +337,39 @@ body {
   align-items: center;
   margin: 5px 0 15px 0;
   flex: 1;
-  min-height: 220px; /* Aumentado de 180px para 220px */
+  min-height: 290px; /* Aumentado de 220px para 290px (30% a mais) */
 }
 
-/* FOTO AUMENTADA - AGORA FICA GRANDE NO CARD */
+/* FOTO AUMENTADA EM 30% - AGORA FICA GRANDE NO CARD */
 .highlight-photo {
-  width: 220px;  /* Aumentado de 170px para 220px - FOTO GRANDE */
-  height: 220px; /* Aumentado de 170px para 220px - FOTO GRANDE */
+  width: 286px;  /* Aumentado de 220px para 286px (30% a mais) */
+  height: 286px; /* Aumentado de 220px para 286px (30% a mais) */
   border-radius: 20px;
   object-fit: cover;
   border: 4px solid #d4a121;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   background: #102810;
+}
+
+/* CIRCULO PARA FOTO DA PESSOA QUE FEZ A MELHOR MÃO */
+.melhor-mao-person-foto {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #d4a121;
+  background: #102810;
+  overflow: hidden;
+  z-index: 3;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+.melhor-mao-person-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .highlight-name {
@@ -612,19 +606,19 @@ body {
   }
   
   .highlight-photo {
-    width: 200px;  /* Ajustado para tablet */
-    height: 200px; /* Ajustado para tablet */
+    width: 260px;  /* Ajustado para tablet */
+    height: 260px; /* Ajustado para tablet */
   }
   
   .highlight-photo-container {
-    min-height: 210px; /* Ajustado para tablet */
+    min-height: 275px; /* Ajustado para tablet */
   }
   
-  .admin-btn {
-    bottom: 80px;
-    right: 10px;
-    padding: 10px 15px;
-    font-size: 0.85em;
+  .melhor-mao-person-foto {
+    width: 85px;
+    height: 85px;
+    top: 12px;
+    right: 12px;
   }
   
   .inscricao-simples {
@@ -687,12 +681,19 @@ body {
   }
   
   .highlight-photo {
-    width: 180px;  /* Ajustado para mobile */
-    height: 180px; /* Ajustado para mobile */
+    width: 234px;  /* Ajustado para mobile */
+    height: 234px; /* Ajustado para mobile */
   }
   
   .highlight-photo-container {
-    min-height: 190px; /* Ajustado para mobile */
+    min-height: 245px; /* Ajustado para mobile */
+  }
+  
+  .melhor-mao-person-foto {
+    width: 70px;
+    height: 70px;
+    top: 10px;
+    right: 10px;
   }
   
   .bottom-menu {
@@ -831,11 +832,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
             <div class="highlight-photo-container">
-              <!-- FOTO GRANDE NO CARD -->
+              <!-- FOTO AUMENTADA EM 30% -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Diego%20Campeao%201%20etapa.jpg?raw=true" 
                    alt="Foto do Campeão Diego" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=DIEGO'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=DIEGO'">
             </div>
             <div class="highlight-name">Diego</div>
             <div class="highlight-detail">Vencedor da 1ª Etapa</div>
@@ -851,14 +852,22 @@ body {
           </div>
           
           <h3 class="highlight-title">MELHOR MÃO</h3>
+          
+          <!-- CIRCULO COM FOTO DA PESSOA QUE FEZ A MELHOR MÃO -->
+          <div class="melhor-mao-person-foto">
+            <img src="https://github.com/pokerdequinta/fotos/blob/main/Matheus%20foto.jpg?raw=true" 
+                 alt="Foto de Matheus"
+                 onerror="this.src='https://via.placeholder.com/100/FFD700/102810?text=MATHEUS'">
+          </div>
+          
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
             <div class="highlight-photo-container">
-              <!-- FOTO GRANDE NO CARD -->
+              <!-- FOTO AUMENTADA EM 30% -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Melhor%20mao.jpg?raw=true" 
                    alt="Foto da Melhor Mão" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=MATHEUS'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=STRAIGHT+FLUSH'">
             </div>
             <div class="highlight-name">Street Flush</div>
             <div class="highlight-detail">Feito por: Matheus</div>
@@ -877,11 +886,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">💥</span>
             <div class="highlight-photo-container">
-              <!-- FOTO GRANDE NO CARD -->
+              <!-- FOTO AUMENTADA EM 30% -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Matheus%20KO.jpg?raw=true" 
                    alt="Foto do Matador de KO" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=MATHEUS'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=MATHEUS'">
             </div>
             <div class="highlight-name">Matheus</div>
             <div class="highlight-detail">8 eliminações</div>
@@ -900,11 +909,11 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
             <div class="highlight-photo-container">
-              <!-- FOTO GRANDE NO CARD -->
+              <!-- FOTO AUMENTADA EM 30% -->
               <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
                    alt="Foto do Ganhador da Roleta" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/220/FFD700/102810?text=GASPAR'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=GASPAR'">
             </div>
             <div class="highlight-name">Gaspar</div>
             <div class="highlight-detail">Ganhou:50K EM FICHAS</div>
@@ -1005,12 +1014,6 @@ body {
     </div>
   </div>
 </div>
-
-<!-- BOTÃO ADMIN - OCULTO -->
-<a href="admin.html" class="admin-btn">
-  <span>🔐</span>
-  <span>Admin</span>
-</a>
 
 <script>
 // Menu hamburguer
