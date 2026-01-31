@@ -22,6 +22,39 @@ body {
   padding-bottom: 80px; /* Espaço para o bottom menu */
 }
 
+/* Aumentar os ícones em 20% */
+.bottom-menu-icon {
+  font-size: 2.2em; /* Aumentado de 1.8em para 2.2em (22% maior) */
+  margin-bottom: 5px;
+}
+
+.hamburger-icon {
+  font-size: 1.8em; /* Aumentado de 1.5em para 1.8em (20% maior) */
+  color: #d4a121;
+  min-width: 30px;
+  text-align: center;
+}
+
+.info-item .icon {
+  font-size: 2.2em; /* Aumentado de 1.8em para 2.2em (22% maior) */
+  min-width: 40px;
+  text-align: center;
+  color: #102810;
+}
+
+.highlight-icon {
+  font-size: 2.4em; /* Aumentado de 2.0em para 2.4em (20% maior) */
+  margin-bottom: 5px;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+}
+
+.footer-icons {
+  font-size: 2.4em; /* Aumentado de 2.0em para 2.4em (20% maior) */
+  color: #d4a121;
+  margin: 20px 0;
+  letter-spacing: 15px;
+}
+
 /* LOGO SECTION */
 .logo-section {
   text-align: center;
@@ -157,13 +190,6 @@ body {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.info-item .icon {
-  font-size: 1.8em;
-  min-width: 40px;
-  text-align: center;
-  color: #102810;
 }
 
 .info-content {
@@ -323,12 +349,6 @@ body {
   flex: 1;
 }
 
-.highlight-icon {
-  font-size: 2.0em;
-  margin-bottom: 5px;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
-}
-
 /* ESPAÇO PARA FOTO - AUMENTADO EM 30% */
 .highlight-photo-container {
   width: 100%;
@@ -402,13 +422,6 @@ body {
 .footer-text {
   opacity: 0.8;
   margin-bottom: 10px;
-}
-
-.footer-icons {
-  font-size: 2em;
-  color: #d4a121;
-  margin: 20px 0;
-  letter-spacing: 15px;
 }
 
 /* BOTTOM MENU */
@@ -512,13 +525,6 @@ body {
   margin-bottom: 0;
 }
 
-.hamburger-icon {
-  font-size: 1.5em;
-  color: #d4a121;
-  min-width: 30px;
-  text-align: center;
-}
-
 .hamburger-text {
   font-family: 'Anton';
   font-size: 1em;
@@ -542,11 +548,6 @@ body {
 .bottom-menu-item:hover {
   background: rgba(212, 161, 33, 0.1);
   transform: translateY(-5px);
-}
-
-.bottom-menu-icon {
-  font-size: 1.8em;
-  margin-bottom: 5px;
 }
 
 .bottom-menu-text {
@@ -641,7 +642,7 @@ body {
   }
   
   .bottom-menu-icon {
-    font-size: 1.6em;
+    font-size: 1.9em; /* Ajustado para responsivo */
   }
   
   .hamburger-button {
@@ -711,7 +712,7 @@ body {
   }
   
   .bottom-menu-icon {
-    font-size: 1.4em;
+    font-size: 1.7em; /* Ajustado para mobile */
   }
   
   .hamburger-button {
@@ -832,13 +833,13 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">👑</span>
             <div class="highlight-photo-container">
-              <!-- FOTO AUMENTADA EM 30% -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/Diego%20Campeao%201%20etapa.jpg?raw=true" 
-                   alt="Foto do Campeão Diego" 
+              <!-- FOTO ATUALIZADA PARA SERGIO -->
+              <img src="https://github.com/pokerdequinta/fotos/blob/main/Sergiocampeao1etapa.png?raw=true" 
+                   alt="Foto do Campeão Sergio" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=DIEGO'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=SERGIO'">
             </div>
-            <div class="highlight-name">Diego</div>
+            <div class="highlight-name">Sergio</div>
             <div class="highlight-detail">Vencedor da 1ª Etapa</div>
             <div class="highlight-detail">31 Pontos</div>
           </div>
@@ -855,23 +856,23 @@ body {
           
           <!-- CIRCULO COM FOTO DA PESSOA QUE FEZ A MELHOR MÃO -->
           <div class="melhor-mao-person-foto">
-            <img src="https://github.com/pokerdequinta/fotos/blob/main/Matheus.png?raw=true" 
-                 alt="Foto de Matheus"
-                 onerror="this.src='https://via.placeholder.com/100/FFD700/102810?text=MATHEUS'">
+            <img src="https://github.com/pokerdequinta/fotos/blob/main/Van%20Van.png?raw=true" 
+                 alt="Foto de Van Van"
+                 onerror="this.src='https://via.placeholder.com/100/FFD700/102810?text=VAN+VAN'">
           </div>
           
           <div class="highlight-content">
             <span class="highlight-icon">🃏</span>
             <div class="highlight-photo-container">
-              <!-- FOTO AUMENTADA EM 30% -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/Melhor%20mao.jpg?raw=true" 
-                   alt="Foto da Melhor Mão" 
+              <!-- FOTO ATUALIZADA PARA QUADRA DE 7 -->
+              <img src="https://github.com/pokerdequinta/fotos/blob/main/melhormao1etapa.png?raw=true" 
+                   alt="Foto da Melhor Mão - Quadra de 7" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=STRAIGHT+FLUSH'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=QUADRA+DE+7'">
             </div>
-            <div class="highlight-name">Street Flush</div>
-            <div class="highlight-detail">Feito por: Matheus</div>
-            <div class="highlight-detail">GANHA:1 ADDON na próxima Etapa</div>
+            <div class="highlight-name">Quadra de 7</div>
+            <div class="highlight-detail">Feito por: Van Van</div>
+            <div class="highlight-detail">GANHA: 1 ADDON na próxima Etapa</div>
           </div>
         </div>
         
@@ -886,14 +887,14 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">💥</span>
             <div class="highlight-photo-container">
-              <!-- FOTO AUMENTADA EM 30% -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/Matheus%20KO.jpg?raw=true" 
-                   alt="Foto do Matador de KO" 
+              <!-- FOTO ATUALIZADA PARA AMARILDO -->
+              <img src="https://github.com/pokerdequinta/fotos/blob/main/matadorko1etapa.jpg?raw=true" 
+                   alt="Foto do Matador de KO Amarildo" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=MATHEUS'">
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=AMARILDO'">
             </div>
-            <div class="highlight-name">Matheus</div>
-            <div class="highlight-detail">8 eliminações</div>
+            <div class="highlight-name">Amarildo</div>
+            <div class="highlight-detail">5 eliminações</div>
             <div class="highlight-detail"></div>
           </div>
         </div>
@@ -909,14 +910,15 @@ body {
           <div class="highlight-content">
             <span class="highlight-icon">🎡</span>
             <div class="highlight-photo-container">
-              <!-- FOTO AUMENTADA EM 30% -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/Gaspar.png?raw=true" 
+              <!-- FOTO QUE ALTERNA ENTRE AS DUAS IMAGENS -->
+              <img src="https://github.com/pokerdequinta/fotos/blob/main/abracobruxo1.jpeg?raw=true" 
                    alt="Foto do Ganhador da Roleta" 
                    class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=GASPAR'">
+                   id="roleta-photo"
+                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=CLEVERSON'">
             </div>
-            <div class="highlight-name">Gaspar</div>
-            <div class="highlight-detail">Ganhou:50K EM FICHAS</div>
+            <div class="highlight-name">Cleversson</div>
+            <div class="highlight-detail">Ganhou: 1 Abraço do Bruxo!</div>
             <div class="highlight-detail"></div>
           </div>
         </div>
@@ -1063,9 +1065,35 @@ if (inscricaoBtn) {
     }, 200);
   });
 }
+
+// Script para alternar as fotos da roleta da sorte a cada 2 segundos
+const roletaPhoto = document.getElementById('roleta-photo');
+const roletaImages = [
+  'https://github.com/pokerdequinta/fotos/blob/main/abracobruxo1.jpeg?raw=true',
+  'https://github.com/pokerdequinta/fotos/blob/main/abracobruxo2.jpg?raw=true'
+];
+
+if (roletaPhoto) {
+  let currentImageIndex = 0;
+  
+  // Função para alternar as imagens
+  function changeRoletaImage() {
+    currentImageIndex = (currentImageIndex + 1) % roletaImages.length;
+    roletaPhoto.src = roletaImages[currentImageIndex];
+  }
+  
+  // Iniciar o ciclo de troca de imagens a cada 2 segundos
+  setInterval(changeRoletaImage, 2000);
+}
+
+// Preload das imagens da roleta para evitar piscar durante a troca
+window.addEventListener('load', function() {
+  roletaImages.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+});
 </script>
 
 </body>
 </html>
-
-
