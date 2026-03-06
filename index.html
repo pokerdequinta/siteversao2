@@ -3,1097 +3,1113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Poker de Quinta - Menu Principal</title>
+<title>Confirmação de Presença - Poker de Quinta</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Roboto', sans-serif;
-  background: #0d1b0d;
-  color: #fff;
-  min-height: 100vh;
-  padding-bottom: 80px; /* Espaço para o bottom menu */
-}
-
-/* Aumentar os ícones em 20% */
-.bottom-menu-icon {
-  font-size: 2.2em; /* Aumentado de 1.8em para 2.2em (22% maior) */
-  margin-bottom: 5px;
-}
-
-.hamburger-icon {
-  font-size: 1.8em; /* Aumentado de 1.5em para 1.8em (20% maior) */
-  color: #d4a121;
-  min-width: 30px;
-  text-align: center;
-}
-
-.info-item .icon {
-  font-size: 2.2em; /* Aumentado de 1.8em para 2.2em (22% maior) */
-  min-width: 40px;
-  text-align: center;
-  color: #102810;
-}
-
-.highlight-icon {
-  font-size: 2.4em; /* Aumentado de 2.0em para 2.4em (20% maior) */
-  margin-bottom: 5px;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
-}
-
-.footer-icons {
-  font-size: 2.4em; /* Aumentado de 2.0em para 2.4em (20% maior) */
-  color: #d4a121;
-  margin: 20px 0;
-  letter-spacing: 15px;
-}
-
-/* LOGO SECTION */
-.logo-section {
-  text-align: center;
-  padding: 40px 20px 30px;
-  background: linear-gradient(180deg, #102810 0%, #0d1b0d 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.logo-img {
-  max-width: 250px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
-  animation: fadeIn 1s;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.logo-title {
-  font-family: 'Anton';
-  font-size: 3em;
-  color: #d4a121;
-  letter-spacing: 5px;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 1;
-}
-
-.logo-subtitle {
-  font-size: 1.3em;
-  color: #d4a121;
-  opacity: 0.9;
-  position: relative;
-  z-index: 1;
-}
-
-/* CONTAINER PRINCIPAL */
-.main-container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-/* SECTION TITLE */
-.section-title {
-  font-family: 'Anton';
-  font-size: 2.5em;
-  color: #d4a121;
-  text-align: center;
-  letter-spacing: 3px;
-  margin-bottom: 30px;
-  text-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
-}
-
-/* CARD DA PRÓXIMA ETAPA EM AMARELO */
-.next-stage-card {
-  background: linear-gradient(135deg, #d4a121 0%, #f4c141 100%);
-  border: 2px solid #fff;
-  border-radius: 20px;
-  padding: 35px 30px;
-  animation: pulseGlow 2s infinite;
-  position: relative;
-  overflow: hidden;
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 10px 50px rgba(212, 161, 33, 0.4);
-  }
-  50% {
-    box-shadow: 0 15px 70px rgba(212, 161, 33, 0.8);
-  }
-}
-
-/* BADGE NO TOPO ESQUERDO */
-.stage-top-badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  color: #d4a121;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-family: 'Anton';
-  font-size: 1.3em;
-  letter-spacing: 2px;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  border: 2px solid #d4a121;
-  z-index: 2;
-  text-transform: uppercase;
-}
-
-.next-stage-card .menu-title {
-  font-family: 'Anton';
-  color: #000;
-  font-size: 2.5em;
-  margin-bottom: 10px;
-  text-align: center;
-  letter-spacing: 3px;
-}
-
-.next-stage-card .menu-description {
-  color: #000;
-  opacity: 0.9;
-  font-size: 1.2em;
-  margin-bottom: 25px;
-  text-align: center;
-  font-weight: 700;
-}
-
-/* INFORMAÇÕES DA ETAPA - ESTILO MODERNO */
-.stage-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
-  text-align: left;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.info-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.info-label {
-  font-family: 'Anton', sans-serif;
-  font-size: 0.9em;
-  color: #102810;
-  letter-spacing: 1px;
-  margin-bottom: 3px;
-}
-
-.info-value {
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.1em;
-  font-weight: 700;
-  color: #000;
-}
-
-.info-date {
-  color: #c72c48;
-}
-
-.info-time {
-  color: #27ae60;
-}
-
-.info-buyin {
-  color: #102810;
-}
-
-.info-rebuy {
-  color: #2c3e50;
-}
-
-.info-addon {
-  color: #8e44ad;
-}
-
-/* BOTÃO DE INSCRIÇÃO SIMPLES */
-.inscricao-simples {
-  display: inline-block;
-  background: linear-gradient(135deg, #102810 0%, #1a3d1a 100%);
-  color: #d4a121;
-  padding: 15px 35px;
-  border-radius: 50px;
-  font-family: 'Anton';
-  font-size: 1.4em;
-  letter-spacing: 2px;
-  text-decoration: none;
-  margin-top: 30px;
-  border: 2px solid #d4a121;
-  transition: all 0.3s;
-  text-align: center;
-}
-
-.inscricao-simples:hover {
-  background: linear-gradient(135deg, #1a3d1a 0%, #102810 100%);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(212, 161, 33, 0.4);
-  border-color: #f4c141;
-}
-
-/* SEÇÃO DE DESTAQUES DA 1ª ETAPA ABAIXO DO CARD AMARELO */
-.highlights-section {
-  margin-top: 60px;
-}
-
-.highlights-title {
-  font-family: 'Anton';
-  font-size: 2.2em;
-  color: #d4a121;
-  letter-spacing: 2px;
-  margin-bottom: 40px;
-  text-align: center;
-  text-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
-  padding-bottom: 15px;
-  border-bottom: 3px solid #d4a121;
-}
-
-/* CARDS DOS DESTAQUES */
-.highlight-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  margin-top: 20px;
-}
-
-.highlight-card {
-  background: linear-gradient(135deg, #1a3d1a 0%, #0d1b0d 100%);
-  border: 3px solid #d4a121;
-  border-radius: 20px;
-  padding: 25px 20px 25px 40px; /* Mais padding à esquerda para a faixa */
-  text-align: center;
-  transition: all 0.3s;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-}
-
-.highlight-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(212, 161, 33, 0.4);
-}
-
-/* FAIXA VERTICAL "1ª ETAPA" NO LADO ESQUERDO */
-.etapa-faixa {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 30px;
-  background: linear-gradient(180deg, #d4a121 0%, #f4c141 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  z-index: 1;
-}
-
-.etapa-faixa-text {
-  font-family: 'Anton';
-  font-size: 1.1em;
-  color: #102810;
-  letter-spacing: 3px;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.highlight-title {
-  font-family: 'Anton';
-  font-size: 1.6em;
-  color: #d4a121;
-  letter-spacing: 1.5px;
-  margin-bottom: 15px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #d4a121;
-  width: 100%;
-}
-
-.highlight-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding-top: 5px;
-  width: 100%;
-  flex: 1;
-}
-
-/* ESPAÇO PARA FOTO - AUMENTADO EM 30% */
-.highlight-photo-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px 0 15px 0;
-  flex: 1;
-  min-height: 290px; /* Aumentado de 220px para 290px (30% a mais) */
-}
-
-/* FOTO AUMENTADA EM 30% - AGORA FICA GRANDE NO CARD */
-.highlight-photo {
-  width: 286px;  /* Aumentado de 220px para 286px (30% a mais) */
-  height: 286px; /* Aumentado de 220px para 286px (30% a mais) */
-  border-radius: 20px;
-  object-fit: cover;
-  border: 4px solid #d4a121;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  background: #102810;
-}
-
-/* CIRCULO PARA FOTO DA PESSOA QUE FEZ A MELHOR MÃO */
-.melhor-mao-person-foto {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #d4a121;
-  background: #102810;
-  overflow: hidden;
-  z-index: 3;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-}
-
-.melhor-mao-person-foto img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.highlight-name {
-  font-family: 'Anton';
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #f4c141;
-  letter-spacing: 1.5px;
-  margin-top: 5px;
-}
-
-.highlight-detail {
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.05em;
-  color: #fff;
-  font-weight: 700;
-  line-height: 1.5;
-  margin-top: 5px;
-}
-
-/* FOOTER */
-.footer {
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 60px;
-  border-top: 2px solid #d4a121;
-  background: #102810;
-}
-
-.footer-text {
-  opacity: 0.8;
-  margin-bottom: 10px;
-}
-
-/* BOTTOM MENU */
-.bottom-menu {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(135deg, #102810 0%, #0d1b0d 100%);
-  border-top: 2px solid #d4a121;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  z-index: 1000;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* Menu principal (4 itens à esquerda) */
-.main-menu-items {
-  display: flex;
-  gap: 25px;
-  flex: 1;
-  justify-content: flex-start;
-}
-
-/* Menu hamburguer (à direita) */
-.hamburger-menu {
-  position: relative;
-}
-
-.hamburger-button {
-  background: #d4a121;
-  color: #000;
-  border: none;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 1.8em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  font-weight: bold;
-}
-
-.hamburger-button:hover {
-  background: #f4c141;
-  transform: scale(1.1);
-}
-
-.hamburger-dropdown {
-  position: absolute;
-  bottom: 55px;
-  right: 0;
-  background: linear-gradient(135deg, #1a3d1a 0%, #102810 100%);
-  border: 2px solid #d4a121;
-  border-radius: 15px;
-  padding: 20px;
-  min-width: 280px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  display: none;
-  z-index: 1001;
-}
-
-.hamburger-dropdown.active {
-  display: block;
-  animation: fadeInUp 0.3s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hamburger-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px 15px;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  transition: all 0.3s;
-}
-
-.hamburger-item:hover {
-  background: rgba(212, 161, 33, 0.2);
-  transform: translateX(5px);
-}
-
-.hamburger-item:last-child {
-  margin-bottom: 0;
-}
-
-.hamburger-text {
-  font-family: 'Anton';
-  font-size: 1em;
-  letter-spacing: 1px;
-  color: #d4a121;
-}
-
-.bottom-menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #d4a121;
-  text-decoration: none;
-  font-size: 0.8em;
-  transition: all 0.3s;
-  padding: 5px 10px;
-  border-radius: 10px;
-  min-width: 70px;
-}
-
-.bottom-menu-item:hover {
-  background: rgba(212, 161, 33, 0.1);
-  transform: translateY(-5px);
-}
-
-.bottom-menu-text {
-  font-family: 'Anton';
-  letter-spacing: 1px;
-  font-size: 0.9em;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .stage-info {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .highlight-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .logo-title {
-    font-size: 2em;
-  }
-  
-  .section-title {
-    font-size: 1.8em;
-  }
-  
-  .stage-top-badge {
-    font-size: 1.1em;
-    padding: 8px 15px;
-  }
-  
-  .next-stage-card .menu-title {
-    font-size: 2em;
-  }
-  
-  .stage-info {
-    grid-template-columns: 1fr;
-  }
-  
-  .highlight-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .highlight-card {
-    padding: 25px 20px 25px 35px;
-  }
-  
-  .etapa-faixa {
-    width: 25px;
-  }
-  
-  .etapa-faixa-text {
-    font-size: 1em;
-    letter-spacing: 2px;
-  }
-  
-  .highlight-photo {
-    width: 260px;  /* Ajustado para tablet */
-    height: 260px; /* Ajustado para tablet */
-  }
-  
-  .highlight-photo-container {
-    min-height: 275px; /* Ajustado para tablet */
-  }
-  
-  .melhor-mao-person-foto {
-    width: 85px;
-    height: 85px;
-    top: 12px;
-    right: 12px;
-  }
-  
-  .inscricao-simples {
-    font-size: 1.2em;
-    padding: 12px 25px;
-  }
-  
-  .bottom-menu {
-    padding: 10px 15px;
-  }
-  
-  .main-menu-items {
-    gap: 15px;
-  }
-  
-  .bottom-menu-item {
-    min-width: 60px;
-    font-size: 0.75em;
-    padding: 4px 8px;
-  }
-  
-  .bottom-menu-icon {
-    font-size: 1.9em; /* Ajustado para responsivo */
-  }
-  
-  .hamburger-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5em;
-  }
-  
-  .hamburger-dropdown {
-    min-width: 250px;
-    right: -10px;
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto', sans-serif;background:#0d1b0d;color:#fff;min-height:100vh}
+.logo-top{text-align:center;padding:20px}
+.logo-top img{max-width:200px}
+.container{max-width:1000px;margin:auto;padding:20px}
+header{text-align:center;background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;margin-bottom:30px}
+h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
+.subtitle{margin-top:10px}
+
+#countdownContainer {
+    background: #1a3d1a;
+    border: 2px dashed #d4a121;
+    border-radius: 10px;
     padding: 15px;
-  }
+    margin-bottom: 20px;
+    text-align: center;
+}
+.timer-header { font-family: 'Anton'; font-size: 1.2em; color: #fff; margin-bottom: 5px; display: block; }
+#timer { font-family: 'Anton'; font-size: 1.8em; color: #d4a121; }
+
+.info-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:25px}
+.info-card{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;text-align:center}
+.info-card h2{font-family:'Anton';font-size:2.5em;color:#d4a121}
+.add-btn{width:100%;padding:15px;background:#d4a121;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-bottom:10px;color:#000}
+.cancel-btn-main{width:100%;padding:15px;background:#c72c48;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-bottom:20px;color:#fff}
+.add-btn:disabled{opacity:0.5;cursor:not-allowed}
+.export-btn{background:#2d5016;color:#fff}
+.section{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;margin-bottom:25px}
+.player-list{list-style:none}
+.player-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);padding:15px;border-radius:10px;margin-bottom:10px;gap:10px}
+.player-info{display:flex;gap:15px;align-items:center}
+.player-avatar {width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #d4a121}
+.player-number{font-family:'Anton';color:#d4a121}
+.player-details{display:flex;flex-direction:column}
+.player-details small{opacity:.85}
+.player-badge{background:#d4a121;color:#000;padding:4px 10px;border-radius:20px;font-size:.8em;font-weight:bold}
+.wait{background:#c72c48;color:#fff}
+.guest{background:#4CAF50;color:#000}
+.member{background:#1E90FF;color:#fff}
+.remove-btn{background:#c72c48;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+.empty-state{text-align:center;opacity:.7;padding:30px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000}
+.modal.active{display:flex}
+.modal-content{background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;width:90%;max-width:500px}
+.form-group{margin-bottom:15px}
+.form-group label{color:#d4a121;font-weight:bold;display:block;margin-bottom:5px}
+.form-group input,.form-group select{width:100%;padding:10px;border-radius:8px;border:1px solid #2d5016;background:#1a3d1a;color:#fff}
+/* Estilo para o select com foto */
+.player-select {display:flex;align-items:center;gap:10px;padding:5px}
+.player-select img {width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #d4a121}
+.player-select span {color:#fff}
+#playerName option {background:#1a3d1a;color:#fff;padding:10px}
+#playerName option:hover {background:#2d5016}
+#playerName optgroup {background:#102810;color:#d4a121;font-weight:bold}
+.modal-buttons{display:flex;gap:10px;margin-top:20px}
+.modal-btn{flex:1;padding:10px;font-weight:bold;border:none;border-radius:8px;cursor:pointer}
+.modal-btn.confirm{background:#d4a121;color:#000}
+.modal-btn.cancel{background:#c72c48;color:#fff}
+.loading{text-align:center;padding:20px;opacity:0.7}
+.status-indicator{position:fixed;top:10px;right:10px;background:#2d5016;padding:8px 15px;border-radius:20px;font-size:0.85em;border:1px solid #d4a121}
+.status-indicator.connected{background:#1a3d1a;border-color:#4CAF50}
+.status-indicator.error{background:#3d1a1a;border-color:#c72c48}
+.priority-indicator{background:#FFA500;color:#000;padding:2px 8px;border-radius:10px;font-size:0.75em;margin-left:5px}
+
+/* Estilos para o painel admin */
+.admin-panel {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 999;
+}
+.admin-btn {
+    width: auto;
+    padding: 8px 15px;
+    background: rgba(13,27,13,0.3);
+    border: 1px solid rgba(212,161,33,0.1);
+    opacity: 0.15;
+    font-size: 0.7em;
+    transition: opacity 0.3s;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 5px;
+}
+.admin-btn:hover {
+    opacity: 1;
+    background: #d4a121;
+    color: #000;
+}
+.admin-btn.active {
+    opacity: 1;
+    background: #4CAF50;
+}
+.inscricoes-status {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #102810;
+    border: 2px solid #d4a121;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    z-index: 999;
+}
+.inscricoes-status.abertas {
+    background: #1a3d1a;
+    border-color: #4CAF50;
+}
+.inscricoes-status.fechadas {
+    background: #3d1a1a;
+    border-color: #c72c48;
+}
+.etapa-indicator {
+    position: fixed;
+    top: 10px;
+    left: 200px;
+    background: #102810;
+    border: 2px solid #d4a121;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    z-index: 999;
 }
 
-@media (max-width: 480px) {
-  .stage-top-badge {
-    font-size: 1em;
-    padding: 6px 12px;
-  }
-  
-  .next-stage-card .menu-title {
-    font-size: 1.7em;
-  }
-  
-  .highlight-card {
-    padding: 20px 15px 20px 30px;
-  }
-  
-  .etapa-faixa {
-    width: 20px;
-  }
-  
-  .etapa-faixa-text {
-    font-size: 0.9em;
-    letter-spacing: 1.5px;
-  }
-  
-  .highlight-photo {
-    width: 234px;  /* Ajustado para mobile */
-    height: 234px; /* Ajustado para mobile */
-  }
-  
-  .highlight-photo-container {
-    min-height: 245px; /* Ajustado para mobile */
-  }
-  
-  .melhor-mao-person-foto {
-    width: 70px;
-    height: 70px;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .bottom-menu {
-    padding: 8px 10px;
-  }
-  
-  .main-menu-items {
+/* Estilo para o seletor de etapa no admin */
+.etapa-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-  }
-  
-  .bottom-menu-item {
-    min-width: 50px;
-    font-size: 0.7em;
-    padding: 3px 6px;
-  }
-  
-  .bottom-menu-icon {
-    font-size: 1.7em; /* Ajustado para mobile */
-  }
-  
-  .hamburger-button {
-    width: 35px;
-    height: 35px;
-    font-size: 1.3em;
-  }
-  
-  .hamburger-dropdown {
-    min-width: 220px;
-    right: -15px;
-    padding: 12px;
-  }
-  
-  .hamburger-item {
+    margin: 20px 0;
+}
+.etapa-btn {
+    background: #1a3d1a;
+    border: 1px solid #d4a121;
+    color: #fff;
     padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+.etapa-btn:hover {
+    background: #d4a121;
+    color: #000;
+}
+.etapa-btn.ativa {
+    background: #d4a121;
+    color: #000;
+    border-color: #fff;
+}
+
+/* Estilo para a área de gerenciamento de fotos */
+.foto-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+.foto-info {
+    min-width: 150px;
+    font-weight: bold;
+    color: #d4a121;
+}
+.foto-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a121;
+}
+.foto-input {
+    flex: 1;
+    padding: 10px;
+    background: #1a3d1a;
+    border: 1px solid #2d5016;
+    color: #fff;
+    border-radius: 5px;
     font-size: 0.9em;
-  }
+}
+.foto-actions {
+    display: flex;
+    gap: 5px;
+}
+.foto-btn {
+    padding: 8px 15px;
+    background: #d4a121;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.foto-btn.reset {
+    background: #c72c48;
+    color: #fff;
+}
+.fotos-header {
+    display: grid;
+    grid-template-columns: 80px 150px 1fr 100px;
+    gap: 15px;
+    padding: 10px 15px;
+    background: #102810;
+    border-bottom: 2px solid #d4a121;
+    font-weight: bold;
+    color: #d4a121;
+    margin-bottom: 10px;
+}
+
+@media(max-width:768px){
+.info-cards{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGO SECTION -->
-<div class="logo-section">
-  <img src="logo pdq.png" class="logo-img" onerror="this.style.display='none'" alt="Logo Poker de Quinta">
-  <h1 class="logo-title">POKER DE QUINTA</h1>
-  <p class="logo-subtitle">Bem-vindo ao Site Oficial do Poker de Quinta.</p>
+<div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
+<div class="inscricoes-status" id="inscricoesStatus">🔒 Inscrições Fechadas</div>
+<div class="etapa-indicator" id="etapaIndicator">📅 3ª Etapa</div>
+
+<div class="logo-top">
+<img src="logo pdq.png" onerror="this.style.display='none'">
 </div>
 
-<!-- CONTAINER PRINCIPAL -->
-<div class="main-container">
+<div class="container">
+
+<header>
+<h1>LISTA DE PRESENÇA POKER DE QUINTA</h1>
+<div class="subtitle" id="dataEvento">📅 3ª Etapa - 26/03/2026</div>
+</header>
+
+<div id="countdownContainer">
+    <span class="timer-header" id="timerHeader">As Inscrições abrem 23/03/2026 às 07:00</span>
+    <div id="timer">Calculando tempo...</div>
+</div>
+
+<div class="info-cards">
+<div class="info-card"><h2 id="confirmedCount">0</h2>Confirmados</div>
+<div class="info-card"><h2 id="vacancyCount">20</h2>Vagas</div>
+<div class="info-card"><h2 id="waitlistCount">0</h2>Espera</div>
+</div>
+
+<button class="add-btn" id="btnConfirmar" disabled>🔒 INSCRIÇÕES FECHADAS</button>
+<button class="cancel-btn-main" id="btnCancelarWhatsApp">❌ CANCELAR MINHA INSCRIÇÃO</button>
+<button class="add-btn export-btn" id="btnExportar">📊 EXPORTAR CSV</button>
+
+<div class="section">
+<h3>✅ CONFIRMADOS</h3>
+<ul id="confirmedList" class="player-list">
+<li class="loading">Carregando dados...</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>⏳ LISTA DE ESPERA</h3>
+<p style="opacity:0.8;margin-bottom:15px;font-size:0.9em">
+  🔸 Membros têm prioridade sobre convidados • Ordem de chegada dentro de cada categoria
+</p>
+<ul id="waitlistList" class="player-list">
+<li class="loading">Carregando dados...</li>
+</ul>
+</div>
+
+</div>
+
+<div class="admin-panel">
+    <button class="admin-btn" id="btnModoAdmin" style="background:rgba(13,27,13,0.3);">🔐 ADMIN</button>
+    <button class="admin-btn" id="btnToggleInscricoes" style="display:none;">🔓 Abrir Inscrições</button>
+    <button class="admin-btn" id="btnProximaEtapa" style="display:none;">⏭️ Próxima Etapa</button>
+    <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Ir para Etapa</button>
+    <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Gerenciar Fotos</button>
+    <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair do Admin</button>
+</div>
+
+<div class="modal" id="modalAdmin">
+<div class="modal-content">
+<h2 style="color: #8b0000;">🔐 Modo Administrador</h2>
+<p style="margin: 15px 0; opacity: 0.8;">Digite a senha de administrador para acessar funções exclusivas:</p>
+<div class="form-group">
+<label>Senha Admin</label>
+<input type="password" id="senhaAdmin" placeholder="Digite a senha">
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="btnFecharAdmin">Cancelar</button>
+<button class="modal-btn confirm" id="btnAcessarAdmin" style="background:#8b0000; color:#fff">Acessar</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modalGerenciarFotos">
+<div class="modal-content" style="max-width: 900px;">
+<h2 style="color: #d4a121;">📸 Gerenciar Fotos dos Jogadores</h2>
+<p style="margin: 15px 0; opacity: 0.8;">Configure as URLs das fotos de cada jogador:</p>
+<div class="fotos-header">
+    <div>Prévia</div>
+    <div>Jogador</div>
+    <div>URL da Foto</div>
+    <div>Ações</div>
+</div>
+<div id="fotosList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
+    <!-- Lista de fotos será gerada aqui -->
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="btnFecharFotos">Fechar</button>
+<button class="modal-btn confirm" id="btnSalvarFotos" style="background:#d4a121;">Salvar Todas</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modalSelecionarEtapa">
+<div class="modal-content">
+<h2 style="color: #d4a121;">📅 Selecionar Etapa</h2>
+<p style="margin: 15px 0;">Escolha a etapa para configurar o sistema:</p>
+<div class="etapa-selector" id="etapaSelector">
+    <!-- Botões serão gerados via JavaScript -->
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="btnCancelarSelecao">Cancelar</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modalBemVindo">
+<div class="modal-content">
+<h2 style="color: #d4a121;">📋 Bem-vindo ao Poker de Quinta!</h2>
+<p style="margin: 15px 0; line-height: 1.6;">Esta é a página oficial de inscrição do <strong>Poker de Quinta</strong>.</p>
+<p style="margin: 15px 0; line-height: 1.6; font-size:0.9em">
+  <strong>Regras importantes:</strong><br>
+  • Limite de 20 vagas confirmadas<br>
+  • Confirme a presença somente se for ir com CERTEZA<br>
+  • Caso se inscreva e não possa ir a etapa, clique no botão CANCELAR MINHA INSCRIÇÃO<br>
+  • Após 20 confirmações, novos jogadores vão para lista de espera<br>
+  • Na lista de espera: membros têm prioridade sobre convidados
+</p>
+<div class="modal-buttons">
+<button class="modal-btn confirm" id="btnEntendi" style="width:100%">Entendi!</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<h2>Confirmar Presença</h2>
+<div class="form-group">
+<label>Jogador</label>
+<select id="playerName" style="padding:10px;"></select>
+<!-- Div para mostrar a prévia da foto quando selecionar -->
+<div id="playerPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
+    <img src="" alt="Foto do jogador" style="width:60px;height:60px;border-radius:50%;border:2px solid #d4a121;object-fit:cover;">
+</div>
+</div>
+<div class="form-group">
+<input type="checkbox" id="isGuest"> Adicionar convidado
+</div>
+<div class="form-group" id="guestNameGroup" style="display:none">
+<label>Nome do Convidado</label>
+<input id="guestName" placeholder="Digite o nome completo">
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="btnCancelar">Cancelar</button>
+<button class="modal-btn confirm" id="btnConfirmarModal">Confirmar</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getDatabase, ref, set, onValue, remove, push, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
+  authDomain: "poker-de-quinta.firebaseapp.com",
+  databaseURL: "https://poker-de-quinta-default-rtdb.firebaseio.com",
+  projectId: "poker-de-quinta",
+  storageBucket: "poker-de-quinta.firebasestorage.app",
+  messagingSenderId: "776724152456",
+  appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
+};
+
+const LIMITE_VAGAS = 20;
+
+// URL da foto padrão (avatar)
+const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+
+// Calendário oficial das etapas (baseado no http://pokerdequinta.github.io/calendario)
+const ETAPAS = [
+    { numero: 1, data: '2026-01-29', descricao: '1ª Etapa' },
+    { numero: 2, data: '2026-02-26', descricao: '2ª Etapa' },
+    { numero: 3, data: '2026-03-26', descricao: '3ª Etapa' },
+    { numero: 4, data: '2026-04-30', descricao: '4ª Etapa' },
+    { numero: 5, data: '2026-05-28', descricao: '5ª Etapa' },
+    { numero: 6, data: '2026-06-25', descricao: '6ª Etapa' },
+    { numero: 7, data: '2026-07-30', descricao: '7ª Etapa' },
+    { numero: 8, data: '2026-08-27', descricao: '8ª Etapa' },
+    { numero: 9, data: '2026-09-24', descricao: '9ª Etapa' },
+    { numero: 10, data: '2026-10-08', descricao: '10ª Etapa' },
+    { numero: 11, data: '2026-10-29', descricao: '11ª Etapa' },
+    { numero: 12, data: '2026-11-26', descricao: '12ª Etapa' },
+    { numero: 13, data: '2026-12-10', descricao: 'ÚLTIMA ETAPA 🏆' }
+];
+
+// Lista inicial de jogadores
+const JOGADORES_INICIAIS = [
+    "Amarildo", "Boy", "Buiu", "Caio", "Charles", "Cleversson", "Davi", "Gera", "Diego", 
+    "Dos Anjos", "Eduardo", "Fernando", "Gregory", "Gaspar", "Guilherme", "Guti", "Kastelo", 
+    "Izidio", "Jean", "Jean Rebuy", "Junior", "Leo", "Loreto", "Lucas", "Matheus", "Maykon", 
+    "Marcelo", "Neto", "Nil", "Peterson", "Rafael", "Ricardo Amarante", "Ricardo Linhares", 
+    "Ricardo Matoso", "Robson", "Sergio", "Solano", "Tigre", "Van Van", "Waltinho", "Wesley"
+];
+
+// Função para calcular data de abertura das inscrições (segunda-feira anterior, 07:00)
+function calcularDataAbertura(dataEtapa) {
+    const data = new Date(dataEtapa + 'T19:00:00');
+    const diaDaSemana = data.getDay();
+    let diasAteSegunda;
+    
+    if (diaDaSemana === 1) {
+        diasAteSegunda = 7;
+    } else if (diaDaSemana === 0) {
+        diasAteSegunda = 6;
+    } else {
+        diasAteSegunda = diaDaSemana - 1;
+    }
+    
+    const dataAbertura = new Date(data);
+    dataAbertura.setDate(data.getDate() - diasAteSegunda);
+    dataAbertura.setHours(7, 0, 0, 0);
+    
+    return dataAbertura;
+}
+
+// Configurações iniciais
+let config = {
+    etapa: 3,
+    dataEvento: '2026-03-26',
+    dataAbertura: calcularDataAbertura('2026-03-26').toISOString(),
+    inscricoesAbertas: false
+};
+
+let DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+let DATA_EVENTO = new Date(config.dataEvento);
+
+// Array de jogadores com fotos
+let jogadores = [];
+
+let db;
+let confirmados = [];
+let listaEspera = [];
+let modoAdmin = false;
+let timerInterval;
+
+// Elementos
+const btnToggleInscricoes = document.getElementById('btnToggleInscricoes');
+const btnProximaEtapa = document.getElementById('btnProximaEtapa');
+const btnSelecionarEtapa = document.getElementById('btnSelecionarEtapa');
+const btnGerenciarFotos = document.getElementById('btnGerenciarFotos');
+const btnSairAdmin = document.getElementById('btnSairAdmin');
+const inscricoesStatus = document.getElementById('inscricoesStatus');
+const etapaIndicator = document.getElementById('etapaIndicator');
+const dataEventoEl = document.getElementById('dataEvento');
+const timerHeader = document.getElementById('timerHeader');
+const btnConfirmar = document.getElementById('btnConfirmar');
+
+// Função para obter dados da etapa atual
+function getEtapaAtual() {
+    return ETAPAS.find(e => e.numero === config.etapa) || ETAPAS[2];
+}
+
+// Carregar fotos dos jogadores do Firebase
+async function carregarFotosJogadores() {
+    try {
+        const snapshot = await get(ref(db, 'fotosJogadores'));
+        if (snapshot.exists()) {
+            const fotosSalvas = snapshot.val();
+            jogadores = JOGADORES_INICIAIS.map(nome => ({
+                nome: nome,
+                foto: fotosSalvas[nome] || FOTO_PADRAO
+            }));
+        } else {
+            jogadores = JOGADORES_INICIAIS.map(nome => ({
+                nome: nome,
+                foto: FOTO_PADRAO
+            }));
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+        jogadores = JOGADORES_INICIAIS.map(nome => ({
+            nome: nome,
+            foto: FOTO_PADRAO
+        }));
+    }
+    preencherSelectJogadores();
+}
+
+// Salvar fotos dos jogadores no Firebase
+async function salvarFotosJogadores() {
+    try {
+        const fotosObj = {};
+        jogadores.forEach(j => {
+            fotosObj[j.nome] = j.foto;
+        });
+        await set(ref(db, 'fotosJogadores'), fotosObj);
+        alert('✅ Fotos salvas com sucesso!');
+        atualizar();
+        preencherSelectJogadores();
+        modalGerenciarFotos.classList.remove('active');
+    } catch (e) {
+        alert('Erro ao salvar fotos: ' + e.message);
+    }
+}
+
+// Preencher o select com as opções formatadas
+function preencherSelectJogadores() {
+    const selectJogador = document.getElementById('playerName');
+    selectJogador.innerHTML = '';
+    
+    const optDefault = document.createElement('option');
+    optDefault.value = '';
+    optDefault.textContent = 'Selecione seu nome...';
+    selectJogador.appendChild(optDefault);
+    
+    jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
+        const o = document.createElement('option');
+        o.value = j.nome;
+        o.textContent = j.nome;
+        o.setAttribute('data-foto', j.foto);
+        selectJogador.appendChild(o);
+    });
+}
+
+// Carregar configurações do Firebase
+async function carregarConfig() {
+    try {
+        const snapshot = await get(ref(db, 'config'));
+        if (snapshot.exists()) {
+            config = snapshot.val();
+        } else {
+            await salvarConfig(config);
+        }
+        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+        DATA_EVENTO = new Date(config.dataEvento);
+        atualizarInterfaceConfig();
+    } catch (e) {
+        console.error('Erro ao carregar config:', e);
+    }
+}
+
+// Salvar configurações no Firebase
+async function salvarConfig(novaConfig) {
+    try {
+        await set(ref(db, 'config'), novaConfig);
+        config = novaConfig;
+        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+        DATA_EVENTO = new Date(config.dataEvento);
+        atualizarInterfaceConfig();
+    } catch (e) {
+        console.error('Erro ao salvar config:', e);
+    }
+}
+
+// Atualizar interface com as configurações
+function atualizarInterfaceConfig() {
+    const etapaAtual = getEtapaAtual();
+    const dataFormatada = DATA_EVENTO.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
+    dataEventoEl.textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
+    
+    if (config.inscricoesAbertas) {
+        inscricoesStatus.textContent = '🔓 Inscrições Abertas';
+        inscricoesStatus.classList.add('abertas');
+        inscricoesStatus.classList.remove('fechadas');
+    } else {
+        inscricoesStatus.textContent = '🔒 Inscrições Fechadas';
+        inscricoesStatus.classList.add('fechadas');
+        inscricoesStatus.classList.remove('abertas');
+    }
+    
+    etapaIndicator.textContent = `📅 ${etapaAtual.descricao}`;
+    
+    const dataAberturaObj = new Date(config.dataAbertura);
+    const dataAberturaStr = dataAberturaObj.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}) + 
+                            ' às ' + dataAberturaObj.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    timerHeader.textContent = `As Inscrições abrem ${dataAberturaStr}`;
+    
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(atualizarCronometro, 1000);
+    atualizarCronometro();
+}
+
+function atualizarCronometro() {
+    const agora = new Date().getTime();
+    const dist = DATA_ABERTURA - agora;
+
+    if (dist > 0) {
+        const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+        const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((dist % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+        
+        if ((config.inscricoesAbertas && new Date().getTime() >= DATA_ABERTURA) || modoAdmin) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
+        } else {
+            btnConfirmar.disabled = true;
+            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
+        }
+    } else {
+        document.getElementById("countdownContainer").style.display = "none";
+        if (config.inscricoesAbertas || modoAdmin) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
+        } else {
+            btnConfirmar.disabled = true;
+            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
+        }
+    }
+}
+
+// Função para obter a URL da foto do jogador
+function getFotoJogador(nomeJogador) {
+    const jogador = jogadores.find(j => j.nome === nomeJogador);
+    return jogador ? jogador.foto : FOTO_PADRAO;
+}
+
+// Inicializar Firebase
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  statusIndicator.textContent = '✅ Conectado';
+  statusIndicator.classList.add('connected');
   
-  <!-- PRÓXIMA ETAPA -->
-  <div>
-    <h2 class="section-title">PRÓXIMA ETAPA</h2>
-    
-    <div class="next-stage-card">
-      <!-- BADGE NO TOPO ESQUERDO -->
-      <div class="stage-top-badge">2ª ETAPA</div>
-      
-      <h3 class="menu-title">26/02</h3>
-      <p class="menu-description">Prepare-se para mais uma noite de resenha e Baralhada!</p>
-      
-      <!-- INFORMAÇÕES DA PRÓXIMA ETAPA -->
-      <div class="stage-info">
-        <div class="info-item">
-          <span class="icon">📅</span>
-          <div class="info-content">
-            <div class="info-label">DATA</div>
-            <div class="info-value info-date">26 de Fevereiro</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <span class="icon">⏰</span>
-          <div class="info-content">
-            <div class="info-label">HORÁRIO</div>
-            <div class="info-value info-time">20 horas</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <span class="icon">💰</span>
-          <div class="info-content">
-            <div class="info-label">BUY-IN</div>
-            <div class="info-value info-buyin">R$ 100,00</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <span class="icon">🔄</span>
-          <div class="info-content">
-            <div class="info-label">REBUY SIMPLES</div>
-            <div class="info-value info-rebuy">R$ 30,00</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <span class="icon">🔄🔄</span>
-          <div class="info-content">
-            <div class="info-label">REBUY DUPLO</div>
-            <div class="info-value info-rebuy">R$ 60,00</div>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <span class="icon">➕</span>
-          <div class="info-content">
-            <div class="info-label">ADDON</div>
-            <div class="info-value info-addon">R$ 50,00</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- BOTÃO DE INSCRIÇÃO SIMPLES -->
-      <div style="text-align: center; margin-top: 30px;">
-        <a href="https://pokerdequinta.github.io/confirma/" class="inscricao-simples">
-          FAZER INSCRIÇÃO
-        </a>
-      </div>
-    </div>
-    
-    <!-- DESTAQUES DA 1ª ETAPA -->
-    <div class="highlights-section">
-      <h2 class="highlights-title">PRINCIPAIS DESTAQUES DA 1ª ETAPA</h2>
-      
-      <div class="highlight-grid">
-        <!-- CAMPEÃO DA 1ª ETAPA -->
-        <div class="highlight-card">
-          <!-- FAIXA VERTICAL "1ª ETAPA" -->
-          <div class="etapa-faixa">
-            <div class="etapa-faixa-text">1ª ETAPA</div>
-          </div>
-          
-          <h3 class="highlight-title">CAMPEÃO</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">👑</span>
-            <div class="highlight-photo-container">
-              <!-- FOTO ATUALIZADA PARA SERGIO -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/Sergiocampeao1etapa.png?raw=true" 
-                   alt="Foto do Campeão Sergio" 
-                   class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=SERGIO'">
-            </div>
-            <div class="highlight-name">Sergio</div>
-            <div class="highlight-detail">Vencedor da 1ª Etapa</div>
-            <div class="highlight-detail">31 Pontos</div>
-          </div>
-        </div>
-        
-        <!-- MELHOR MÃO DA ETAPA -->
-        <div class="highlight-card">
-          <!-- FAIXA VERTICAL "1ª ETAPA" -->
-          <div class="etapa-faixa">
-            <div class="etapa-faixa-text">1ª ETAPA</div>
-          </div>
-          
-          <h3 class="highlight-title">MELHOR MÃO</h3>
-          
-          <!-- CIRCULO COM FOTO DA PESSOA QUE FEZ A MELHOR MÃO -->
-          <div class="melhor-mao-person-foto">
-            <img src="https://github.com/pokerdequinta/fotos/blob/main/Van%20Van.png?raw=true" 
-                 alt="Foto de Van Van"
-                 onerror="this.src='https://via.placeholder.com/100/FFD700/102810?text=VAN+VAN'">
-          </div>
-          
-          <div class="highlight-content">
-            <span class="highlight-icon">🃏</span>
-            <div class="highlight-photo-container">
-              <!-- FOTO ATUALIZADA PARA QUADRA DE 7 -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/melhormao1etapa.png?raw=true" 
-                   alt="Foto da Melhor Mão - Quadra de 7" 
-                   class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=QUADRA+DE+7'">
-            </div>
-            <div class="highlight-name">Quadra de 7</div>
-            <div class="highlight-detail">Feito por: Van Van</div>
-            <div class="highlight-detail">GANHA: 1 ADDON na próxima Etapa</div>
-          </div>
-        </div>
-        
-        <!-- MATADOR DE KO -->
-        <div class="highlight-card">
-          <!-- FAIXA VERTICAL "1ª ETAPA" -->
-          <div class="etapa-faixa">
-            <div class="etapa-faixa-text">1ª ETAPA</div>
-          </div>
-          
-          <h3 class="highlight-title">MATADOR DE KO</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">💥</span>
-            <div class="highlight-photo-container">
-              <!-- FOTO ATUALIZADA PARA AMARILDO -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/matadorko1etapa.jpg?raw=true" 
-                   alt="Foto do Matador de KO Amarildo" 
-                   class="highlight-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=AMARILDO'">
-            </div>
-            <div class="highlight-name">Amarildo</div>
-            <div class="highlight-detail">5 eliminações</div>
-            <div class="highlight-detail"></div>
-          </div>
-        </div>
-        
-        <!-- GANHADOR DA ROLETA -->
-        <div class="highlight-card">
-          <!-- FAIXA VERTICAL "1ª ETAPA" -->
-          <div class="etapa-faixa">
-            <div class="etapa-faixa-text">1ª ETAPA</div>
-          </div>
-          
-          <h3 class="highlight-title">ROLETA DA SORTE</h3>
-          <div class="highlight-content">
-            <span class="highlight-icon">🎡</span>
-            <div class="highlight-photo-container">
-              <!-- FOTO QUE ALTERNA ENTRE AS DUAS IMAGENS -->
-              <img src="https://github.com/pokerdequinta/fotos/blob/main/abracobruxo1.jpeg?raw=true" 
-                   alt="Foto do Ganhador da Roleta" 
-                   class="highlight-photo"
-                   id="roleta-photo"
-                   onerror="this.src='https://via.placeholder.com/286/FFD700/102810?text=CLEVERSON'">
-            </div>
-            <div class="highlight-name">Cleversson</div>
-            <div class="highlight-detail">Ganhou: 1 Abraço do Bruxo!</div>
-            <div class="highlight-detail"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  <p class="footer-text">© 2026 Poker de Quinta - Todos os direitos reservados</p>
-  <div class="footer-icons">♠ ♥ ♦ ♣</div>
-  <p class="footer-text" style="opacity: 0.6; font-size: 0.9em;">Desenvolvido pelo Presida.</p>
-</div>
-
-<!-- BOTTOM MENU -->
-<div class="bottom-menu">
-  <!-- 4 ITENS À ESQUERDA -->
-  <div class="main-menu-items">
-    <a href="https://pokerdequinta.github.io/ranking/" class="bottom-menu-item">
-      <span class="bottom-menu-icon">🏆</span>
-      <span class="bottom-menu-text">RANKING</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/confirma/" class="bottom-menu-item">
-      <span class="bottom-menu-icon">✅</span>
-      <span class="bottom-menu-text">INSCRIÇÕES</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/enquete/" class="bottom-menu-item">
-      <span class="bottom-menu-icon">📊</span>
-      <span class="bottom-menu-text">ENQUETE</span>
-    </a>
-    
-    <a href="https://pokerdequinta.github.io/regulamento/" class="bottom-menu-item">
-      <span class="bottom-menu-icon">📋</span>
-      <span class="bottom-menu-text">REGULAMENTO</span>
-    </a>
-  </div>
+  await carregarFotosJogadores();
+  await carregarConfig();
   
-  <!-- MENU HAMBURGUER À DIREITA -->
-  <div class="hamburger-menu">
-    <button class="hamburger-button" id="hamburgerButton">+</button>
-    <div class="hamburger-dropdown" id="hamburgerDropdown">
-      <!-- Todos os menus agora estão no hamburguer -->
-      <a href="https://pokerdequinta.github.io/ranking/" class="hamburger-item">
-        <span class="hamburger-icon">🏆</span>
-        <span class="hamburger-text">RANKING</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/confirma/" class="hamburger-item">
-        <span class="hamburger-icon">✅</span>
-        <span class="hamburger-text">INSCRIÇÕES</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/enquete/" class="hamburger-item">
-        <span class="hamburger-icon">📊</span>
-        <span class="hamburger-text">ENQUETES</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/regulamento/" class="hamburger-item">
-        <span class="hamburger-icon">📋</span>
-        <span class="hamburger-text">REGULAMENTO</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/calendario/" class="hamburger-item">
-        <span class="hamburger-icon">📆</span>
-        <span class="hamburger-text">CALENDÁRIO</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/novidades/" class="hamburger-item">
-        <span class="hamburger-icon">🎉</span>
-        <span class="hamburger-text">NOVIDADES 2026</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/dealer/" class="hamburger-item">
-        <span class="hamburger-icon">🎲</span>
-        <span class="hamburger-text">DEALER PID</span>
-      </a>
-      
-      <a href="https://forms.gle/yG2MAeQvSco46DK49" class="hamburger-item">
-        <span class="hamburger-icon">📸</span>
-        <span class="hamburger-text">CADASTRO PIX</span>
-      </a>
-      
-      <a href="https://pokerdequinta.github.io/loja/" class="hamburger-item">
-        <span class="hamburger-icon">🛒</span>
-        <span class="hamburger-text">LOJA</span>
-      </a>
-
-      <a href="https://pokerdequinta.github.io/endereco/" class="hamburger-item">
-        <span class="hamburger-icon">📍</span>
-        <span class="hamburger-text">LOCALIZAÇÃO</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-<script>
-// Menu hamburguer
-const hamburgerButton = document.getElementById('hamburgerButton');
-const hamburgerDropdown = document.getElementById('hamburgerDropdown');
-
-if (hamburgerButton && hamburgerDropdown) {
-  hamburgerButton.addEventListener('click', function(e) {
-    e.stopPropagation();
-    hamburgerDropdown.classList.toggle('active');
+  onValue(ref(db, 'confirmados'), (snapshot) => {
+    confirmados = [];
+    if (snapshot.exists()) snapshot.forEach(child => { confirmados.push({...child.val(), id: child.key}); });
+    atualizar();
   });
   
-  // Fechar menu ao clicar fora
-  document.addEventListener('click', function(e) {
-    if (!hamburgerDropdown.contains(e.target) && !hamburgerButton.contains(e.target)) {
-      hamburgerDropdown.classList.remove('active');
+  onValue(ref(db, 'listaEspera'), (snapshot) => {
+    listaEspera = [];
+    if (snapshot.exists()) snapshot.forEach(child => { listaEspera.push({...child.val(), id: child.key}); });
+    atualizar();
+  });
+  
+  onValue(ref(db, 'config'), (snapshot) => {
+    if (snapshot.exists()) {
+      config = snapshot.val();
+      DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+      DATA_EVENTO = new Date(config.dataEvento);
+      atualizarInterfaceConfig();
     }
   });
   
-  // Fechar menu ao clicar em um item
-  const hamburgerItems = hamburgerDropdown.querySelectorAll('.hamburger-item');
-  hamburgerItems.forEach(item => {
-    item.addEventListener('click', function() {
-      hamburgerDropdown.classList.remove('active');
-    });
-  });
+} catch (e) {
+  statusIndicator.textContent = '❌ Erro de conexão';
+  statusIndicator.classList.add('error');
 }
 
-// Adicionar interatividade aos cards de destaque
-document.querySelectorAll('.highlight-card').forEach(card => {
-  card.addEventListener('click', function() {
-    // Adicionar efeito visual ao clicar
-    this.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-      this.style.transform = '';
-    }, 200);
-  });
+// Elementos do modal
+const selectJogador = document.getElementById('playerName');
+const photoPreview = document.getElementById('playerPhotoPreview');
+const previewImg = photoPreview.querySelector('img');
+
+selectJogador.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const foto = selectedOption.getAttribute('data-foto');
+    
+    if (foto && this.value) {
+        previewImg.src = foto;
+        photoPreview.style.display = 'block';
+    } else {
+        photoPreview.style.display = 'none';
+    }
 });
 
-// Adicionar interatividade ao botão de inscrição
-const inscricaoBtn = document.querySelector('.inscricao-simples');
-if (inscricaoBtn) {
-  inscricaoBtn.addEventListener('click', function() {
-    this.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-      this.style.transform = '';
-    }, 200);
-  });
-}
+btnEntendi.onclick = () => modalBemVindo.classList.remove('active');
+window.addEventListener('load', () => modalBemVindo.classList.add('active'));
 
-// Script para alternar as fotos da roleta da sorte a cada 2 segundos
-const roletaPhoto = document.getElementById('roleta-photo');
-const roletaImages = [
-  'https://github.com/pokerdequinta/fotos/blob/main/abracobruxo1.jpeg?raw=true',
-  'https://github.com/pokerdequinta/fotos/blob/main/abracobruxo2.jpg?raw=true'
-];
+btnConfirmar.onclick = () => {
+    if (!config.inscricoesAbertas && !modoAdmin) {
+        return alert("As inscrições estão fechadas no momento!");
+    }
+    modal.classList.add('active');
+};
 
-if (roletaPhoto) {
-  let currentImageIndex = 0;
+btnCancelar.onclick = () => {
+  modal.classList.remove('active');
+  selectJogador.value = '';
+  photoPreview.style.display = 'none';
+  isGuest.checked = false;
+  guestNameGroup.style.display = 'none';
+  document.getElementById('guestName').value = '';
+};
+
+isGuest.onchange = e => guestNameGroup.style.display = e.target.checked ? 'block' : 'none';
+
+btnConfirmarModal.onclick = async () => {
+  const nome = selectJogador.value;
+  if (!nome) return alert('Selecione seu nome!');
   
-  // Função para alternar as imagens
-  function changeRoletaImage() {
-    currentImageIndex = (currentImageIndex + 1) % roletaImages.length;
-    roletaPhoto.src = roletaImages[currentImageIndex];
+  if (!isGuest.checked) {
+    const jaInscrito = [...confirmados, ...listaEspera].some(p => !p.isGuest && p.nome === nome);
+    if (jaInscrito) {
+      return alert('Você já está inscrito!');
+    }
   }
   
-  // Iniciar o ciclo de troca de imagens a cada 2 segundos
-  setInterval(changeRoletaImage, 2000);
+  const agora = new Date().toISOString();
+  
+  try {
+    if (!isGuest.checked) {
+      const snapshot = await get(ref(db, 'confirmados'));
+      const totalAtual = snapshot.exists() ? snapshot.size : 0;
+      
+      if (totalAtual < LIMITE_VAGAS) {
+        await push(ref(db, 'confirmados'), { 
+          nome, 
+          isGuest: false, 
+          data: agora,
+          timestamp: Date.now(),
+          foto: getFotoJogador(nome),
+          etapa: config.etapa
+        });
+        alert('✅ Presença confirmada! Você está na lista de confirmados.');
+      } else {
+        await push(ref(db, 'listaEspera'), { 
+          nome, 
+          isGuest: false, 
+          data: agora,
+          timestamp: Date.now(),
+          foto: getFotoJogador(nome),
+          etapa: config.etapa
+        });
+        alert('⏳ Você foi adicionado à LISTA DE ESPERA.');
+      }
+    } else {
+      const gNome = document.getElementById('guestName').value.trim();
+      if (!gNome) return alert('Digite o nome do convidado!');
+      
+      await push(ref(db, 'listaEspera'), { 
+        nome: gNome, 
+        isGuest: true, 
+        guestOf: nome, 
+        data: agora,
+        timestamp: Date.now(),
+        etapa: config.etapa
+      });
+      alert('✅ Convidado adicionado à lista de espera!');
+    }
+    
+    modal.classList.remove('active');
+    selectJogador.value = '';
+    photoPreview.style.display = 'none';
+    isGuest.checked = false;
+    guestNameGroup.style.display = 'none';
+    document.getElementById('guestName').value = '';
+    
+  } catch (e) { 
+    alert('Erro ao confirmar: ' + e.message); 
+  }
+};
+
+btnCancelarWhatsApp.onclick = () => {
+  const msg = encodeURIComponent('Gostaria de cancelar minha inscrição no Poker de Quinta.\nNome: ');
+  window.open(`https://wa.me/5541987210685?text=${msg}`, '_blank');
+};
+
+function atualizar() {
+  confirmedCount.textContent = confirmados.length;
+  vacancyCount.textContent = Math.max(0, LIMITE_VAGAS - confirmados.length);
+  waitlistCount.textContent = listaEspera.length;
+
+  const confirmadosOrdenados = [...confirmados].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  
+  confirmedList.innerHTML = confirmadosOrdenados.length ? '' : '<li class="empty-state">Nenhuma confirmação</li>';
+  confirmadosOrdenados.forEach((p, i) => {
+    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',false)">❌</button>` : '';
+    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge member">MEMBRO</span>';
+    const guestInfo = p.isGuest && p.guestOf ? ` <small style="opacity:0.7">(Convidado de ${p.guestOf})</small>` : '';
+    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
+    
+    confirmedList.innerHTML += `<li class="player-item">
+        <div class="player-info">
+            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
+            <div class="player-number">${i+1}º</div>
+            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
+        </div>
+        ${badge}
+        ${btnRemover}</li>`;
+  });
+
+  const membrosEspera = listaEspera.filter(p => !p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const convidadosEspera = listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const listaEsperaOrdenada = [...membrosEspera, ...convidadosEspera];
+
+  waitlistList.innerHTML = listaEsperaOrdenada.length ? '' : '<li class="empty-state">Lista vazia</li>';
+  listaEsperaOrdenada.forEach((p, i) => {
+    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',true)">❌</button>` : '';
+    const btnPromover = modoAdmin && confirmados.length < LIMITE_VAGAS ? 
+      `<button class="remove-btn" style="background:#4CAF50" onclick="promoverJogadorManual('${p.id}')">↗️ PROMOVER</button>` : '';
+    const guestInfo = p.isGuest && p.guestOf ? ` (Convidado de ${p.guestOf})` : '';
+    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge wait">MEMBRO</span>';
+    const prioridade = !p.isGuest && i < membrosEspera.length ? '<span class="priority-indicator">PRIORIDADE</span>' : '';
+    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
+    
+    waitlistList.innerHTML += `<li class="player-item">
+        <div class="player-info">
+            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
+            <div class="player-number">${i+1}º</div>
+            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center">
+          ${badge}
+          ${prioridade}
+          ${btnPromover}
+          ${btnRemover}
+        </div>
+        </li>`;
+  });
 }
 
-// Preload das imagens da roleta para evitar piscar durante a troca
-window.addEventListener('load', function() {
-  roletaImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-});
-</script>
+window.removerJogador = async (id, isWait) => {
+  if(!confirm('Tem certeza que deseja remover este jogador?')) return;
+  try {
+    const path = isWait ? 'listaEspera' : 'confirmados';
+    await remove(ref(db, `${path}/${id}`));
+    if (!isWait) {
+      await promoverDaListaDeEspera();
+    }
+    alert('Jogador removido com sucesso!');
+  } catch (e) {
+    alert('Erro ao remover: ' + e.message);
+  }
+};
 
+async function promoverDaListaDeEspera() {
+  try {
+    const snapshotConfirmados = await get(ref(db, 'confirmados'));
+    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
+    
+    if (totalConfirmados < LIMITE_VAGAS) {
+      const snapshotEspera = await get(ref(db, 'listaEspera'));
+      
+      if (snapshotEspera.exists()) {
+        let candidatos = [];
+        snapshotEspera.forEach(child => {
+          candidatos.push({...child.val(), id: child.key});
+        });
+        
+        const membros = candidatos.filter(p => !p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        
+        if (membros.length > 0) {
+          const promovido = membros[0];
+          
+          await push(ref(db, 'confirmados'), {
+            nome: promovido.nome,
+            isGuest: false,
+            data: promovido.data,
+            timestamp: promovido.timestamp,
+            foto: promovido.foto || getFotoJogador(promovido.nome),
+            promovido: true,
+            dataPromocao: new Date().toISOString(),
+            etapa: config.etapa
+          });
+          
+          await remove(ref(db, `listaEspera/${promovido.id}`));
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Erro ao promover da lista de espera:', e);
+  }
+}
+
+window.promoverJogadorManual = async (id) => {
+  try {
+    const snapshotConfirmados = await get(ref(db, 'confirmados'));
+    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
+    
+    if (totalConfirmados >= LIMITE_VAGAS) {
+      return alert('❌ Não há vagas disponíveis!');
+    }
+    
+    const snapshot = await get(ref(db, `listaEspera/${id}`));
+    
+    if (!snapshot.exists()) {
+      return alert('Jogador não encontrado!');
+    }
+    
+    const jogador = snapshot.val();
+    
+    if (!confirm(`Promover ${jogador.nome} para confirmados?`)) {
+      return;
+    }
+    
+    await push(ref(db, 'confirmados'), {
+      nome: jogador.nome,
+      isGuest: jogador.isGuest,
+      guestOf: jogador.guestOf || null,
+      data: jogador.data,
+      timestamp: jogador.timestamp,
+      foto: jogador.foto || (!jogador.isGuest ? getFotoJogador(jogador.nome) : null),
+      promovido: true,
+      promocaoManual: true,
+      dataPromocao: new Date().toISOString(),
+      etapa: config.etapa
+    });
+    
+    await remove(ref(db, `listaEspera/${id}`));
+    
+    alert(`✅ ${jogador.nome} foi promovido!`);
+    
+  } catch (e) {
+    alert('Erro ao promover: ' + e.message);
+  }
+};
+
+// Funções do modo admin
+btnModoAdmin.onclick = () => modalAdmin.classList.add('active');
+btnFecharAdmin.onclick = () => modalAdmin.classList.remove('active');
+
+btnAcessarAdmin.onclick = () => {
+  if (document.getElementById('senhaAdmin').value === "poker2026") {
+    modoAdmin = true;
+    modalAdmin.classList.remove('active');
+    
+    btnToggleInscricoes.style.display = 'block';
+    btnProximaEtapa.style.display = 'block';
+    btnSelecionarEtapa.style.display = 'block';
+    btnGerenciarFotos.style.display = 'block';
+    btnSairAdmin.style.display = 'block';
+    btnModoAdmin.style.background = '#4CAF50';
+    btnModoAdmin.style.opacity = '1';
+    
+    atualizarBotaoInscricoes();
+    
+    alert("✅ Modo Administrador Ativado!");
+    atualizar();
+  } else {
+    alert('❌ Senha incorreta!');
+  }
+};
+
+btnSairAdmin.onclick = () => {
+  modoAdmin = false;
+  
+  btnToggleInscricoes.style.display = 'none';
+  btnProximaEtapa.style.display = 'none';
+  btnSelecionarEtapa.style.display = 'none';
+  btnGerenciarFotos.style.display = 'none';
+  btnSairAdmin.style.display = 'none';
+  btnModoAdmin.style.background = 'rgba(13,27,13,0.3)';
+  btnModoAdmin.style.opacity = '0.15';
+  
+  alert("👋 Modo Administrador desativado.");
+  atualizar();
+};
+
+btnToggleInscricoes.onclick = async () => {
+  const novaConfig = {...config, inscricoesAbertas: !config.inscricoesAbertas};
+  await salvarConfig(novaConfig);
+  atualizarBotaoInscricoes();
+};
+
+function atualizarBotaoInscricoes() {
+  if (config.inscricoesAbertas) {
+    btnToggleInscricoes.textContent = '🔒 Fechar Inscrições';
+    btnToggleInscricoes.style.background = '#c72c48';
+  } else {
+    btnToggleInscricoes.textContent = '🔓 Abrir Inscrições';
+    btnToggleInscricoes.style.background = '#4CAF50';
+  }
+}
+
+btnGerenciarFotos.onclick = () => {
+  const fotosList = document.getElementById('fotosList');
+  fotosList.innerHTML = '';
+  
+  jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach((jogador, index) => {
+    const div = document.createElement('div');
+    div.className = 'foto-item';
+    div.innerHTML = `
+        <img class="foto-preview" src="${jogador.foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${jogador.nome}">
+        <div class="foto-info">${jogador.nome}</div>
+        <input type="text" class="foto-input" id="foto-${index}" value="${jogador.foto}" placeholder="URL da foto do ${jogador.nome}">
+        <div class="foto-actions">
+            <button class="foto-btn" onclick="document.getElementById('foto-${index}').value='${FOTO_PADRAO}'">Padrão</button>
+        </div>
+    `;
+    fotosList.appendChild(div);
+  });
+  
+  modalGerenciarFotos.classList.add('active');
+};
+
+btnFecharFotos.onclick = () => {
+  modalGerenciarFotos.classList.remove('active');
+};
+
+btnSalvarFotos.onclick = () => {
+  jogadores.forEach((jogador, index) => {
+    const input = document.getElementById(`foto-${index}`);
+    if (input) {
+      jogador.foto = input.value || FOTO_PADRAO;
+    }
+  });
+  
+  salvarFotosJogadores();
+};
+
+btnSelecionarEtapa.onclick = () => {
+  const selector = document.getElementById('etapaSelector');
+  selector.innerHTML = '';
+  
+  ETAPAS.forEach(etapa => {
+    const btn = document.createElement('button');
+    btn.className = `etapa-btn ${etapa.numero === config.etapa ? 'ativa' : ''}`;
+    btn.textContent = `${etapa.numero}ª`;
+    btn.title = etapa.descricao;
+    btn.onclick = () => selecionarEtapa(etapa.numero);
+    selector.appendChild(btn);
+  });
+  
+  modalSelecionarEtapa.classList.add('active');
+};
+
+btnCancelarSelecao.onclick = () => {
+  modalSelecionarEtapa.classList.remove('active');
+};
+
+async function selecionarEtapa(numero) {
+  const etapa = ETAPAS.find(e => e.numero === numero);
+  if (!etapa) return;
+  
+  if (!confirm(`Deseja ir para a ${etapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) {
+    return;
+  }
+  
+  try {
+    await set(ref(db, 'confirmados'), null);
+    await set(ref(db, 'listaEspera'), null);
+    
+    const dataAbertura = calcularDataAbertura(etapa.data);
+    
+    await salvarConfig({
+      etapa: etapa.numero,
+      dataEvento: etapa.data,
+      dataAbertura: dataAbertura.toISOString(),
+      inscricoesAbertas: false
+    });
+    
+    modalSelecionarEtapa.classList.remove('active');
+    alert(`✅ Configurado para ${etapa.descricao}!`);
+    
+  } catch (e) {
+    alert('Erro ao mudar de etapa: ' + e.message);
+  }
+}
+
+btnProximaEtapa.onclick = () => {
+  const proximaEtapa = ETAPAS.find(e => e.numero === config.etapa + 1) || ETAPAS[0];
+  
+  if (!confirm(`Avançar para ${proximaEtapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) {
+    return;
+  }
+  
+  selecionarEtapa(proximaEtapa.numero);
+};
+
+btnExportar.onclick = () => {
+  let csv = 'Posição,Nome,Status,Data/Hora\n';
+  confirmados.forEach((p, i) => {
+    csv += `${i+1},${p.nome},CONFIRMADO,${new Date(p.data).toLocaleString('pt-BR')}\n`;
+  });
+  
+  const listaEsperaOrdenada = [
+    ...listaEspera.filter(p => !p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)),
+    ...listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+  ];
+  
+  listaEsperaOrdenada.forEach((p, i) => {
+    const tipo = p.isGuest ? 'CONVIDADO' : 'ESPERA';
+    const nome = p.isGuest && p.guestOf ? `${p.nome} (Convidado de ${p.guestOf})` : p.nome;
+    csv += `${i+1},${nome},${tipo},${new Date(p.data).toLocaleString('pt-BR')}\n`;
+  });
+  
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `lista-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
+
+window.removerJogador = removerJogador;
+window.promoverJogadorManual = promoverJogadorManual;
+</script>
 </body>
 </html>
