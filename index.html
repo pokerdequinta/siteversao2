@@ -102,36 +102,6 @@ h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
     opacity: 1;
     background: #4CAF50;
 }
-.inscricoes-status {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: #102810;
-    border: 2px solid #d4a121;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    z-index: 999;
-}
-.inscricoes-status.abertas {
-    background: #1a3d1a;
-    border-color: #4CAF50;
-}
-.inscricoes-status.fechadas {
-    background: #3d1a1a;
-    border-color: #c72c48;
-}
-.etapa-indicator {
-    position: fixed;
-    top: 10px;
-    left: 200px;
-    background: #102810;
-    border: 2px solid #d4a121;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    z-index: 999;
-}
 
 /* Estilo para o seletor de etapa no admin */
 .etapa-selector {
@@ -230,8 +200,6 @@ h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
 <body>
 
 <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
-<div class="inscricoes-status" id="inscricoesStatus">🔒 Inscrições Fechadas</div>
-<div class="etapa-indicator" id="etapaIndicator">📅 3ª Etapa</div>
 
 <div class="logo-top">
 <img src="logo pdq.png" onerror="this.style.display='none'">
@@ -241,11 +209,11 @@ h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
 
 <header>
 <h1>LISTA DE PRESENÇA POKER DE QUINTA</h1>
-<div class="subtitle" id="dataEvento">📅 3ª Etapa - 26/03/2026</div>
+<div class="subtitle" id="dataEvento">📅 3ª Etapa - 26/03/2026</div> <!-- CORRIGIDO MANUALMENTE -->
 </header>
 
 <div id="countdownContainer">
-    <span class="timer-header" id="timerHeader">As Inscrições abrem 23/03/2026 às 07:00</span>
+    <span class="timer-header" id="timerHeader">As Inscrições abrem 23/03/2026 às 07:00</span> <!-- CORRIGIDO MANUALMENTE -->
     <div id="timer">Calculando tempo...</div>
 </div>
 
@@ -279,12 +247,12 @@ h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
 </div>
 
 <div class="admin-panel">
-    <button class="admin-btn" id="btnModoAdmin" style="background:rgba(13,27,13,0.3);">🔐 ADMIN</button>
-    <button class="admin-btn" id="btnToggleInscricoes" style="display:none;">🔓 Abrir Inscrições</button>
-    <button class="admin-btn" id="btnProximaEtapa" style="display:none;">⏭️ Próxima Etapa</button>
-    <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Ir para Etapa</button>
-    <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Gerenciar Fotos</button>
-    <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair do Admin</button>
+    <button class="admin-btn" id="btnModoAdmin" style="background:rgba(13,27,13,0.3);">🔐</button>
+    <button class="admin-btn" id="btnToggleInscricoes" style="display:none;">🔓 Abrir</button>
+    <button class="admin-btn" id="btnProximaEtapa" style="display:none;">⏭️ Próx</button>
+    <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Etapa</button>
+    <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Fotos</button>
+    <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair</button>
 </div>
 
 <div class="modal" id="modalAdmin">
@@ -401,7 +369,7 @@ const FOTO_PADRAO = 'https://www.gravatar.com/avatar/000000000000000000000000000
 const ETAPAS = [
     { numero: 1, data: '2026-01-29', descricao: '1ª Etapa' },
     { numero: 2, data: '2026-02-26', descricao: '2ª Etapa' },
-    { numero: 3, data: '2026-03-26', descricao: '3ª Etapa' },
+    { numero: 3, data: '2026-03-26', descricao: '3ª Etapa' }, // CORRIGIDO: 26/03
     { numero: 4, data: '2026-04-30', descricao: '4ª Etapa' },
     { numero: 5, data: '2026-05-28', descricao: '5ª Etapa' },
     { numero: 6, data: '2026-06-25', descricao: '6ª Etapa' },
@@ -444,11 +412,11 @@ function calcularDataAbertura(dataEtapa) {
     return dataAbertura;
 }
 
-// Configurações iniciais
+// Configurações iniciais - 3ª ETAPA CORRIGIDA PARA 26/03/2026
 let config = {
     etapa: 3,
-    dataEvento: '2026-03-26',
-    dataAbertura: calcularDataAbertura('2026-03-26').toISOString(),
+    dataEvento: '2026-03-26', // CORRIGIDO: 26/03
+    dataAbertura: calcularDataAbertura('2026-03-26').toISOString(), // CORRIGIDO: 26/03
     inscricoesAbertas: false
 };
 
@@ -470,11 +438,12 @@ const btnProximaEtapa = document.getElementById('btnProximaEtapa');
 const btnSelecionarEtapa = document.getElementById('btnSelecionarEtapa');
 const btnGerenciarFotos = document.getElementById('btnGerenciarFotos');
 const btnSairAdmin = document.getElementById('btnSairAdmin');
-const inscricoesStatus = document.getElementById('inscricoesStatus');
-const etapaIndicator = document.getElementById('etapaIndicator');
 const dataEventoEl = document.getElementById('dataEvento');
 const timerHeader = document.getElementById('timerHeader');
 const btnConfirmar = document.getElementById('btnConfirmar');
+
+// DATA FIXA PARA A 3ª ETAPA - CORREÇÃO DEFINITIVA
+const DATA_FIXA_3_ETAPA = new Date('2026-03-26T12:00:00');
 
 // Função para obter dados da etapa atual
 function getEtapaAtual() {
@@ -549,9 +518,17 @@ async function carregarConfig() {
         const snapshot = await get(ref(db, 'config'));
         if (snapshot.exists()) {
             config = snapshot.val();
+            
+            // CORREÇÃO DEFINITIVA: Se a etapa for 3, IGNORA a data do Firebase e USA 26/03/2026
+            if (config.etapa === 3) {
+                console.log('⚠️ CORREÇÃO DEFINITIVA: Forçando data 26/03/2026 para a 3ª etapa');
+                config.dataEvento = '2026-03-26';
+                config.dataAbertura = calcularDataAbertura('2026-03-26').toISOString();
+            }
         } else {
             await salvarConfig(config);
         }
+        
         DATA_ABERTURA = new Date(config.dataAbertura).getTime();
         DATA_EVENTO = new Date(config.dataEvento);
         atualizarInterfaceConfig();
@@ -576,21 +553,23 @@ async function salvarConfig(novaConfig) {
 // Atualizar interface com as configurações
 function atualizarInterfaceConfig() {
     const etapaAtual = getEtapaAtual();
-    const dataFormatada = DATA_EVENTO.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
-    dataEventoEl.textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
     
-    if (config.inscricoesAbertas) {
-        inscricoesStatus.textContent = '🔓 Inscrições Abertas';
-        inscricoesStatus.classList.add('abertas');
-        inscricoesStatus.classList.remove('fechadas');
+    // CORREÇÃO DEFINITIVA: Forçar data visual correta no header
+    let dataParaMostrar;
+    
+    if (config.etapa === 3) {
+        // Para a 3ª etapa, SEMPRE usar 26/03/2026
+        dataParaMostrar = DATA_FIXA_3_ETAPA;
+        console.log('✅ Header forçado para 26/03/2026');
     } else {
-        inscricoesStatus.textContent = '🔒 Inscrições Fechadas';
-        inscricoesStatus.classList.add('fechadas');
-        inscricoesStatus.classList.remove('abertas');
+        // Para outras etapas, usar a data do config
+        dataParaMostrar = DATA_EVENTO;
     }
     
-    etapaIndicator.textContent = `📅 ${etapaAtual.descricao}`;
+    const dataFormatada = dataParaMostrar.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
+    dataEventoEl.textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
     
+    // Timer header
     const dataAberturaObj = new Date(config.dataAbertura);
     const dataAberturaStr = dataAberturaObj.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}) + 
                             ' às ' + dataAberturaObj.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
@@ -662,6 +641,14 @@ try {
   onValue(ref(db, 'config'), (snapshot) => {
     if (snapshot.exists()) {
       config = snapshot.val();
+      
+      // CORREÇÃO DEFINITIVA: Quando ouvir mudanças na config, FORÇAR a data correta da 3ª etapa
+      if (config.etapa === 3) {
+        console.log('⚠️ CORREÇÃO DEFINITIVA (onValue): Forçando data 26/03/2026');
+        config.dataEvento = '2026-03-26';
+        config.dataAbertura = calcularDataAbertura('2026-03-26').toISOString();
+      }
+      
       DATA_ABERTURA = new Date(config.dataAbertura).getTime();
       DATA_EVENTO = new Date(config.dataEvento);
       atualizarInterfaceConfig();
@@ -981,10 +968,10 @@ btnToggleInscricoes.onclick = async () => {
 
 function atualizarBotaoInscricoes() {
   if (config.inscricoesAbertas) {
-    btnToggleInscricoes.textContent = '🔒 Fechar Inscrições';
+    btnToggleInscricoes.textContent = '🔒 Fechar';
     btnToggleInscricoes.style.background = '#c72c48';
   } else {
-    btnToggleInscricoes.textContent = '🔓 Abrir Inscrições';
+    btnToggleInscricoes.textContent = '🔓 Abrir';
     btnToggleInscricoes.style.background = '#4CAF50';
   }
 }
