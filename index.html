@@ -231,6 +231,10 @@ body {
     color: var(--down-color);
 }
 
+.legenda-stable {
+    color: var(--stable-color);
+}
+
 /* TABELA DE RANKING */
 .ranking-container {
     overflow-x: auto;
@@ -427,23 +431,6 @@ body {
     color: var(--ko-color);
 }
 
-/* INDICADORES DE POSIÇÃO */
-.position-indicator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    min-width: 20px;
-}
-
-.position-up {
-    color: var(--up-color);
-}
-
-.position-down {
-    color: var(--down-color);
-}
-
 /* JOGADOR */
 .player-info {
     display: flex;
@@ -469,7 +456,7 @@ body {
 }
 
 .player-name {
-    font-weight: 600;
+    font-weight: 400; /* Removido o bold */
 }
 
 /* ÍCONES ESPECIAIS */
@@ -516,6 +503,29 @@ body {
 @keyframes glovePulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
+}
+
+/* INDICADORES DE POSIÇÃO - AGORA DO LADO DIREITO DO NOME */
+.position-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-left: 4px;
+}
+
+.position-up {
+    color: var(--up-color);
+}
+
+.position-down {
+    color: var(--down-color);
+}
+
+.position-stable {
+    color: var(--stable-color);
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
 /* PONTUAÇÃO COM BORDA */
@@ -1539,6 +1549,10 @@ body {
                         <span class="legenda-icone legenda-down">⬇️</span>
                         <span>Desceu em relação à etapa anterior</span>
                     </div>
+                    <div class="legenda-item">
+                        <span class="legenda-icone legenda-stable">●</span>
+                        <span>Manteve a posição</span>
+                    </div>
                 </div>
             </div>
             
@@ -1546,7 +1560,7 @@ body {
                 <table class="ranking-table" id="rankingTable">
                     <thead id="rankingTableHead">
                         <tr>
-                            <th style="width: 70px;">POS</th>
+                            <th style="width: 60px;">POS</th>
                             <th>JOGADOR</th>
                             <th style="width: 90px; text-align: center;">PONTOS</th>
                             <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
@@ -1605,6 +1619,10 @@ body {
                         <span class="legenda-icone legenda-down">⬇️</span>
                         <span>Desceu em relação à etapa anterior</span>
                     </div>
+                    <div class="legenda-item">
+                        <span class="legenda-icone legenda-stable">●</span>
+                        <span>Manteve a posição</span>
+                    </div>
                 </div>
             </div>
             
@@ -1612,7 +1630,7 @@ body {
                 <table class="ranking-table ko" id="rankingTableKO">
                     <thead id="rankingTableHeadKO">
                         <tr>
-                            <th style="width: 70px;">POS</th>
+                            <th style="width: 60px;">POS</th>
                             <th>JOGADOR</th>
                             <th style="width: 90px; text-align: center;">PONTOS KO</th>
                             <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
@@ -2066,17 +2084,66 @@ async function carregarDados() {
         statusIndicator.textContent = '✅ Conectado';
         statusIndicator.classList.add('connected');
         
-        // Calcular ranking sem variação (primeira carga)
+        // Verificar se temos ranking anterior salvo
+        const rankingAnteriorSalvo = await db.get('rankingAnterior');
+        const rankingKOAnteriorSalvo = await db.get('rankingKOAnterior');
+        
+        if (rankingAnteriorSalvo) {
+            rankingAnterior = rankingAnteriorSalvo;
+        }
+        
+        if (rankingKOAnteriorSalvo) {
+            rankingKOAnterior = rankingKOAnteriorSalvo;
+        }
+        
+        // Calcular novo ranking
         const novoRanking = calcularRankingGeral();
         const novoRankingKO = calcularRankingKO();
+        
+        // Se não temos ranking anterior, este é o primeiro
+        if (rankingAnterior.length === 0) {
+            rankingAnterior = JSON.parse(JSON.stringify(novoRanking));
+            rankingKOAnterior = JSON.parse(JSON.stringify(novoRankingKO));
+        }
+        
+        // Calcular variações comparando com o ranking anterior
+        novoRanking.forEach(jogador => {
+            const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
+            if (jogadorAnterior) {
+                if (jogador.posicaoAtual < jogadorAnterior.posicaoAtual) {
+                    jogador.variacao = 'up';
+                } else if (jogador.posicaoAtual > jogadorAnterior.posicaoAtual) {
+                    jogador.variacao = 'down';
+                } else {
+                    jogador.variacao = 'stable';
+                }
+            } else {
+                jogador.variacao = null;
+            }
+        });
+        
+        novoRankingKO.forEach(jogador => {
+            const jogadorAnterior = rankingKOAnterior.find(j => j.id === jogador.id);
+            if (jogadorAnterior) {
+                if (jogador.posicaoAtualKO < jogadorAnterior.posicaoAtualKO) {
+                    jogador.variacaoKO = 'up';
+                } else if (jogador.posicaoAtualKO > jogadorAnterior.posicaoAtualKO) {
+                    jogador.variacaoKO = 'down';
+                } else {
+                    jogador.variacaoKO = 'stable';
+                }
+            } else {
+                jogador.variacaoKO = null;
+            }
+        });
         
         // Atualizar os rankings
         rankingAtual = novoRanking;
         rankingKO = novoRankingKO;
         
         // Salvar como ranking anterior para próxima atualização
-        rankingAnterior = JSON.parse(JSON.stringify(rankingAtual));
-        rankingKOAnterior = JSON.parse(JSON.stringify(rankingKO));
+        await db.set('rankingAnterior', rankingAtual);
+        await db.set('rankingKOAnterior', rankingKO);
         
         // Atualizar a visualização
         if (viewAtual === 'rankingGeral') {
@@ -2146,7 +2213,7 @@ btnViewRanking.onclick = () => {
         btnViewRankingKO.classList.remove('active');
         viewRanking.style.display = 'block';
         viewRankingKO.style.display = 'none';
-        atualizarRankingGeral();
+        carregarDados();
     }
 };
 
@@ -2157,7 +2224,7 @@ btnViewRankingKO.onclick = () => {
         btnViewRanking.classList.remove('active');
         viewRanking.style.display = 'none';
         viewRankingKO.style.display = 'block';
-        atualizarRankingKO();
+        carregarDados();
     }
 };
 
@@ -2262,7 +2329,7 @@ window.salvarReiDaMesa = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Rei da Mesa definido como: ${jogadorSelecionado.nome}`);
         
-        await atualizarRankingCompleto();
+        await carregarDados();
         
     } catch (e) {
         alert('❌ Erro ao salvar Rei da Mesa: ' + e.message);
@@ -2284,7 +2351,7 @@ window.salvarMelhorMao = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Melhor mão definida para: ${jogadorSelecionado.nome}`);
         
-        await atualizarRankingCompleto();
+        await carregarDados();
         
     } catch (e) {
         alert('❌ Erro ao salvar Melhor Mão: ' + e.message);
@@ -2349,24 +2416,12 @@ window.salvarCampeoes = async function() {
         campeoesEtapas = novosCampeoes;
         alert('✅ Campeões salvos com sucesso!');
         
-        await atualizarRankingCompleto();
+        await carregarDados();
         
     } catch (e) {
         alert('❌ Erro ao salvar campeões: ' + e.message);
     }
 };
-
-// Função para calcular a variação de posição em relação à etapa anterior
-function calcularVariacaoPosicao(posicaoAtual, posicaoAnterior) {
-    if (!posicaoAnterior || posicaoAnterior === 0) return null;
-    
-    if (posicaoAtual < posicaoAnterior) {
-        return 'up';
-    } else if (posicaoAtual > posicaoAnterior) {
-        return 'down';
-    }
-    return null;
-}
 
 // Função para gerar HTML do indicador de posição
 function getPositionIndicatorHTML(variacao) {
@@ -2376,6 +2431,8 @@ function getPositionIndicatorHTML(variacao) {
         return `<span class="position-indicator position-up" title="Subiu em relação à etapa anterior">⬆️</span>`;
     } else if (variacao === 'down') {
         return `<span class="position-indicator position-down" title="Desceu em relação à etapa anterior">⬇️</span>`;
+    } else if (variacao === 'stable') {
+        return `<span class="position-indicator position-stable" title="Manteve a posição">●</span>`;
     }
     return '';
 }
@@ -2505,48 +2562,6 @@ function calcularRankingKO() {
     return rankingCalculado;
 }
 
-async function atualizarRankingCompleto() {
-    // Salvar ranking anterior ANTES de recalcular
-    rankingAnterior = JSON.parse(JSON.stringify(rankingAtual));
-    rankingKOAnterior = JSON.parse(JSON.stringify(rankingKO));
-    
-    // Calcular novos rankings
-    const novoRanking = calcularRankingGeral();
-    const novoRankingKO = calcularRankingKO();
-    
-    // Calcular variações para o ranking geral
-    novoRanking.forEach(jogador => {
-        const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
-        if (jogadorAnterior) {
-            jogador.variacao = calcularVariacaoPosicao(jogador.posicaoAtual, jogadorAnterior.posicaoAtual);
-            console.log(`Jogador ${jogador.nome}: Atual ${jogador.posicaoAtual}, Anterior ${jogadorAnterior.posicaoAtual}, Variação: ${jogador.variacao}`);
-        } else {
-            jogador.variacao = null;
-        }
-    });
-    
-    // Calcular variações para o ranking KO
-    novoRankingKO.forEach(jogador => {
-        const jogadorAnterior = rankingKOAnterior.find(j => j.id === jogador.id);
-        if (jogadorAnterior) {
-            jogador.variacaoKO = calcularVariacaoPosicao(jogador.posicaoAtualKO, jogadorAnterior.posicaoAtualKO);
-        } else {
-            jogador.variacaoKO = null;
-        }
-    });
-    
-    // Atualizar os rankings
-    rankingAtual = novoRanking;
-    rankingKO = novoRankingKO;
-    
-    // Atualizar a visualização
-    if (viewAtual === 'rankingGeral') {
-        atualizarRankingGeral();
-    } else {
-        atualizarRankingKO();
-    }
-}
-
 function atualizarRankingGeral() {
     const tbody = document.getElementById('rankingTableBody');
     
@@ -2617,7 +2632,6 @@ function atualizarRankingGeral() {
             <td>
                 <div class="rank-cell">
                     <div class="rank-number">${rank}</div>
-                    ${variacaoHTML}
                 </div>
             </td>
             <td>
@@ -2628,6 +2642,7 @@ function atualizarRankingGeral() {
                          onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
                     <div class="player-name-container">
                         <span class="player-name">${jogador.nome}</span>
+                        ${variacaoHTML}
                         <div class="player-icons">
                             ${iconesHTML}
                         </div>
@@ -2742,7 +2757,6 @@ function atualizarRankingKO() {
             <td>
                 <div class="rank-cell">
                     <div class="rank-number">${rank}</div>
-                    ${variacaoHTML}
                 </div>
             </td>
             <td>
@@ -2753,6 +2767,7 @@ function atualizarRankingKO() {
                          onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
                     <div class="player-name-container">
                         <span class="player-name">${jogador.nome}</span>
+                        ${variacaoHTML}
                     </div>
                 </div>
             </td>
@@ -3140,10 +3155,12 @@ btnExportarCSV.onclick = function() {
         let variacao = '';
         if (jogador.variacao === 'up') variacao = 'Subiu';
         else if (jogador.variacao === 'down') variacao = 'Desceu';
+        else if (jogador.variacao === 'stable') variacao = 'Estável';
         
         let variacaoKO = '';
         if (jogadorKO?.variacaoKO === 'up') variacaoKO = 'Subiu';
         else if (jogadorKO?.variacaoKO === 'down') variacaoKO = 'Desceu';
+        else if (jogadorKO?.variacaoKO === 'stable') variacaoKO = 'Estável';
         
         csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.vezesPrimeiro},${jogador.koAcumulado},"${variacao}",${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${posicaoKO},"${variacaoKO}"`;
         
@@ -3186,6 +3203,7 @@ window.mostrarCriteriosDesempate = function() {
         console.log(`   Participações: ${jogador.participacoes}`);
         console.log(`   Vezes em 1º: ${jogador.vezesPrimeiro}`);
         console.log(`   KO Acumulado: ${jogador.koAcumulado}`);
+        console.log(`   Variação: ${jogador.variacao}`);
     });
 };
 
