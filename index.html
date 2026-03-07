@@ -2066,7 +2066,21 @@ async function carregarDados() {
         statusIndicator.textContent = '✅ Conectado';
         statusIndicator.classList.add('connected');
         
-        calcularRankings();
+        // Primeiro cálculo (sem ranking anterior)
+        rankingAtual = calcularRankingGeral();
+        rankingKO = calcularRankingKO();
+        
+        // Salvar como ranking anterior para próxima atualização
+        rankingAnterior = [...rankingAtual];
+        rankingKOAnterior = [...rankingKO];
+        
+        // Atualizar a visualização
+        if (viewAtual === 'rankingGeral') {
+            atualizarRankingGeral();
+        } else {
+            atualizarRankingKO();
+        }
+        
         atualizarSelectsEspeciais();
         
         if (modoAdmin) {
@@ -2244,9 +2258,7 @@ window.salvarReiDaMesa = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Rei da Mesa definido como: ${jogadorSelecionado.nome}`);
         
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
+        await atualizarRankingCompleto();
         
     } catch (e) {
         alert('❌ Erro ao salvar Rei da Mesa: ' + e.message);
@@ -2268,9 +2280,7 @@ window.salvarMelhorMao = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Melhor mão definida para: ${jogadorSelecionado.nome}`);
         
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
+        await atualizarRankingCompleto();
         
     } catch (e) {
         alert('❌ Erro ao salvar Melhor Mão: ' + e.message);
@@ -2335,9 +2345,7 @@ window.salvarCampeoes = async function() {
         campeoesEtapas = novosCampeoes;
         alert('✅ Campeões salvos com sucesso!');
         
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
+        await atualizarRankingCompleto();
         
     } catch (e) {
         alert('❌ Erro ao salvar campeões: ' + e.message);
@@ -2436,19 +2444,11 @@ function calcularRankingGeral() {
         return a.nome.localeCompare(b.nome);
     });
     
+    // Atribuir posições
     rankingCalculado.forEach((jogador, index) => {
         jogador.posicaoAtual = index + 1;
-        
-        // Calcular variação em relação ao ranking anterior
-        const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
-        if (jogadorAnterior) {
-            jogador.variacao = calcularVariacaoPosicao(jogador.posicaoAtual, jogadorAnterior.posicaoAtual);
-        } else {
-            jogador.variacao = null;
-        }
     });
     
-    rankingAtual = rankingCalculado;
     return rankingCalculado;
 }
 
@@ -2493,10 +2493,35 @@ function calcularRankingKO() {
         return a.nome.localeCompare(b.nome);
     });
     
+    // Atribuir posições
     rankingCalculado.forEach((jogador, index) => {
         jogador.posicaoAtualKO = index + 1;
-        
-        // Calcular variação em relação ao ranking anterior
+    });
+    
+    return rankingCalculado;
+}
+
+async function atualizarRankingCompleto() {
+    // Salvar ranking anterior ANTES de recalcular
+    rankingAnterior = rankingAtual.length > 0 ? [...rankingAtual] : [];
+    rankingKOAnterior = rankingKO.length > 0 ? [...rankingKO] : [];
+    
+    // Calcular novos rankings
+    const novoRanking = calcularRankingGeral();
+    const novoRankingKO = calcularRankingKO();
+    
+    // Calcular variações para o ranking geral
+    novoRanking.forEach(jogador => {
+        const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
+        if (jogadorAnterior) {
+            jogador.variacao = calcularVariacaoPosicao(jogador.posicaoAtual, jogadorAnterior.posicaoAtual);
+        } else {
+            jogador.variacao = null;
+        }
+    });
+    
+    // Calcular variações para o ranking KO
+    novoRankingKO.forEach(jogador => {
         const jogadorAnterior = rankingKOAnterior.find(j => j.id === jogador.id);
         if (jogadorAnterior) {
             jogador.variacaoKO = calcularVariacaoPosicao(jogador.posicaoAtualKO, jogadorAnterior.posicaoAtualKO);
@@ -2505,18 +2530,11 @@ function calcularRankingKO() {
         }
     });
     
-    rankingKO = rankingCalculado;
-    return rankingCalculado;
-}
-
-function calcularRankings() {
-    // Salvar ranking anterior antes de recalcular
-    rankingAnterior = [...rankingAtual];
-    rankingKOAnterior = [...rankingKO];
+    // Atualizar os rankings
+    rankingAtual = novoRanking;
+    rankingKO = novoRankingKO;
     
-    calcularRankingGeral();
-    calcularRankingKO();
-    
+    // Atualizar a visualização
     if (viewAtual === 'rankingGeral') {
         atualizarRankingGeral();
     } else {
@@ -2937,6 +2955,7 @@ window.salvarEtapa = async function(tipo) {
         await db.set(caminho, novosScores);
         alert(`✅ Etapa ${tipo === 'geral' ? 'geral' : 'KO'} salva com sucesso!`);
         
+        // Recarregar dados e atualizar ranking com variações
         await carregarDados();
         
     } catch (e) {
@@ -3089,8 +3108,8 @@ window.removerJogador = async function(id, nome) {
 
 // Exportar CSV
 btnExportarCSV.onclick = function() {
-    const ranking = calcularRankingGeral();
-    const rankingKOCalc = calcularRankingKO();
+    const ranking = rankingAtual;
+    const rankingKOCalc = rankingKO;
     
     let csv = 'Posição,Jogador,Pontos Totais (Geral),Participações (Geral),Vezes em 1º,KO Acumulado,Variação,Diferença para Líder (Geral),Rei da Mesa,Melhor Mão,Pontos KO,Participações KO,Posição KO,Variação KO';
     
