@@ -1945,8 +1945,10 @@ let viewAtual = 'rankingGeral';
 let reiDaMesa = null;
 let melhorMao = null;
 let campeoesEtapas = {};
-let rankingAnterior = [];
-let rankingKOAnterior = [];
+
+// SIMPLIFICAÇÃO: Vamos usar localStorage para guardar o ranking anterior
+let rankingAnterior = JSON.parse(localStorage.getItem('rankingAnterior')) || [];
+let rankingKOAnterior = JSON.parse(localStorage.getItem('rankingKOAnterior')) || [];
 
 class FirebaseDB {
     constructor(config) {
@@ -1975,22 +1977,6 @@ class FirebaseDB {
             return await response.json();
         } catch (error) {
             console.error('Erro ao salvar dados:', error);
-            throw error;
-        }
-    }
-
-    async update(path, data) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao atualizar dados:', error);
             throw error;
         }
     }
@@ -2053,84 +2039,69 @@ const selectMelhorMao = document.getElementById('selectMelhorMao');
 async function simularDadosTeste() {
     console.log('=== SIMULANDO DADOS DE TESTE ===');
     
-    // Criar alguns jogadores de teste se não existirem
-    if (jogadores.length === 0) {
-        const jogadoresTeste = [
-            { nome: "João Silva", foto: null },
-            { nome: "Maria Santos", foto: null },
-            { nome: "Pedro Oliveira", foto: null },
-            { nome: "Ana Costa", foto: null },
-            { nome: "Carlos Souza", foto: null }
-        ];
-        
-        for (const jogador of jogadoresTeste) {
-            await db.push('rankingJogadores', jogador);
-        }
-        console.log('Jogadores de teste criados');
+    // Criar jogadores de teste
+    const nomesTeste = ["João Silva", "Maria Santos", "Pedro Oliveira", "Ana Costa", "Carlos Souza"];
+    
+    for (const nome of nomesTeste) {
+        const novoJogador = {
+            nome: nome,
+            foto: null,
+            previousRank: 0,
+            dataCriacao: new Date().toISOString()
+        };
+        await db.push('rankingJogadores', novoJogador);
     }
     
-    // Verificar se já existem etapas
-    const etapasExistentes = await db.get('rankingEtapas');
+    // Buscar jogadores criados
+    const dadosJogadores = await db.get('rankingJogadores');
+    const jogadoresLista = Object.keys(dadosJogadores).map(key => ({
+        ...dadosJogadores[key],
+        id: key
+    }));
     
-    if (!etapasExistentes || Object.keys(etapasExistentes).length === 0) {
-        // Simular primeira etapa com pontuações variadas
-        const etapa1 = {};
-        const etapa2 = {};
-        
-        // Buscar jogadores atualizados
-        const dadosJogadores = await db.get('rankingJogadores');
-        const jogadoresLista = Object.keys(dadosJogadores).map(key => key);
-        
-        // Distribuir pontuações diferentes para criar ranking variado
-        jogadoresLista.forEach((id, index) => {
-            // Etapa 1: pontuações decrescentes (100, 90, 80, 70, 60)
-            etapa1[id] = 100 - (index * 10);
-            
-            // Etapa 2: embaralhar para criar variações
-            // O jogador que era 1º vai para 3º, etc.
-            if (index === 0) etapa2[id] = 70;  // 1º vira 4º
-            else if (index === 1) etapa2[id] = 100; // 2º vira 1º
-            else if (index === 2) etapa2[id] = 90;  // 3º vira 2º
-            else if (index === 3) etapa2[id] = 80;  // 4º vira 3º
-            else if (index === 4) etapa2[id] = 60;  // 5º vira 5º
-        });
-        
-        await db.set('rankingEtapas/1', etapa1);
-        await db.set('rankingEtapas/2', etapa2);
-        
-        console.log('Etapas de teste criadas:');
-        console.log('Etapa 1:', etapa1);
-        console.log('Etapa 2:', etapa2);
-    }
+    // Criar etapa 1 com pontuações variadas
+    const etapa1 = {};
+    jogadoresLista.forEach((jogador, index) => {
+        etapa1[jogador.id] = 100 - (index * 10); // 100, 90, 80, 70, 60
+    });
     
-    await carregarDados();
+    // Criar etapa 2 com pontuações diferentes (embaralhadas)
+    const etapa2 = {};
+    jogadoresLista.forEach((jogador, index) => {
+        if (index === 0) etapa2[jogador.id] = 70;  // 1º vira 4º
+        else if (index === 1) etapa2[jogador.id] = 100; // 2º vira 1º
+        else if (index === 2) etapa2[jogador.id] = 90;  // 3º vira 2º
+        else if (index === 3) etapa2[jogador.id] = 80;  // 4º vira 3º
+        else etapa2[jogador.id] = 60;  // 5º permanece 5º
+    });
+    
+    await db.set('rankingEtapas/1', etapa1);
+    await db.set('rankingEtapas/2', etapa2);
+    
+    alert('✅ Dados de teste criados! Recarregue a página.');
+    location.reload();
 }
 
 async function carregarDados() {
     try {
         console.log('Carregando dados...');
+        console.log('Ranking anterior (localStorage):', rankingAnterior);
         
         const dadosJogadores = await db.get('rankingJogadores');
         const dadosEtapas = await db.get('rankingEtapas');
         const dadosEtapasKO = await db.get('rankingEtapasKO');
         const dadosConfig = await db.get('configuracoes');
         const dadosCampeoes = await db.get('campeoesEtapas');
-        const rankingAnteriorSalvo = await db.get('rankingAnterior');
-        const rankingKOAnteriorSalvo = await db.get('rankingKOAnterior');
         
         if (dadosJogadores) {
             jogadores = Object.keys(dadosJogadores).map(key => ({
                 ...dadosJogadores[key],
                 id: key
             }));
-            console.log('Jogadores carregados:', jogadores.length);
         }
         
         if (dadosEtapas) {
             etapas = dadosEtapas;
-            console.log('Etapas carregadas:', Object.keys(etapas).length);
-            console.log('Etapa 1:', etapas[1]);
-            console.log('Etapa 2:', etapas[2]);
         }
         
         if (dadosEtapasKO) {
@@ -2146,18 +2117,6 @@ async function carregarDados() {
             campeoesEtapas = dadosCampeoes;
         }
         
-        // Carregar ranking anterior se existir
-        if (rankingAnteriorSalvo && Array.isArray(rankingAnteriorSalvo) && rankingAnteriorSalvo.length > 0) {
-            rankingAnterior = rankingAnteriorSalvo;
-            console.log('Ranking anterior carregado:', rankingAnterior.map(j => ({nome: j.nome, pos: j.posicaoAtual})));
-        } else {
-            console.log('Nenhum ranking anterior encontrado');
-        }
-        
-        if (rankingKOAnteriorSalvo && Array.isArray(rankingKOAnteriorSalvo) && rankingKOAnteriorSalvo.length > 0) {
-            rankingKOAnterior = rankingKOAnteriorSalvo;
-        }
-        
         statusIndicator.textContent = '✅ Conectado';
         statusIndicator.classList.add('connected');
         
@@ -2165,50 +2124,26 @@ async function carregarDados() {
         const novoRanking = calcularRankingGeral();
         const novoRankingKO = calcularRankingKO();
         
-        console.log('Novo ranking calculado:', novoRanking.map(j => ({nome: j.nome, pontos: j.totalPontos, pos: j.posicaoAtual})));
+        console.log('Novo ranking calculado:', novoRanking.map(j => ({nome: j.nome, pos: j.posicaoAtual})));
         
-        // Se não temos ranking anterior, este é o primeiro
-        if (rankingAnterior.length === 0) {
-            console.log('Primeiro ranking - todos estáveis');
-            
-            // Todos os jogadores começam estáveis
-            novoRanking.forEach(jogador => {
-                jogador.variacao = 'stable';
-            });
-            
-            novoRankingKO.forEach(jogador => {
-                jogador.variacaoKO = 'stable';
-            });
-            
-            // Salvar como ranking anterior
-            rankingAnterior = JSON.parse(JSON.stringify(novoRanking));
-            rankingKOAnterior = JSON.parse(JSON.stringify(novoRankingKO));
-            
-            await db.set('rankingAnterior', rankingAnterior);
-            await db.set('rankingKOAnterior', rankingKOAnterior);
-            
-        } else {
+        // Se temos ranking anterior, calcular variações
+        if (rankingAnterior && rankingAnterior.length > 0) {
             console.log('Comparando com ranking anterior...');
-            console.log('Ranking anterior:', rankingAnterior.map(j => ({nome: j.nome, pos: j.posicaoAtual})));
             
-            // Calcular variações comparando com o ranking anterior
             novoRanking.forEach(jogador => {
                 const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
                 if (jogadorAnterior) {
-                    console.log(`Jogador ${jogador.nome}: Atual ${jogador.posicaoAtual}, Anterior ${jogadorAnterior.posicaoAtual}`);
-                    
                     if (jogador.posicaoAtual < jogadorAnterior.posicaoAtual) {
                         jogador.variacao = 'up';
-                        console.log(`  → SUBIU (⬆️)`);
+                        console.log(`✅ ${jogador.nome}: ${jogadorAnterior.posicaoAtual} → ${jogador.posicaoAtual} (SUBIU)`);
                     } else if (jogador.posicaoAtual > jogadorAnterior.posicaoAtual) {
                         jogador.variacao = 'down';
-                        console.log(`  → DESCEU (⬇️)`);
+                        console.log(`🔻 ${jogador.nome}: ${jogadorAnterior.posicaoAtual} → ${jogador.posicaoAtual} (DESCEU)`);
                     } else {
                         jogador.variacao = 'stable';
-                        console.log(`  → ESTÁVEL (●)`);
+                        console.log(`⚪ ${jogador.nome}: ${jogadorAnterior.posicaoAtual} → ${jogador.posicaoAtual} (ESTÁVEL)`);
                     }
                 } else {
-                    console.log(`Jogador ${jogador.nome} não encontrado no ranking anterior`);
                     jogador.variacao = 'stable';
                 }
             });
@@ -2227,17 +2162,19 @@ async function carregarDados() {
                     jogador.variacaoKO = 'stable';
                 }
             });
+        } else {
+            console.log('Primeiro ranking - todos estáveis');
+            novoRanking.forEach(jogador => jogador.variacao = 'stable');
+            novoRankingKO.forEach(jogador => jogador.variacaoKO = 'stable');
         }
         
         // Atualizar os rankings
         rankingAtual = novoRanking;
         rankingKO = novoRankingKO;
         
-        // Salvar como ranking anterior para próxima atualização
-        await db.set('rankingAnterior', rankingAtual);
-        await db.set('rankingKOAnterior', rankingKO);
-        
-        console.log('Ranking final com variações:', rankingAtual.map(j => ({nome: j.nome, pos: j.posicaoAtual, var: j.variacao})));
+        // Salvar como ranking anterior NO localStorage
+        localStorage.setItem('rankingAnterior', JSON.stringify(rankingAtual));
+        localStorage.setItem('rankingKOAnterior', JSON.stringify(rankingKO));
         
         // Atualizar a visualização
         if (viewAtual === 'rankingGeral') {
@@ -2577,7 +2514,6 @@ function calcularRankingGeral() {
             participacoes: participacoes,
             vezesPrimeiro: vezesPrimeiro,
             koAcumulado: koAcumulado,
-            melhoresPontuacoes: melhoresPontuacoes,
             isReiDaMesa: jogador.id === reiDaMesa,
             isMelhorMao: jogador.id === melhorMao
         };
@@ -2585,19 +2521,10 @@ function calcularRankingGeral() {
     
     // Ordenar com critérios de desempate
     rankingCalculado.sort((a, b) => {
-        // 1. Maior número de pontos
         if (b.totalPontos !== a.totalPontos) return b.totalPontos - a.totalPontos;
-        
-        // 2. Maior número de participações
         if (b.participacoes !== a.participacoes) return b.participacoes - a.participacoes;
-        
-        // 3. Maior número de vezes que terminou em primeiro lugar
         if (b.vezesPrimeiro !== a.vezesPrimeiro) return b.vezesPrimeiro - a.vezesPrimeiro;
-        
-        // 4. Melhor número de KO acumulados
         if (b.koAcumulado !== a.koAcumulado) return b.koAcumulado - a.koAcumulado;
-        
-        // Critério final: ordem alfabética
         return a.nome.localeCompare(b.nome);
     });
     
@@ -2636,23 +2563,16 @@ function calcularRankingKO() {
             nome: jogador.nome,
             foto: jogador.foto,
             totalPontosKO: totalPontosKO,
-            participacoesKO: participacoesKO,
-            melhoresPontuacoesKO: melhoresPontuacoesKO
+            participacoesKO: participacoesKO
         };
     });
     
     rankingCalculado.sort((a, b) => {
-        // 1. Maior número de pontos KO
         if (b.totalPontosKO !== a.totalPontosKO) return b.totalPontosKO - a.totalPontosKO;
-        
-        // 2. Maior número de participações KO
         if (b.participacoesKO !== a.participacoesKO) return b.participacoesKO - a.participacoesKO;
-        
-        // Critério final: ordem alfabética
         return a.nome.localeCompare(b.nome);
     });
     
-    // Atribuir posições
     rankingCalculado.forEach((jogador, index) => {
         jogador.posicaoAtualKO = index + 1;
     });
@@ -2721,7 +2641,7 @@ function atualizarRankingGeral() {
                 }
             }
             
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}" title="${campeoesEtapas[i] === jogador.id ? 'Campeão da etapa' : ''}">${etapaText}${iconeTrofeu}</div></td>`;
+            etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeTrofeu}</div></td>`;
         }
         
         const tr = document.createElement('tr');
@@ -2814,7 +2734,7 @@ function atualizarRankingKO() {
         // Gerar indicador de variação
         const variacaoHTML = getPositionIndicatorHTML(jogador.variacaoKO);
         
-        // Gerar células de etapas para KO com zero e ícone de luva
+        // Gerar células de etapas para KO
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id];
@@ -2836,9 +2756,7 @@ function atualizarRankingKO() {
                             etapaClass = 'present ko';
                             etapaText = pontos.toString();
                             
-                            // Adicionar ícone de luva se foi o maior pontuador da etapa
                             if (maioresPontuadoresKO[i] === jogador.id) {
-                                etapaClass += ' glove';
                                 iconeLuva = '<span class="glove-icon" style="margin-left: 2px; font-size: 0.7rem;">🥊</span>';
                             }
                         }
@@ -2846,7 +2764,7 @@ function atualizarRankingKO() {
                 }
             }
             
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}" title="${maioresPontuadoresKO[i] === jogador.id ? 'Maior pontuador KO da etapa' : ''}">${etapaText}${iconeLuva}</div></td>`;
+            etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeLuva}</div></td>`;
         }
         
         const tr = document.createElement('tr');
@@ -2861,8 +2779,7 @@ function atualizarRankingKO() {
                 <div class="player-info">
                     <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
                          class="player-avatar"
-                         alt="${jogador.nome}"
-                         onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
+                         alt="${jogador.nome}">
                     <div class="player-name-container">
                         <span class="player-name">${jogador.nome}</span>
                         ${variacaoHTML}
@@ -2992,16 +2909,6 @@ window.formatarInputPontos = function(input, tipo) {
         input.classList.remove('NJ');
         input.classList.remove('zero');
     }
-    
-    if (tipo === 'ko') {
-        if (input.value === 'NJ') {
-            input.style.borderColor = '#FF4757';
-        } else if (input.value === '0') {
-            input.style.borderColor = 'var(--border)';
-        } else {
-            input.style.borderColor = 'var(--ko-color)';
-        }
-    }
 };
 
 window.setPontuacao = function(jogadorId, pontos, tipo) {
@@ -3022,9 +2929,6 @@ window.limparPontuacoes = function(tipo) {
                 input.value = '';
                 input.classList.remove('NJ');
                 input.classList.remove('zero');
-                if (tipo === 'ko') {
-                    input.style.borderColor = 'var(--border)';
-                }
             }
         });
     }
@@ -3049,19 +2953,15 @@ window.salvarEtapa = async function(tipo) {
                         const numero = parseInt(valor);
                         if (!isNaN(numero)) {
                             novosScores[jogador.id] = numero;
-                        } else {
-                            novosScores[jogador.id] = null;
                         }
                     }
                     temAlteracoes = true;
-                } else {
-                    novosScores[jogador.id] = null;
                 }
             }
         });
         
         if (!temAlteracoes) {
-            if (!confirm(`Nenhuma pontuação ${tipo === 'geral' ? 'geral' : 'KO'} foi alterada. Deseja salvar mesmo assim?`)) {
+            if (!confirm(`Nenhuma pontuação foi alterada. Deseja salvar mesmo assim?`)) {
                 return;
             }
         }
@@ -3071,21 +2971,12 @@ window.salvarEtapa = async function(tipo) {
             `rankingEtapasKO/${etapaAtualSelecionadaKO}`;
         
         await db.set(caminho, novosScores);
-        alert(`✅ Etapa ${tipo === 'geral' ? 'geral' : 'KO'} salva com sucesso!`);
+        alert(`✅ Etapa salva com sucesso!`);
         
-        // ANTES de recarregar, salvar o ranking atual como anterior
-        if (rankingAtual.length > 0) {
-            await db.set('rankingAnterior', rankingAtual);
-        }
-        if (rankingKO.length > 0) {
-            await db.set('rankingKOAnterior', rankingKO);
-        }
-        
-        // Recarregar dados e atualizar ranking com variações
         await carregarDados();
         
     } catch (e) {
-        alert(`❌ Erro ao salvar etapa ${tipo === 'geral' ? 'geral' : 'KO'}: ` + e.message);
+        alert(`❌ Erro ao salvar etapa: ` + e.message);
     }
 };
 
@@ -3108,157 +2999,69 @@ function renderizarAdminJogadores() {
         a.nome.localeCompare(b.nome)
     );
     
-    let html = `
-        <div style="display: grid; gap: 6px; margin-top: 12px;">
-    `;
+    let html = '<div style="display: grid; gap: 6px; margin-top: 12px;">';
     
     jogadoresOrdenados.forEach(jogador => {
-        const jogadorRanking = rankingAtual.find(j => j.id === jogador.id);
-        const posicaoGeral = jogadorRanking ? jogadorRanking.posicaoAtual : '-';
-        const totalPontosGeral = jogadorRanking?.totalPontos || 0;
-        
-        const jogadorKORanking = rankingKO.find(j => j.id === jogador.id);
-        const posicaoKO = jogadorKORanking ? jogadorKORanking.posicaoAtualKO : '-';
-        const totalPontosKO = jogadorKORanking?.totalPontosKO || 0;
-        
-        let icones = '';
-        if (jogador.id === reiDaMesa) {
-            icones += ' 👑';
-        }
-        if (jogador.id === melhorMao) {
-            icones += ' 🃏';
-        }
-        
-        // Verificar se foi campeão de alguma etapa
-        const etapasCampeao = Object.entries(campeoesEtapas)
-            .filter(([etapa, id]) => id === jogador.id)
-            .map(([etapa]) => etapa)
-            .join(', ');
-        
-        if (etapasCampeao) {
-            icones += ` 🏆 (E${etapasCampeao})`;
-        }
+        const posicaoGeral = rankingAtual.find(j => j.id === jogador.id)?.posicaoAtual || '-';
+        const totalPontosGeral = rankingAtual.find(j => j.id === jogador.id)?.totalPontos || 0;
         
         html += `
             <div style="background: var(--bg-row); padding: 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
+                    <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome)}" 
                          style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--primary);"
                          alt="${jogador.nome}">
                     <div>
-                        <div style="font-weight: 600; font-size: 0.85rem;">${jogador.nome}${icones}</div>
-                        <div style="display: flex; gap: 8px; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">
-                            <span>📊 Geral: #${posicaoGeral} (${totalPontosGeral} pts)</span>
-                            <span>🥊 KO: #${posicaoKO} (${totalPontosKO} pts)</span>
+                        <div style="font-weight: 600; font-size: 0.85rem;">${jogador.nome}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">
+                            Posição: #${posicaoGeral} (${totalPontosGeral} pts)
                         </div>
                     </div>
                 </div>
-                <button onclick="removerJogador('${jogador.id}', '${jogador.nome.replace(/'/g, "\\'")}')" 
-                        style="background: #FF4757; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">
+                <button onclick="removerJogador('${jogador.id}')" 
+                        style="background: #FF4757; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
                     🗑️
                 </button>
             </div>
         `;
     });
     
-    html += `</div>`;
+    html += '</div>';
     container.innerHTML = html;
 }
 
-window.removerJogador = async function(id, nome) {
-    if (!confirm(`Tem certeza que deseja remover o jogador "${nome}"?\n\nEsta ação não pode ser desfeita!`)) {
-        return;
-    }
+window.removerJogador = async function(id) {
+    if (!confirm('Tem certeza que deseja remover este jogador?')) return;
     
     try {
         await db.remove(`rankingJogadores/${id}`);
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            await db.remove(`rankingEtapas/${i}/${id}`);
-            await db.remove(`rankingEtapasKO/${i}/${id}`);
-        }
-        
-        // Remover das configurações de campeão se necessário
-        const campeoesAtualizados = { ...campeoesEtapas };
-        Object.keys(campeoesAtualizados).forEach(etapa => {
-            if (campeoesAtualizados[etapa] === id) {
-                delete campeoesAtualizados[etapa];
-            }
-        });
-        await db.set('campeoesEtapas', campeoesAtualizados);
-        
-        if (id === reiDaMesa) {
-            await db.set('configuracoes/reiDaMesa', null);
-            reiDaMesa = null;
-        }
-        if (id === melhorMao) {
-            await db.set('configuracoes/melhorMao', null);
-            melhorMao = null;
-        }
-        
-        alert('✅ Jogador removido com sucesso!');
-        
+        alert('✅ Jogador removido!');
         await carregarDados();
-        if (modoAdmin) {
-            renderizarPlayersPoints(adminTipo);
-            renderizarAdminJogadores();
-            atualizarSelectsEspeciais();
-            renderizarCampeoesEtapas();
-        }
-        
     } catch (e) {
-        alert('❌ Erro ao remover jogador: ' + e.message);
+        alert('❌ Erro ao remover jogador');
     }
 };
 
 // Exportar CSV
 btnExportarCSV.onclick = function() {
-    const ranking = rankingAtual;
-    const rankingKOCalc = rankingKO;
-    
-    let csv = 'Posição,Jogador,Pontos Totais (Geral),Participações (Geral),Vezes em 1º,KO Acumulado,Variação,Diferença para Líder (Geral),Rei da Mesa,Melhor Mão,Pontos KO,Participações KO,Posição KO,Variação KO';
+    let csv = 'Posição,Jogador,Pontos,Variação';
     
     for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        csv += `,Etapa ${i} Geral`;
-    }
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        csv += `,Etapa ${i} KO`;
+        csv += `,Etapa ${i}`;
     }
     csv += '\n';
     
-    const primeiroPontos = ranking[0]?.totalPontos || 0;
-    
-    ranking.forEach(jogador => {
-        const diferencaGeral = primeiroPontos - jogador.totalPontos;
-        const jogadorKO = rankingKOCalc.find(j => j.id === jogador.id);
-        const pontosKO = jogadorKO?.totalPontosKO || 0;
-        const participacoesKO = jogadorKO?.participacoesKO || 0;
-        const posicaoKO = jogadorKO?.posicaoAtualKO || '-';
-        const isReiDaMesa = jogador.id === reiDaMesa ? 'SIM' : 'NÃO';
-        const isMelhorMao = jogador.id === melhorMao ? 'SIM' : 'NÃO';
-        
+    rankingAtual.forEach(jogador => {
         let variacao = '';
-        if (jogador.variacao === 'up') variacao = 'Subiu';
-        else if (jogador.variacao === 'down') variacao = 'Desceu';
-        else if (jogador.variacao === 'stable') variacao = 'Estável';
+        if (jogador.variacao === 'up') variacao = '⬆️';
+        else if (jogador.variacao === 'down') variacao = '⬇️';
+        else if (jogador.variacao === 'stable') variacao = '●';
         
-        let variacaoKO = '';
-        if (jogadorKO?.variacaoKO === 'up') variacaoKO = 'Subiu';
-        else if (jogadorKO?.variacaoKO === 'down') variacaoKO = 'Desceu';
-        else if (jogadorKO?.variacaoKO === 'stable') variacaoKO = 'Estável';
+        csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},"${variacao}"`;
         
-        csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.vezesPrimeiro},${jogador.koAcumulado},"${variacao}",${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${posicaoKO},"${variacaoKO}"`;
-        
-        // Pontuações gerais
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapas[i]?.[jogador.id] || '-';
-            csv += `,"${score}"`;
-        }
-        
-        // Pontuações KO
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapasKO[i]?.[jogador.id] !== undefined ? etapasKO[i][jogador.id] : '-';
-            csv += `,"${score}"`;
+            csv += `,${score}`;
         }
         csv += '\n';
     });
@@ -3266,33 +3069,11 @@ btnExportarCSV.onclick = function() {
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `ranking-poker-quinta-completo-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(link);
+    link.download = `ranking-${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
-    document.body.removeChild(link);
-    
-    alert('📊 Ranking completo exportado com sucesso!');
 };
 
-// Função para debug dos critérios de desempate
-window.mostrarCriteriosDesempate = function() {
-    if (!modoAdmin) {
-        alert('Disponível apenas no modo admin');
-        return;
-    }
-    
-    console.log('=== CRITÉRIOS DE DESEMPATE ===');
-    rankingAtual.forEach((jogador, index) => {
-        console.log(`${index + 1}. ${jogador.nome}:`);
-        console.log(`   Pontos: ${jogador.totalPontos}`);
-        console.log(`   Participações: ${jogador.participacoes}`);
-        console.log(`   Vezes em 1º: ${jogador.vezesPrimeiro}`);
-        console.log(`   KO Acumulado: ${jogador.koAcumulado}`);
-        console.log(`   Variação: ${jogador.variacao}`);
-    });
-};
-
-// Botão para simular dados de teste
+// Botão de simulação
 window.simularDadosTeste = simularDadosTeste;
 
 // Event Listeners
@@ -3310,24 +3091,21 @@ modalAdmin.addEventListener('click', (e) => {
     }
 });
 
-// Inicializar aplicação
 document.addEventListener('DOMContentLoaded', () => {
     carregarDados();
-    window.mostrarCriteriosDesempate = mostrarCriteriosDesempate;
 });
 
 senhaAdmin.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        btnAcessarAdmin.click();
-    }
+    if (e.key === 'Enter') btnAcessarAdmin.click();
 });
 </script>
 
-<!-- Botão para simular dados de teste (visível apenas no admin) -->
+<!-- Botão de teste -->
 <div style="position: fixed; bottom: 50px; right: 8px;">
-    <button onclick="simularDadosTeste()" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-        🧪 Simular Dados de Teste
+    <button onclick="simularDadosTeste()" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+        🧪 Criar Dados de Teste
     </button>
 </div>
+
 </body>
 </html>
