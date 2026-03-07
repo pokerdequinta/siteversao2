@@ -2049,6 +2049,63 @@ const adminKO = document.getElementById('adminKO');
 const selectReiDaMesa = document.getElementById('selectReiDaMesa');
 const selectMelhorMao = document.getElementById('selectMelhorMao');
 
+// Função para simular dados de teste
+async function simularDadosTeste() {
+    console.log('=== SIMULANDO DADOS DE TESTE ===');
+    
+    // Criar alguns jogadores de teste se não existirem
+    if (jogadores.length === 0) {
+        const jogadoresTeste = [
+            { nome: "João Silva", foto: null },
+            { nome: "Maria Santos", foto: null },
+            { nome: "Pedro Oliveira", foto: null },
+            { nome: "Ana Costa", foto: null },
+            { nome: "Carlos Souza", foto: null }
+        ];
+        
+        for (const jogador of jogadoresTeste) {
+            await db.push('rankingJogadores', jogador);
+        }
+        console.log('Jogadores de teste criados');
+    }
+    
+    // Verificar se já existem etapas
+    const etapasExistentes = await db.get('rankingEtapas');
+    
+    if (!etapasExistentes || Object.keys(etapasExistentes).length === 0) {
+        // Simular primeira etapa com pontuações variadas
+        const etapa1 = {};
+        const etapa2 = {};
+        
+        // Buscar jogadores atualizados
+        const dadosJogadores = await db.get('rankingJogadores');
+        const jogadoresLista = Object.keys(dadosJogadores).map(key => key);
+        
+        // Distribuir pontuações diferentes para criar ranking variado
+        jogadoresLista.forEach((id, index) => {
+            // Etapa 1: pontuações decrescentes (100, 90, 80, 70, 60)
+            etapa1[id] = 100 - (index * 10);
+            
+            // Etapa 2: embaralhar para criar variações
+            // O jogador que era 1º vai para 3º, etc.
+            if (index === 0) etapa2[id] = 70;  // 1º vira 4º
+            else if (index === 1) etapa2[id] = 100; // 2º vira 1º
+            else if (index === 2) etapa2[id] = 90;  // 3º vira 2º
+            else if (index === 3) etapa2[id] = 80;  // 4º vira 3º
+            else if (index === 4) etapa2[id] = 60;  // 5º vira 5º
+        });
+        
+        await db.set('rankingEtapas/1', etapa1);
+        await db.set('rankingEtapas/2', etapa2);
+        
+        console.log('Etapas de teste criadas:');
+        console.log('Etapa 1:', etapa1);
+        console.log('Etapa 2:', etapa2);
+    }
+    
+    await carregarDados();
+}
+
 async function carregarDados() {
     try {
         console.log('Carregando dados...');
@@ -2072,6 +2129,8 @@ async function carregarDados() {
         if (dadosEtapas) {
             etapas = dadosEtapas;
             console.log('Etapas carregadas:', Object.keys(etapas).length);
+            console.log('Etapa 1:', etapas[1]);
+            console.log('Etapa 2:', etapas[2]);
         }
         
         if (dadosEtapasKO) {
@@ -2090,7 +2149,7 @@ async function carregarDados() {
         // Carregar ranking anterior se existir
         if (rankingAnteriorSalvo && Array.isArray(rankingAnteriorSalvo) && rankingAnteriorSalvo.length > 0) {
             rankingAnterior = rankingAnteriorSalvo;
-            console.log('Ranking anterior carregado:', rankingAnterior.length, 'jogadores');
+            console.log('Ranking anterior carregado:', rankingAnterior.map(j => ({nome: j.nome, pos: j.posicaoAtual})));
         } else {
             console.log('Nenhum ranking anterior encontrado');
         }
@@ -2106,7 +2165,7 @@ async function carregarDados() {
         const novoRanking = calcularRankingGeral();
         const novoRankingKO = calcularRankingKO();
         
-        console.log('Novo ranking calculado:', novoRanking.length, 'jogadores');
+        console.log('Novo ranking calculado:', novoRanking.map(j => ({nome: j.nome, pontos: j.totalPontos, pos: j.posicaoAtual})));
         
         // Se não temos ranking anterior, este é o primeiro
         if (rankingAnterior.length === 0) {
@@ -2130,6 +2189,7 @@ async function carregarDados() {
             
         } else {
             console.log('Comparando com ranking anterior...');
+            console.log('Ranking anterior:', rankingAnterior.map(j => ({nome: j.nome, pos: j.posicaoAtual})));
             
             // Calcular variações comparando com o ranking anterior
             novoRanking.forEach(jogador => {
@@ -2139,13 +2199,13 @@ async function carregarDados() {
                     
                     if (jogador.posicaoAtual < jogadorAnterior.posicaoAtual) {
                         jogador.variacao = 'up';
-                        console.log(`  → SUBIU`);
+                        console.log(`  → SUBIU (⬆️)`);
                     } else if (jogador.posicaoAtual > jogadorAnterior.posicaoAtual) {
                         jogador.variacao = 'down';
-                        console.log(`  → DESCEU`);
+                        console.log(`  → DESCEU (⬇️)`);
                     } else {
                         jogador.variacao = 'stable';
-                        console.log(`  → ESTÁVEL`);
+                        console.log(`  → ESTÁVEL (●)`);
                     }
                 } else {
                     console.log(`Jogador ${jogador.nome} não encontrado no ranking anterior`);
@@ -3013,6 +3073,14 @@ window.salvarEtapa = async function(tipo) {
         await db.set(caminho, novosScores);
         alert(`✅ Etapa ${tipo === 'geral' ? 'geral' : 'KO'} salva com sucesso!`);
         
+        // ANTES de recarregar, salvar o ranking atual como anterior
+        if (rankingAtual.length > 0) {
+            await db.set('rankingAnterior', rankingAtual);
+        }
+        if (rankingKO.length > 0) {
+            await db.set('rankingKOAnterior', rankingKO);
+        }
+        
         // Recarregar dados e atualizar ranking com variações
         await carregarDados();
         
@@ -3224,6 +3292,9 @@ window.mostrarCriteriosDesempate = function() {
     });
 };
 
+// Botão para simular dados de teste
+window.simularDadosTeste = simularDadosTeste;
+
 // Event Listeners
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modalAdmin.classList.contains('active')) {
@@ -3251,5 +3322,12 @@ senhaAdmin.addEventListener('keypress', (e) => {
     }
 });
 </script>
+
+<!-- Botão para simular dados de teste (visível apenas no admin) -->
+<div style="position: fixed; bottom: 50px; right: 8px;">
+    <button onclick="simularDadosTeste()" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+        🧪 Simular Dados de Teste
+    </button>
+</div>
 </body>
 </html>
