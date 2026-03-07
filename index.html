@@ -555,6 +555,10 @@ body {
 
 /* ETAPAS */
 .etapa-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
     padding: 2px 6px;
     border-radius: 6px;
     font-size: 0.7rem;
@@ -593,6 +597,11 @@ body {
     color: #000;
     border: none;
     font-weight: 700;
+}
+
+.etapa-pill.champion span {
+    font-size: 0.65rem;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
 }
 
 /* PAINEL ADMINISTRATIVO */
@@ -1304,6 +1313,10 @@ body {
         min-width: 28px;
         font-size: 0.7rem;
         padding: 10px 1px;
+    }
+    
+    .etapa-pill.champion span {
+        font-size: 0.6rem;
     }
     
     .add-player-form {
@@ -2041,23 +2054,6 @@ btnAdminKO.onclick = () => {
     renderizarPlayersPoints('ko');
 };
 
-// Voltar para o ranking do admin
-btnViewRanking.onclick = () => {
-    if (modoAdmin) {
-        viewRanking.style.display = 'block';
-        viewRankingKO.style.display = 'none';
-        viewAdmin.style.display = 'none';
-        carregarDados();
-    } else {
-        viewAtual = 'rankingGeral';
-        btnViewRanking.classList.add('active');
-        btnViewRankingKO.classList.remove('active');
-        viewRanking.style.display = 'block';
-        viewRankingKO.style.display = 'none';
-        atualizarRankingGeral();
-    }
-};
-
 // Adicionar novo jogador
 btnAdicionarJogador.onclick = async () => {
     const nome = novoJogadorNome.value.trim();
@@ -2408,12 +2404,13 @@ function atualizarRankingGeral() {
             iconesHTML += '<span class="player-icon card-icon" title="Melhor mão da etapa">🃏</span>';
         }
         
-        // Gerar células de etapas
+        // Gerar células de etapas com ícone de troféu para campeões
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapas[i]?.[jogador.id];
             let etapaClass = 'empty';
             let etapaText = '-';
+            let iconeTrofeu = '';
             
             if (score !== undefined && score !== null) {
                 if (score === 'NJ') {
@@ -2423,14 +2420,15 @@ function atualizarRankingGeral() {
                     etapaClass = 'present';
                     etapaText = score;
                     
-                    // Destacar se foi campeão da etapa
+                    // Adicionar ícone de troféu se foi campeão da etapa
                     if (campeoesEtapas[i] === jogador.id) {
                         etapaClass = 'champion';
+                        iconeTrofeu = '<span style="margin-left: 2px; font-size: 0.7rem;">🏆</span>';
                     }
                 }
             }
             
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}" title="${campeoesEtapas[i] === jogador.id ? 'Campeão da etapa' : ''}">${etapaText}</div></td>`;
+            etapasHTML += `<td><div class="etapa-pill ${etapaClass}" title="${campeoesEtapas[i] === jogador.id ? 'Campeão da etapa' : ''}">${etapaText}${iconeTrofeu}</div></td>`;
         }
         
         const tr = document.createElement('tr');
