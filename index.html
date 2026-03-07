@@ -2066,13 +2066,17 @@ async function carregarDados() {
         statusIndicator.textContent = '✅ Conectado';
         statusIndicator.classList.add('connected');
         
-        // Primeiro cálculo (sem ranking anterior)
-        rankingAtual = calcularRankingGeral();
-        rankingKO = calcularRankingKO();
+        // Calcular ranking sem variação (primeira carga)
+        const novoRanking = calcularRankingGeral();
+        const novoRankingKO = calcularRankingKO();
+        
+        // Atualizar os rankings
+        rankingAtual = novoRanking;
+        rankingKO = novoRankingKO;
         
         // Salvar como ranking anterior para próxima atualização
-        rankingAnterior = [...rankingAtual];
-        rankingKOAnterior = [...rankingKO];
+        rankingAnterior = JSON.parse(JSON.stringify(rankingAtual));
+        rankingKOAnterior = JSON.parse(JSON.stringify(rankingKO));
         
         // Atualizar a visualização
         if (viewAtual === 'rankingGeral') {
@@ -2503,8 +2507,8 @@ function calcularRankingKO() {
 
 async function atualizarRankingCompleto() {
     // Salvar ranking anterior ANTES de recalcular
-    rankingAnterior = rankingAtual.length > 0 ? [...rankingAtual] : [];
-    rankingKOAnterior = rankingKO.length > 0 ? [...rankingKO] : [];
+    rankingAnterior = JSON.parse(JSON.stringify(rankingAtual));
+    rankingKOAnterior = JSON.parse(JSON.stringify(rankingKO));
     
     // Calcular novos rankings
     const novoRanking = calcularRankingGeral();
@@ -2515,6 +2519,7 @@ async function atualizarRankingCompleto() {
         const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
         if (jogadorAnterior) {
             jogador.variacao = calcularVariacaoPosicao(jogador.posicaoAtual, jogadorAnterior.posicaoAtual);
+            console.log(`Jogador ${jogador.nome}: Atual ${jogador.posicaoAtual}, Anterior ${jogadorAnterior.posicaoAtual}, Variação: ${jogador.variacao}`);
         } else {
             jogador.variacao = null;
         }
