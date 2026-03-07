@@ -2374,8 +2374,10 @@ function calcularRankingKO() {
             const score = etapasKO[i]?.[jogador.id];
             if (score !== undefined && score !== null && score !== 'NJ') {
                 const pontos = parseInt(score);
-                if (!isNaN(pontos) && pontos > 0) {
-                    pontuacoesKO.push(pontos);
+                if (!isNaN(pontos)) {
+                    if (pontos > 0) {
+                        pontuacoesKO.push(pontos);
+                    }
                     participacoesKO++;
                 }
             }
