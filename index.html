@@ -31,6 +31,7 @@
     --crown-gold: #FFD700;
     --card-red: #FF4444;
     --champion-color: #FFD700;
+    --glove-color: #FF6B6B;
 }
 
 * {
@@ -213,6 +214,10 @@ body {
 
 .legenda-card {
     color: var(--card-red);
+}
+
+.legenda-glove {
+    color: var(--glove-color);
 }
 
 /* TABELA DE RANKING */
@@ -464,6 +469,17 @@ body {
     filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
 }
 
+.glove-icon {
+    color: var(--glove-color);
+    filter: drop-shadow(0 0 3px rgba(255, 107, 107, 0.5));
+    animation: glovePulse 2s ease-in-out infinite;
+}
+
+@keyframes glovePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
 /* PONTUAÇÃO COM BORDA */
 .points-cell {
     text-align: center;
@@ -579,6 +595,14 @@ body {
 
 .etapa-pill.present.ko {
     background: linear-gradient(135deg, var(--ko-color), var(--ko-color-dark));
+    color: white;
+    border: none;
+}
+
+.etapa-pill.zero {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
 }
 
 .etapa-pill.absent {
@@ -601,6 +625,22 @@ body {
 
 .etapa-pill.champion span {
     font-size: 0.65rem;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+}
+
+.etapa-pill.present.ko.glove {
+    background: linear-gradient(135deg, var(--ko-color), #ff8a8a);
+    position: relative;
+    overflow: hidden;
+}
+
+.etapa-pill.present.ko.glove::after {
+    content: '🥊';
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    font-size: 0.8rem;
+    transform: rotate(15deg);
     filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
 }
 
@@ -926,6 +966,11 @@ body {
 .points-input-admin input.NJ {
     color: #FF4757;
     border-color: #FF4757;
+}
+
+.points-input-admin input.zero {
+    color: var(--text-muted);
+    border-color: var(--border);
 }
 
 .points-input-admin.ko input:focus {
@@ -1499,6 +1544,13 @@ body {
                 </h2>
                 <div style="color: var(--text-muted); font-size: 0.75rem;">
                     Ranking baseado nas pontuações de KO.
+                </div>
+                <!-- LEGENDAS ESPECIAIS KO -->
+                <div class="legendas-especiais">
+                    <div class="legenda-item">
+                        <span class="legenda-icone legenda-glove">🥊</span>
+                        <span>Maior pontuador KO da etapa</span>
+                    </div>
                 </div>
             </div>
             
@@ -2484,6 +2536,28 @@ function atualizarRankingKO() {
     
     const primeiroColocadoPontosKO = rankingKO[0]?.totalPontosKO || 0;
     
+    // Encontrar o maior pontuador de cada etapa KO
+    const maioresPontuadoresKO = {};
+    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+        let maiorPontuacao = -1;
+        let maiorPontuador = null;
+        
+        jogadores.forEach(jogador => {
+            const score = etapasKO[i]?.[jogador.id];
+            if (score !== undefined && score !== null && score !== 'NJ') {
+                const pontos = parseInt(score);
+                if (!isNaN(pontos) && pontos > maiorPontuacao) {
+                    maiorPontuacao = pontos;
+                    maiorPontuador = jogador.id;
+                }
+            }
+        });
+        
+        if (maiorPontuador) {
+            maioresPontuadoresKO[i] = maiorPontuador;
+        }
+    }
+    
     tbody.innerHTML = '';
     
     rankingKO.forEach((jogador, index) => {
@@ -2493,24 +2567,39 @@ function atualizarRankingKO() {
         const diferencaPontos = primeiroColocadoPontosKO - jogador.totalPontosKO;
         const diffClass = rank === 1 ? 'leader' : '';
         
-        // Gerar células de etapas para KO
+        // Gerar células de etapas para KO com zero e ícone de luva
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id];
             let etapaClass = 'empty';
             let etapaText = '-';
+            let iconeLuva = '';
             
             if (score !== undefined && score !== null) {
                 if (score === 'NJ') {
                     etapaClass = 'absent';
                     etapaText = 'NJ';
-                } else if (parseInt(score) > 0) {
-                    etapaClass = 'present ko';
-                    etapaText = score;
+                } else {
+                    const pontos = parseInt(score);
+                    if (!isNaN(pontos)) {
+                        if (pontos === 0) {
+                            etapaClass = 'zero';
+                            etapaText = '0';
+                        } else if (pontos > 0) {
+                            etapaClass = 'present ko';
+                            etapaText = pontos.toString();
+                            
+                            // Adicionar ícone de luva se foi o maior pontuador da etapa
+                            if (maioresPontuadoresKO[i] === jogador.id) {
+                                etapaClass += ' glove';
+                                iconeLuva = '<span class="glove-icon" style="margin-left: 2px; font-size: 0.7rem;">🥊</span>';
+                            }
+                        }
+                    }
                 }
             }
             
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}</div></td>`;
+            etapasHTML += `<td><div class="etapa-pill ${etapaClass}" title="${maioresPontuadoresKO[i] === jogador.id ? 'Maior pontuador KO da etapa' : ''}">${etapaText}${iconeLuva}</div></td>`;
         }
         
         const tr = document.createElement('tr');
@@ -2606,7 +2695,8 @@ function renderizarPlayersPoints(tipo) {
     jogadoresOrdenados.forEach(jogador => {
         const scoreAtual = tipo === 'geral' ? 
             etapas[etapaAtualSelecionada]?.[jogador.id] || '' :
-            etapasKO[etapaAtualSelecionadaKO]?.[jogador.id] || '';
+            etapasKO[etapaAtualSelecionadaKO]?.[jogador.id] !== undefined ? 
+                etapasKO[etapaAtualSelecionadaKO][jogador.id] : '';
         
         const item = document.createElement('div');
         item.className = `point-item ${tipo === 'ko' ? 'ko' : ''}`;
@@ -2621,10 +2711,11 @@ function renderizarPlayersPoints(tipo) {
                 <input type="text" 
                        id="${tipo}_score_${tipo === 'geral' ? etapaAtualSelecionada : etapaAtualSelecionadaKO}_${jogador.id}"
                        value="${scoreAtual}"
-                       placeholder="Pts ou NJ"
+                       placeholder="${tipo === 'ko' ? '0 ou NJ' : 'Pts ou NJ'}"
                        oninput="formatarInputPontos(this, '${tipo}')">
                 <div class="quick-actions">
                     <button class="quick-action-btn ${tipo === 'ko' ? 'ko' : ''}" onclick="setPontuacao('${jogador.id}', 'NJ', '${tipo}')">NJ</button>
+                    ${tipo === 'ko' ? `<button class="quick-action-btn ko" onclick="setPontuacao('${jogador.id}', '0', '${tipo}')">0</button>` : ''}
                 </div>
             </div>
         `;
@@ -2640,15 +2731,23 @@ window.formatarInputPontos = function(input, tipo) {
     if (valor === 'NJ') {
         input.value = 'NJ';
         input.classList.add('NJ');
+        input.classList.remove('zero');
+    } else if (valor === '0') {
+        input.value = '0';
+        input.classList.add('zero');
+        input.classList.remove('NJ');
     } else {
         valor = valor.replace(/[^0-9]/g, '');
         input.value = valor;
         input.classList.remove('NJ');
+        input.classList.remove('zero');
     }
     
     if (tipo === 'ko') {
         if (input.value === 'NJ') {
             input.style.borderColor = '#FF4757';
+        } else if (input.value === '0') {
+            input.style.borderColor = 'var(--border)';
         } else {
             input.style.borderColor = 'var(--ko-color)';
         }
@@ -2672,6 +2771,7 @@ window.limparPontuacoes = function(tipo) {
             if (input) {
                 input.value = '';
                 input.classList.remove('NJ');
+                input.classList.remove('zero');
                 if (tipo === 'ko') {
                     input.style.borderColor = 'var(--border)';
                 }
@@ -2690,8 +2790,19 @@ window.salvarEtapa = async function(tipo) {
             const input = document.getElementById(`${tipo}_score_${etapa}_${jogador.id}`);
             if (input) {
                 const valor = input.value.trim().toUpperCase();
-                if (valor) {
-                    novosScores[jogador.id] = valor === 'NJ' ? 'NJ' : parseInt(valor) || 0;
+                if (valor !== '') {
+                    if (valor === 'NJ') {
+                        novosScores[jogador.id] = 'NJ';
+                    } else if (valor === '0') {
+                        novosScores[jogador.id] = 0;
+                    } else {
+                        const numero = parseInt(valor);
+                        if (!isNaN(numero)) {
+                            novosScores[jogador.id] = numero;
+                        } else {
+                            novosScores[jogador.id] = null;
+                        }
+                    }
                     temAlteracoes = true;
                 } else {
                     novosScores[jogador.id] = null;
@@ -2874,7 +2985,7 @@ btnExportarCSV.onclick = function() {
         
         // Pontuações KO
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapasKO[i]?.[jogador.id] || '-';
+            const score = etapasKO[i]?.[jogador.id] !== undefined ? etapasKO[i][jogador.id] : '-';
             csv += `,"${score}"`;
         }
         csv += '\n';
