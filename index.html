@@ -456,7 +456,7 @@ body {
 }
 
 .player-name {
-    font-weight: 400; /* Removido o bold */
+    font-weight: 400;
 }
 
 /* ÍCONES ESPECIAIS */
@@ -505,7 +505,7 @@ body {
     50% { transform: scale(1.1); }
 }
 
-/* INDICADORES DE POSIÇÃO - AGORA DO LADO DIREITO DO NOME */
+/* INDICADORES DE POSIÇÃO */
 .position-indicator {
     display: inline-flex;
     align-items: center;
@@ -2051,21 +2051,27 @@ const selectMelhorMao = document.getElementById('selectMelhorMao');
 
 async function carregarDados() {
     try {
+        console.log('Carregando dados...');
+        
         const dadosJogadores = await db.get('rankingJogadores');
         const dadosEtapas = await db.get('rankingEtapas');
         const dadosEtapasKO = await db.get('rankingEtapasKO');
         const dadosConfig = await db.get('configuracoes');
         const dadosCampeoes = await db.get('campeoesEtapas');
+        const rankingAnteriorSalvo = await db.get('rankingAnterior');
+        const rankingKOAnteriorSalvo = await db.get('rankingKOAnterior');
         
         if (dadosJogadores) {
             jogadores = Object.keys(dadosJogadores).map(key => ({
                 ...dadosJogadores[key],
                 id: key
             }));
+            console.log('Jogadores carregados:', jogadores.length);
         }
         
         if (dadosEtapas) {
             etapas = dadosEtapas;
+            console.log('Etapas carregadas:', Object.keys(etapas).length);
         }
         
         if (dadosEtapasKO) {
@@ -2081,61 +2087,87 @@ async function carregarDados() {
             campeoesEtapas = dadosCampeoes;
         }
         
-        statusIndicator.textContent = '✅ Conectado';
-        statusIndicator.classList.add('connected');
-        
-        // Verificar se temos ranking anterior salvo
-        const rankingAnteriorSalvo = await db.get('rankingAnterior');
-        const rankingKOAnteriorSalvo = await db.get('rankingKOAnterior');
-        
-        if (rankingAnteriorSalvo) {
+        // Carregar ranking anterior se existir
+        if (rankingAnteriorSalvo && Array.isArray(rankingAnteriorSalvo) && rankingAnteriorSalvo.length > 0) {
             rankingAnterior = rankingAnteriorSalvo;
+            console.log('Ranking anterior carregado:', rankingAnterior.length, 'jogadores');
+        } else {
+            console.log('Nenhum ranking anterior encontrado');
         }
         
-        if (rankingKOAnteriorSalvo) {
+        if (rankingKOAnteriorSalvo && Array.isArray(rankingKOAnteriorSalvo) && rankingKOAnteriorSalvo.length > 0) {
             rankingKOAnterior = rankingKOAnteriorSalvo;
         }
+        
+        statusIndicator.textContent = '✅ Conectado';
+        statusIndicator.classList.add('connected');
         
         // Calcular novo ranking
         const novoRanking = calcularRankingGeral();
         const novoRankingKO = calcularRankingKO();
         
+        console.log('Novo ranking calculado:', novoRanking.length, 'jogadores');
+        
         // Se não temos ranking anterior, este é o primeiro
         if (rankingAnterior.length === 0) {
+            console.log('Primeiro ranking - todos estáveis');
+            
+            // Todos os jogadores começam estáveis
+            novoRanking.forEach(jogador => {
+                jogador.variacao = 'stable';
+            });
+            
+            novoRankingKO.forEach(jogador => {
+                jogador.variacaoKO = 'stable';
+            });
+            
+            // Salvar como ranking anterior
             rankingAnterior = JSON.parse(JSON.stringify(novoRanking));
             rankingKOAnterior = JSON.parse(JSON.stringify(novoRankingKO));
-        }
-        
-        // Calcular variações comparando com o ranking anterior
-        novoRanking.forEach(jogador => {
-            const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
-            if (jogadorAnterior) {
-                if (jogador.posicaoAtual < jogadorAnterior.posicaoAtual) {
-                    jogador.variacao = 'up';
-                } else if (jogador.posicaoAtual > jogadorAnterior.posicaoAtual) {
-                    jogador.variacao = 'down';
+            
+            await db.set('rankingAnterior', rankingAnterior);
+            await db.set('rankingKOAnterior', rankingKOAnterior);
+            
+        } else {
+            console.log('Comparando com ranking anterior...');
+            
+            // Calcular variações comparando com o ranking anterior
+            novoRanking.forEach(jogador => {
+                const jogadorAnterior = rankingAnterior.find(j => j.id === jogador.id);
+                if (jogadorAnterior) {
+                    console.log(`Jogador ${jogador.nome}: Atual ${jogador.posicaoAtual}, Anterior ${jogadorAnterior.posicaoAtual}`);
+                    
+                    if (jogador.posicaoAtual < jogadorAnterior.posicaoAtual) {
+                        jogador.variacao = 'up';
+                        console.log(`  → SUBIU`);
+                    } else if (jogador.posicaoAtual > jogadorAnterior.posicaoAtual) {
+                        jogador.variacao = 'down';
+                        console.log(`  → DESCEU`);
+                    } else {
+                        jogador.variacao = 'stable';
+                        console.log(`  → ESTÁVEL`);
+                    }
                 } else {
+                    console.log(`Jogador ${jogador.nome} não encontrado no ranking anterior`);
                     jogador.variacao = 'stable';
                 }
-            } else {
-                jogador.variacao = null;
-            }
-        });
-        
-        novoRankingKO.forEach(jogador => {
-            const jogadorAnterior = rankingKOAnterior.find(j => j.id === jogador.id);
-            if (jogadorAnterior) {
-                if (jogador.posicaoAtualKO < jogadorAnterior.posicaoAtualKO) {
-                    jogador.variacaoKO = 'up';
-                } else if (jogador.posicaoAtualKO > jogadorAnterior.posicaoAtualKO) {
-                    jogador.variacaoKO = 'down';
+            });
+            
+            novoRankingKO.forEach(jogador => {
+                const jogadorAnterior = rankingKOAnterior.find(j => j.id === jogador.id);
+                if (jogadorAnterior) {
+                    if (jogador.posicaoAtualKO < jogadorAnterior.posicaoAtualKO) {
+                        jogador.variacaoKO = 'up';
+                    } else if (jogador.posicaoAtualKO > jogadorAnterior.posicaoAtualKO) {
+                        jogador.variacaoKO = 'down';
+                    } else {
+                        jogador.variacaoKO = 'stable';
+                    }
                 } else {
                     jogador.variacaoKO = 'stable';
                 }
-            } else {
-                jogador.variacaoKO = null;
-            }
-        });
+            });
+        }
         
         // Atualizar os rankings
         rankingAtual = novoRanking;
@@ -2144,6 +2176,8 @@ async function carregarDados() {
         // Salvar como ranking anterior para próxima atualização
         await db.set('rankingAnterior', rankingAtual);
         await db.set('rankingKOAnterior', rankingKO);
+        
+        console.log('Ranking final com variações:', rankingAtual.map(j => ({nome: j.nome, pos: j.posicaoAtual, var: j.variacao})));
         
         // Atualizar a visualização
         if (viewAtual === 'rankingGeral') {
@@ -2476,7 +2510,9 @@ function calcularRankingGeral() {
         const totalPontos = melhoresPontuacoes.reduce((sum, p) => sum + p, 0);
         
         return {
-            ...jogador,
+            id: jogador.id,
+            nome: jogador.nome,
+            foto: jogador.foto,
             totalPontos: totalPontos,
             participacoes: participacoes,
             vezesPrimeiro: vezesPrimeiro,
@@ -2536,7 +2572,9 @@ function calcularRankingKO() {
         const totalPontosKO = melhoresPontuacoesKO.reduce((sum, p) => sum + p, 0);
         
         return {
-            ...jogador,
+            id: jogador.id,
+            nome: jogador.nome,
+            foto: jogador.foto,
             totalPontosKO: totalPontosKO,
             participacoesKO: participacoesKO,
             melhoresPontuacoesKO: melhoresPontuacoesKO
@@ -3007,10 +3045,13 @@ function renderizarAdminJogadores() {
     `;
     
     jogadoresOrdenados.forEach(jogador => {
-        const posicaoGeral = (rankingAtual.findIndex(j => j.id === jogador.id) + 1) || '-';
-        const totalPontosGeral = rankingAtual.find(j => j.id === jogador.id)?.totalPontos || 0;
-        const posicaoKO = (rankingKO.findIndex(j => j.id === jogador.id) + 1) || '-';
-        const totalPontosKO = rankingKO.find(j => j.id === jogador.id)?.totalPontosKO || 0;
+        const jogadorRanking = rankingAtual.find(j => j.id === jogador.id);
+        const posicaoGeral = jogadorRanking ? jogadorRanking.posicaoAtual : '-';
+        const totalPontosGeral = jogadorRanking?.totalPontos || 0;
+        
+        const jogadorKORanking = rankingKO.find(j => j.id === jogador.id);
+        const posicaoKO = jogadorKORanking ? jogadorKORanking.posicaoAtualKO : '-';
+        const totalPontosKO = jogadorKORanking?.totalPontosKO || 0;
         
         let icones = '';
         if (jogador.id === reiDaMesa) {
@@ -3028,30 +3069,6 @@ function renderizarAdminJogadores() {
         
         if (etapasCampeao) {
             icones += ` 🏆 (E${etapasCampeao})`;
-        }
-        
-        // Verificar se foi maior pontuador KO de alguma etapa
-        const maioresPontuadoresKO = [];
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            if (etapasKO[i]) {
-                let maiorPontuacao = -1;
-                let maiorPontuador = null;
-                
-                Object.entries(etapasKO[i]).forEach(([id, score]) => {
-                    if (score !== 'NJ' && !isNaN(parseInt(score)) && parseInt(score) > maiorPontuacao) {
-                        maiorPontuacao = parseInt(score);
-                        maiorPontuador = id;
-                    }
-                });
-                
-                if (maiorPontuador === jogador.id) {
-                    maioresPontuadoresKO.push(i);
-                }
-            }
-        }
-        
-        if (maioresPontuadoresKO.length > 0) {
-            icones += ` 🥊 (K${maioresPontuadoresKO.join(', K')})`;
         }
         
         html += `
