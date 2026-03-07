@@ -231,350 +231,65 @@ body {
     color: var(--down-color);
 }
 
-.legenda-stable {
-    color: var(--stable-color);
-}
-
-/* INDICADORES DE POSIÇÃO */
-.position-indicator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 5px;
-    font-size: 0.7rem;
-    min-width: 25px;
-}
-
-.position-up {
-    color: var(--up-color);
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.position-up span {
-    font-weight: 600;
-}
-
-.position-down {
-    color: var(--down-color);
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.position-down span {
-    font-weight: 600;
-}
-
-.position-stable {
-    color: var(--stable-color);
-    font-size: 0.8rem;
-}
-
-/* CONTAINER DA TABELA COM ROLAGEM HORIZONTAL E VERTICAL */
+/* TABELA DE RANKING */
 .ranking-container {
-    overflow: auto;
+    overflow-x: auto;
     padding: 0;
     max-height: calc(100vh - 300px);
-    position: relative;
+    overflow-y: auto;
 }
 
-/* WRAPPER DA TABELA */
-.table-wrapper {
-    position: relative;
-    min-width: 100%;
-}
-
-/* TABELA DE RANKING */
 .ranking-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 0.85rem;
-    min-width: 1200px; /* Garante largura mínima para rolagem */
 }
 
-/* CABEÇALHO FIXO */
 .ranking-table thead {
+    background: linear-gradient(180deg, #1a3d1a 0%, #163016 100%);
     position: sticky;
     top: 0;
-    z-index: 30;
+    z-index: 10;
 }
 
-/* COLUNAS FIXAS (POS, JOGADOR, PONTOS, DIF. LÍDER) */
-.ranking-table th:nth-child(1),
-.ranking-table th:nth-child(2),
-.ranking-table th:nth-child(3),
-.ranking-table th:nth-child(4),
-.ranking-table td:nth-child(1),
-.ranking-table td:nth-child(2),
-.ranking-table td:nth-child(3),
-.ranking-table td:nth-child(4) {
-    position: sticky;
-    background: inherit;
-    z-index: 25;
-    left: 0;
-}
-
-/* Ajuste específico para cada coluna fixa */
-.ranking-table th:nth-child(1),
-.ranking-table td:nth-child(1) {
-    left: 0;
-    width: 60px;
-    min-width: 60px;
-    max-width: 60px;
-    z-index: 28;
-}
-
-.ranking-table th:nth-child(2),
-.ranking-table td:nth-child(2) {
-    left: 60px;
-    width: 200px;
-    min-width: 200px;
-    max-width: 200px;
-    z-index: 27;
-}
-
-.ranking-table th:nth-child(3),
-.ranking-table td:nth-child(3) {
-    left: 260px;
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
-    z-index: 26;
-}
-
-.ranking-table th:nth-child(4),
-.ranking-table td:nth-child(4) {
-    left: 350px;
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
-    z-index: 25;
-}
-
-/* Garantir que o fundo das colunas fixas seja consistente ao rolar */
-.ranking-table th:nth-child(1),
-.ranking-table th:nth-child(2),
-.ranking-table th:nth-child(3),
-.ranking-table th:nth-child(4) {
-    background: linear-gradient(180deg, #1a3d1a 0%, #163016 100%);
-    z-index: 35;
-}
-
-.ranking-table.ko th:nth-child(1),
-.ranking-table.ko th:nth-child(2),
-.ranking-table.ko th:nth-child(3),
-.ranking-table.ko th:nth-child(4) {
+.ranking-table.ko thead {
     background: linear-gradient(180deg, #3d1a1a 0%, #301616 100%);
 }
 
-/* Fundo das células fixas para linhas ímpares */
-.ranking-table tbody tr:nth-child(odd) td:nth-child(1),
-.ranking-table tbody tr:nth-child(odd) td:nth-child(2),
-.ranking-table tbody tr:nth-child(odd) td:nth-child(3),
-.ranking-table tbody tr:nth-child(odd) td:nth-child(4) {
-    background-color: var(--bg-row);
+.ranking-table th {
+    padding: 10px 8px;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--primary);
+    white-space: nowrap;
 }
 
-/* Fundo das células fixas para linhas pares */
-.ranking-table tbody tr:nth-child(even) td:nth-child(1),
-.ranking-table tbody tr:nth-child(even) td:nth-child(2),
-.ranking-table tbody tr:nth-child(even) td:nth-child(3),
-.ranking-table tbody tr:nth-child(even) td:nth-child(4) {
-    background-color: var(--bg-row-alt);
+.ranking-table.ko th {
+    color: var(--ko-color);
+    border-bottom: 2px solid var(--ko-color);
 }
 
-/* TOP 10 - fundo especial para colunas fixas */
-.ranking-table tbody tr.top10:nth-child(odd) td:nth-child(1),
-.ranking-table tbody tr.top10:nth-child(odd) td:nth-child(2),
-.ranking-table tbody tr.top10:nth-child(odd) td:nth-child(3),
-.ranking-table tbody tr.top10:nth-child(odd) td:nth-child(4) {
-    background-color: var(--top10-row-odd);
+.ranking-table th:first-child {
+    padding-left: 15px;
 }
 
-.ranking-table tbody tr.top10:nth-child(even) td:nth-child(1),
-.ranking-table tbody tr.top10:nth-child(even) td:nth-child(2),
-.ranking-table tbody tr.top10:nth-child(even) td:nth-child(3),
-.ranking-table tbody tr.top10:nth-child(even) td:nth-child(4) {
-    background-color: var(--top10-row-even);
-}
-
-/* TOP 10 KO - fundo especial */
-.ranking-table.ko tbody tr.top10:nth-child(odd) td:nth-child(1),
-.ranking-table.ko tbody tr.top10:nth-child(odd) td:nth-child(2),
-.ranking-table.ko tbody tr.top10:nth-child(odd) td:nth-child(3),
-.ranking-table.ko tbody tr.top10:nth-child(odd) td:nth-child(4) {
-    background-color: rgba(255, 107, 107, 0.15);
-}
-
-.ranking-table.ko tbody tr.top10:nth-child(even) td:nth-child(1),
-.ranking-table.ko tbody tr.top10:nth-child(even) td:nth-child(2),
-.ranking-table.ko tbody tr.top10:nth-child(even) td:nth-child(3),
-.ranking-table.ko tbody tr.top10:nth-child(even) td:nth-child(4) {
-    background-color: rgba(255, 107, 107, 0.10);
-}
-
-/* DESTAQUES POR POSIÇÃO com gradiente - ajuste para colunas fixas */
-.ranking-row.pos-1 td:nth-child(1),
-.ranking-row.pos-1 td:nth-child(2),
-.ranking-row.pos-1 td:nth-child(3),
-.ranking-row.pos-1 td:nth-child(4) {
-    background: linear-gradient(90deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-2 td:nth-child(1),
-.ranking-row.pos-2 td:nth-child(2),
-.ranking-row.pos-2 td:nth-child(3),
-.ranking-row.pos-2 td:nth-child(4) {
-    background: linear-gradient(90deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-3 td:nth-child(1),
-.ranking-row.pos-3 td:nth-child(2),
-.ranking-row.pos-3 td:nth-child(3),
-.ranking-row.pos-3 td:nth-child(4) {
-    background: linear-gradient(90deg, rgba(205, 127, 50, 0.2) 0%, rgba(205, 127, 50, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-4 td:nth-child(1),
-.ranking-row.pos-4 td:nth-child(2),
-.ranking-row.pos-4 td:nth-child(3),
-.ranking-row.pos-4 td:nth-child(4) {
-    background: linear-gradient(90deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%) !important;
-}
-
-.ranking-row.pos-5 td:nth-child(1),
-.ranking-row.pos-5 td:nth-child(2),
-.ranking-row.pos-5 td:nth-child(3),
-.ranking-row.pos-5 td:nth-child(4) {
-    background: linear-gradient(90deg, rgba(76, 175, 80, 0.12) 0%, rgba(76, 175, 80, 0.04) 100%) !important;
-}
-
-/* Bordas para as colunas fixas */
-.ranking-table td:nth-child(1),
-.ranking-table td:nth-child(2),
-.ranking-table td:nth-child(3),
-.ranking-table td:nth-child(4) {
-    border-right: 1px solid var(--border);
-}
-
-.ranking-table td:nth-child(4) {
-    border-right: 2px solid var(--primary);
-}
-
-.ranking-table.ko td:nth-child(4) {
-    border-right: 2px solid var(--ko-color);
+.ranking-table th:last-child {
+    padding-right: 15px;
 }
 
 /* CABEÇALHO DAS ETAPAS - NÚMEROS 1-12 */
 .ranking-table th:nth-child(n+5) {
     text-align: center;
-    min-width: 40px;
-    padding: 10px 4px;
+    min-width: 32px;
+    padding: 10px 2px;
     font-family: 'Anton', sans-serif;
     font-size: 0.8rem;
-}
-
-/* CÉLULAS DAS ETAPAS */
-.ranking-table td:nth-child(n+5) {
-    text-align: center;
-    padding: 6px 4px;
-}
-
-/* ETAPAS */
-.etapa-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    min-width: 32px;
-    text-align: center;
-    background: var(--bg-dark);
-    color: var(--text);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-}
-
-.etapa-pill.present {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    border: none;
-}
-
-.etapa-pill.present.ko {
-    background: linear-gradient(135deg, var(--ko-color), var(--ko-color-dark));
-    color: white;
-    border: none;
-}
-
-.etapa-pill.zero {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-muted);
-    border: 1px dashed var(--border);
-}
-
-.etapa-pill.absent {
-    background: rgba(255, 71, 87, 0.15);
-    color: #FF4757;
-    border: 1px solid rgba(255, 71, 87, 0.2);
-}
-
-.etapa-pill.empty {
-    opacity: 0.2;
-    background: transparent;
-}
-
-.etapa-pill.champion {
-    background: linear-gradient(135deg, var(--gold), #b8860b);
-    color: #000;
-    border: none;
-    font-weight: 700;
-}
-
-.etapa-pill.champion span {
-    font-size: 0.65rem;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
-}
-
-.etapa-pill.present.ko.glove {
-    background: linear-gradient(135deg, var(--ko-color), #ff8a8a);
-    position: relative;
-    overflow: hidden;
-}
-
-.etapa-pill.present.ko.glove::after {
-    content: '🥊';
-    position: absolute;
-    top: -8px;
-    right: -5px;
-    font-size: 0.8rem;
-    transform: rotate(15deg);
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
-}
-
-/* SOMBRA PARA INDICAR ROLAGEM */
-.ranking-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 20px;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3));
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-    z-index: 45;
-}
-
-.ranking-container.scrolling::after {
-    opacity: 1;
 }
 
 /* LINHAS DO RANKING */
@@ -633,22 +348,27 @@ body {
 /* DESTAQUES POR POSIÇÃO COM BORDAS E CORES FORTES */
 .ranking-row.pos-1 {
     border-left: 4px solid var(--gold) !important;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.08) 100%) !important;
 }
 
 .ranking-row.pos-2 {
     border-left: 4px solid var(--silver) !important;
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.08) 100%) !important;
 }
 
 .ranking-row.pos-3 {
     border-left: 4px solid var(--bronze) !important;
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.2) 0%, rgba(205, 127, 50, 0.08) 100%) !important;
 }
 
 .ranking-row.pos-4 {
     border-left: 4px solid #4CAF50 !important;
+    background: linear-gradient(90deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%) !important;
 }
 
 .ranking-row.pos-5 {
     border-left: 4px solid #4CAF50 !important;
+    background: linear-gradient(90deg, rgba(76, 175, 80, 0.12) 0%, rgba(76, 175, 80, 0.04) 100%) !important;
 }
 
 .ranking-row.pos-6,
@@ -659,11 +379,26 @@ body {
     border-left: 4px solid #4CAF50 !important;
 }
 
+/* CÉLULAS DA TABELA */
+.ranking-table td {
+    padding: 6px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.ranking-table td:first-child {
+    padding-left: 15px;
+}
+
+.ranking-table td:last-child {
+    padding-right: 15px;
+}
+
 /* NÚMERO DO RANKING */
 .rank-cell {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
 }
 
 .rank-number {
@@ -690,6 +425,23 @@ body {
     background: rgba(255, 107, 107, 0.2);
     border-color: rgba(255, 107, 107, 0.4);
     color: var(--ko-color);
+}
+
+/* INDICADORES DE POSIÇÃO */
+.position-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    min-width: 20px;
+}
+
+.position-up {
+    color: var(--up-color);
+}
+
+.position-down {
+    color: var(--down-color);
 }
 
 /* JOGADOR */
@@ -853,6 +605,81 @@ body {
     color: #4CAF50;
     background: rgba(76, 175, 80, 0.15);
     border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* ETAPAS */
+.etapa-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 28px;
+    text-align: center;
+    background: var(--bg-dark);
+    color: var(--text);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.etapa-pill.present {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+}
+
+.etapa-pill.present.ko {
+    background: linear-gradient(135deg, var(--ko-color), var(--ko-color-dark));
+    color: white;
+    border: none;
+}
+
+.etapa-pill.zero {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+}
+
+.etapa-pill.absent {
+    background: rgba(255, 71, 87, 0.15);
+    color: #FF4757;
+    border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+.etapa-pill.empty {
+    opacity: 0.2;
+    background: transparent;
+}
+
+.etapa-pill.champion {
+    background: linear-gradient(135deg, var(--gold), #b8860b);
+    color: #000;
+    border: none;
+    font-weight: 700;
+}
+
+.etapa-pill.champion span {
+    font-size: 0.65rem;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+}
+
+.etapa-pill.present.ko.glove {
+    background: linear-gradient(135deg, var(--ko-color), #ff8a8a);
+    position: relative;
+    overflow: hidden;
+}
+
+.etapa-pill.present.ko.glove::after {
+    content: '🥊';
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    font-size: 0.8rem;
+    transform: rotate(15deg);
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
 }
 
 /* PAINEL ADMINISTRATIVO */
@@ -1543,34 +1370,9 @@ body {
         font-size: 1.5rem;
     }
     
-    .ranking-table th:nth-child(2),
-    .ranking-table td:nth-child(2) {
-        left: 60px;
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-    }
-    
-    .ranking-table th:nth-child(3),
-    .ranking-table td:nth-child(3) {
-        left: 210px;
-        width: 70px;
-        min-width: 70px;
-        max-width: 70px;
-    }
-    
-    .ranking-table th:nth-child(4),
-    .ranking-table td:nth-child(4) {
-        left: 280px;
-        width: 70px;
-        min-width: 70px;
-        max-width: 70px;
-    }
-    
-    .ranking-table th:nth-child(n+5) {
-        min-width: 35px;
-        font-size: 0.7rem;
-        padding: 10px 2px;
+    .ranking-table th,
+    .ranking-table td {
+        padding: 6px 4px;
     }
     
     .rank-number {
@@ -1588,6 +1390,12 @@ body {
         padding: 3px 8px;
         font-size: 0.9rem;
         min-width: 60px;
+    }
+    
+    .ranking-table th:nth-child(n+5) {
+        min-width: 28px;
+        font-size: 0.7rem;
+        padding: 10px 1px;
     }
     
     .etapa-pill.champion span {
@@ -1637,23 +1445,6 @@ body {
         padding: 5px 8px;
         font-size: 0.75rem;
         min-width: auto;
-    }
-    
-    .ranking-table th:nth-child(2),
-    .ranking-table td:nth-child(2) {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-    }
-    
-    .ranking-table th:nth-child(3),
-    .ranking-table td:nth-child(3) {
-        left: 180px;
-    }
-    
-    .ranking-table th:nth-child(4),
-    .ranking-table td:nth-child(4) {
-        left: 250px;
     }
     
     .points-input-admin input {
@@ -1742,51 +1533,45 @@ body {
                     </div>
                     <div class="legenda-item">
                         <span class="legenda-icone legenda-up">⬆️</span>
-                        <span>Subiu de posição</span>
+                        <span>Subiu em relação à etapa anterior</span>
                     </div>
                     <div class="legenda-item">
                         <span class="legenda-icone legenda-down">⬇️</span>
-                        <span>Desceu de posição</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-stable">●</span>
-                        <span>Manteve posição</span>
+                        <span>Desceu em relação à etapa anterior</span>
                     </div>
                 </div>
             </div>
             
-            <div class="ranking-container" id="rankingContainer">
-                <div class="table-wrapper">
-                    <table class="ranking-table" id="rankingTable">
-                        <thead id="rankingTableHead">
-                            <tr>
-                                <th style="width: 60px;">POS</th>
-                                <th style="width: 200px;">JOGADOR</th>
-                                <th style="width: 90px; text-align: center;">PONTOS</th>
-                                <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th>5</th>
-                                <th>6</th>
-                                <th>7</th>
-                                <th>8</th>
-                                <th>9</th>
-                                <th>10</th>
-                                <th>11</th>
-                                <th>12</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rankingTableBody">
-                            <tr>
-                                <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                                    Carregando ranking...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="ranking-container">
+                <table class="ranking-table" id="rankingTable">
+                    <thead id="rankingTableHead">
+                        <tr>
+                            <th style="width: 70px;">POS</th>
+                            <th>JOGADOR</th>
+                            <th style="width: 90px; text-align: center;">PONTOS</th>
+                            <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                            <th>11</th>
+                            <th>12</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingTableBody">
+                        <tr>
+                            <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
+                                Carregando ranking...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -1814,51 +1599,45 @@ body {
                     </div>
                     <div class="legenda-item">
                         <span class="legenda-icone legenda-up">⬆️</span>
-                        <span>Subiu de posição</span>
+                        <span>Subiu em relação à etapa anterior</span>
                     </div>
                     <div class="legenda-item">
                         <span class="legenda-icone legenda-down">⬇️</span>
-                        <span>Desceu de posição</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-stable">●</span>
-                        <span>Manteve posição</span>
+                        <span>Desceu em relação à etapa anterior</span>
                     </div>
                 </div>
             </div>
             
-            <div class="ranking-container" id="rankingContainerKO">
-                <div class="table-wrapper">
-                    <table class="ranking-table ko" id="rankingTableKO">
-                        <thead id="rankingTableHeadKO">
-                            <tr>
-                                <th style="width: 60px;">POS</th>
-                                <th style="width: 200px;">JOGADOR</th>
-                                <th style="width: 90px; text-align: center;">PONTOS KO</th>
-                                <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th>5</th>
-                                <th>6</th>
-                                <th>7</th>
-                                <th>8</th>
-                                <th>9</th>
-                                <th>10</th>
-                                <th>11</th>
-                                <th>12</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rankingTableBodyKO">
-                            <tr>
-                                <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                                    Carregando ranking KO...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="ranking-container">
+                <table class="ranking-table ko" id="rankingTableKO">
+                    <thead id="rankingTableHeadKO">
+                        <tr>
+                            <th style="width: 70px;">POS</th>
+                            <th>JOGADOR</th>
+                            <th style="width: 90px; text-align: center;">PONTOS KO</th>
+                            <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                            <th>11</th>
+                            <th>12</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingTableBodyKO">
+                        <tr>
+                            <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
+                                Carregando ranking KO...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -2252,21 +2031,6 @@ const adminKO = document.getElementById('adminKO');
 const selectReiDaMesa = document.getElementById('selectReiDaMesa');
 const selectMelhorMao = document.getElementById('selectMelhorMao');
 
-// Detectar rolagem horizontal para mostrar sombra
-function setupHorizontalScroll() {
-    const containers = document.querySelectorAll('.ranking-container');
-    
-    containers.forEach(container => {
-        container.addEventListener('scroll', () => {
-            if (container.scrollLeft > 0) {
-                container.classList.add('scrolling');
-            } else {
-                container.classList.remove('scrolling');
-            }
-        });
-    });
-}
-
 async function carregarDados() {
     try {
         const dadosJogadores = await db.get('rankingJogadores');
@@ -2308,8 +2072,6 @@ async function carregarDados() {
         if (modoAdmin) {
             renderizarCampeoesEtapas();
         }
-        
-        setupHorizontalScroll();
         
     } catch (e) {
         console.error('Erro ao carregar dados:', e);
@@ -2367,7 +2129,6 @@ btnViewRanking.onclick = () => {
         viewRanking.style.display = 'block';
         viewRankingKO.style.display = 'none';
         atualizarRankingGeral();
-        setTimeout(setupHorizontalScroll, 100);
     }
 };
 
@@ -2379,7 +2140,6 @@ btnViewRankingKO.onclick = () => {
         viewRanking.style.display = 'none';
         viewRankingKO.style.display = 'block';
         atualizarRankingKO();
-        setTimeout(setupHorizontalScroll, 100);
     }
 };
 
@@ -2584,44 +2344,28 @@ window.salvarCampeoes = async function() {
     }
 };
 
-// Função para calcular a variação de posição
+// Função para calcular a variação de posição em relação à etapa anterior
 function calcularVariacaoPosicao(posicaoAtual, posicaoAnterior) {
     if (!posicaoAnterior || posicaoAnterior === 0) return null;
     
-    const variacao = posicaoAnterior - posicaoAtual;
-    
-    if (variacao > 0) {
-        return {
-            tipo: 'up',
-            valor: variacao
-        };
-    } else if (variacao < 0) {
-        return {
-            tipo: 'down',
-            valor: Math.abs(variacao)
-        };
-    } else {
-        return {
-            tipo: 'stable',
-            valor: 0
-        };
+    if (posicaoAtual < posicaoAnterior) {
+        return 'up';
+    } else if (posicaoAtual > posicaoAnterior) {
+        return 'down';
     }
+    return null;
 }
 
 // Função para gerar HTML do indicador de posição
 function getPositionIndicatorHTML(variacao) {
     if (!variacao) return '';
     
-    switch(variacao.tipo) {
-        case 'up':
-            return `<span class="position-indicator position-up" title="Subiu ${variacao.valor} posição(ões)">⬆️ <span>${variacao.valor}</span></span>`;
-        case 'down':
-            return `<span class="position-indicator position-down" title="Desceu ${variacao.valor} posição(ões)">⬇️ <span>${variacao.valor}</span></span>`;
-        case 'stable':
-            return `<span class="position-indicator position-stable" title="Manteve a posição">●</span>`;
-        default:
-            return '';
+    if (variacao === 'up') {
+        return `<span class="position-indicator position-up" title="Subiu em relação à etapa anterior">⬆️</span>`;
+    } else if (variacao === 'down') {
+        return `<span class="position-indicator position-down" title="Desceu em relação à etapa anterior">⬇️</span>`;
     }
+    return '';
 }
 
 // Funções de Ranking Geral com critérios de desempate
@@ -3370,18 +3114,12 @@ btnExportarCSV.onclick = function() {
         const isMelhorMao = jogador.id === melhorMao ? 'SIM' : 'NÃO';
         
         let variacao = '';
-        if (jogador.variacao) {
-            if (jogador.variacao.tipo === 'up') variacao = `+${jogador.variacao.valor}`;
-            else if (jogador.variacao.tipo === 'down') variacao = `-${jogador.variacao.valor}`;
-            else variacao = '0';
-        }
+        if (jogador.variacao === 'up') variacao = 'Subiu';
+        else if (jogador.variacao === 'down') variacao = 'Desceu';
         
         let variacaoKO = '';
-        if (jogadorKO?.variacaoKO) {
-            if (jogadorKO.variacaoKO.tipo === 'up') variacaoKO = `+${jogadorKO.variacaoKO.valor}`;
-            else if (jogadorKO.variacaoKO.tipo === 'down') variacaoKO = `-${jogadorKO.variacaoKO.valor}`;
-            else variacaoKO = '0';
-        }
+        if (jogadorKO?.variacaoKO === 'up') variacaoKO = 'Subiu';
+        else if (jogadorKO?.variacaoKO === 'down') variacaoKO = 'Desceu';
         
         csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.vezesPrimeiro},${jogador.koAcumulado},"${variacao}",${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${posicaoKO},"${variacaoKO}"`;
         
