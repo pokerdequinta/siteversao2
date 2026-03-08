@@ -32,6 +32,7 @@
     --crown-gold: #FFD700;
     --card-red: #FF4444;
     --glove-color: #FF8C00;
+    --champion-color: #FFD700;
 }
 
 * {
@@ -216,8 +217,8 @@ body {
     color: var(--card-red);
 }
 
-.legenda-glove {
-    color: var(--glove-color);
+.legenda-trophy {
+    color: var(--champion-color);
 }
 
 /* TABELA DE RANKING */
@@ -466,7 +467,7 @@ body {
     color: var(--gold);
     filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
     font-size: 1rem;
-    margin-left: 4px;
+    margin-left: 2px;
     animation: trophyGlow 2s ease-in-out infinite;
 }
 
@@ -707,6 +708,10 @@ body {
 
 .config-item.card h4 {
     color: var(--card-red);
+}
+
+.config-item.trophy h4 {
+    color: var(--champion-color);
 }
 
 /* SISTEMA DE PONTUAÇÃO */
@@ -1191,6 +1196,10 @@ body {
     border-color: var(--card-red);
 }
 
+.player-select.trophy:focus {
+    border-color: var(--champion-color);
+}
+
 .save-config-btn {
     width: 100%;
     padding: 8px;
@@ -1227,6 +1236,15 @@ body {
 
 .save-config-btn.card:hover {
     background: #ff2a2a;
+}
+
+.save-config-btn.trophy {
+    background: var(--champion-color);
+    color: #000;
+}
+
+.save-config-btn.trophy:hover {
+    background: #e6c200;
 }
 
 /* RESPONSIVIDADE */
@@ -1385,8 +1403,8 @@ body {
                         <span>Melhor mão da etapa anterior</span>
                     </div>
                     <div class="legenda-item">
-                        <span class="legenda-icone legenda-glove">🥊</span>
-                        <span>Maior pontuação KO na etapa (destaque laranja)</span>
+                        <span class="legenda-icone legenda-trophy">🏆</span>
+                        <span>Campeão da etapa</span>
                     </div>
                 </div>
             </div>
@@ -1534,6 +1552,26 @@ body {
                         </button>
                         <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
                             O jogador com a melhor mão aparecerá com uma carta 🃏 ao lado do nome
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVA CONFIGURAÇÃO: CAMPEÃO DE CADA ETAPA -->
+                <div class="config-item trophy" style="grid-column: span 2;">
+                    <h4>
+                        <span class="trophy-icon">🏆</span>
+                        <span>CAMPEÕES POR ETAPA</span>
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px;" id="campeoesEtapaContainer">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button class="save-config-btn trophy" onclick="salvarCampeoesEtapa()">
+                            <span>💾</span>
+                            <span>Salvar Campeões das Etapas</span>
+                        </button>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
+                            Defina o campeão de cada etapa para aparecer o troféu 🏆 ao lado da pontuação no ranking geral
                         </div>
                     </div>
                 </div>
@@ -1745,6 +1783,7 @@ let rankingKO = [];
 let viewAtual = 'rankingGeral';
 let reiDaMesa = null;
 let melhorMao = null;
+let campeoesEtapa = {}; // Objeto para armazenar os campeões de cada etapa
 
 class FirebaseDB {
     constructor(config) {
@@ -1846,6 +1885,7 @@ const adminGeral = document.getElementById('adminGeral');
 const adminKO = document.getElementById('adminKO');
 const selectReiDaMesa = document.getElementById('selectReiDaMesa');
 const selectMelhorMao = document.getElementById('selectMelhorMao');
+const campeoesEtapaContainer = document.getElementById('campeoesEtapaContainer');
 
 async function carregarDados() {
     try {
@@ -1853,6 +1893,7 @@ async function carregarDados() {
         const dadosEtapas = await db.get('rankingEtapas');
         const dadosEtapasKO = await db.get('rankingEtapasKO');
         const dadosConfig = await db.get('configuracoes');
+        const dadosCampeoes = await db.get('campeoesEtapa');
         
         if (dadosJogadores) {
             jogadores = Object.keys(dadosJogadores).map(key => ({
@@ -1874,11 +1915,16 @@ async function carregarDados() {
             melhorMao = dadosConfig.melhorMao || null;
         }
         
+        if (dadosCampeoes) {
+            campeoesEtapa = dadosCampeoes;
+        }
+        
         statusIndicator.textContent = '✅ Conectado';
         statusIndicator.classList.add('connected');
         
         calcularRankings();
         atualizarSelectsEspeciais();
+        renderizarCampeoesEtapa();
         
     } catch (e) {
         console.error('Erro ao carregar dados:', e);
@@ -1914,9 +1960,10 @@ btnAcessarAdmin.onclick = () => {
         renderizarPlayersPoints('geral');
         renderizarAdminJogadores();
         atualizarSelectsEspeciais();
+        renderizarCampeoesEtapa();
         
         setTimeout(() => {
-            alert('🔓 Modo Administrador ATIVADO!\n\nVocê agora pode gerenciar jogadores e pontuações.');
+            alert('🔓 Modo Administrador ATIVADO!\n\nVocê agora pode gerenciar jogadores, pontuações e campeões de cada etapa.');
         }, 300);
         
     } else {
@@ -2015,6 +2062,7 @@ btnAdicionarJogador.onclick = async () => {
             renderizarPlayersPoints(adminTipo);
             renderizarAdminJogadores();
             atualizarSelectsEspeciais();
+            renderizarCampeoesEtapa();
         }
         
     } catch (e) {
@@ -2051,6 +2099,37 @@ function atualizarSelectsEspeciais() {
         }
         selectMelhorMao.appendChild(optionMao);
     });
+}
+
+// Renderizar selects para campeões de cada etapa
+function renderizarCampeoesEtapa() {
+    if (!campeoesEtapaContainer) return;
+    
+    campeoesEtapaContainer.innerHTML = '';
+    
+    const jogadoresOrdenados = [...jogadores].sort((a, b) => 
+        a.nome.localeCompare(b.nome)
+    );
+    
+    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+        const div = document.createElement('div');
+        div.style.backgroundColor = 'var(--bg-dark)';
+        div.style.padding = '8px';
+        div.style.borderRadius = '4px';
+        div.style.border = '1px solid var(--border)';
+        
+        div.innerHTML = `
+            <div style="font-weight: 700; color: var(--champion-color); margin-bottom: 5px; text-align: center;">
+                ETAPA ${i}
+            </div>
+            <select class="player-select trophy" id="campeaoEtapa_${i}" style="width: 100%;">
+                <option value="">Nenhum</option>
+                ${jogadoresOrdenados.map(j => `<option value="${j.id}" ${campeoesEtapa[i] === j.id ? 'selected' : ''}>${j.nome}</option>`).join('')}
+            </select>
+        `;
+        
+        campeoesEtapaContainer.appendChild(div);
+    }
 }
 
 // Funções para salvar configurações especiais
@@ -2104,29 +2183,39 @@ window.salvarMelhorMao = async function() {
     }
 };
 
+// NOVA FUNÇÃO: Salvar campeões de cada etapa
+window.salvarCampeoesEtapa = async function() {
+    const novosCampeoes = {};
+    
+    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+        const select = document.getElementById(`campeaoEtapa_${i}`);
+        if (select && select.value) {
+            novosCampeoes[i] = select.value;
+        }
+    }
+    
+    try {
+        await db.set('campeoesEtapa', novosCampeoes);
+        campeoesEtapa = novosCampeoes;
+        
+        alert('✅ Campeões das etapas salvos com sucesso!');
+        
+        // Atualizar ranking se estiver na view geral
+        if (viewAtual === 'rankingGeral') {
+            atualizarRankingGeral();
+        }
+        
+    } catch (e) {
+        alert('❌ Erro ao salvar campeões: ' + e.message);
+    }
+};
+
 // Função para contar quantas vezes o jogador terminou em primeiro lugar
 function contarPrimeirosLugares(jogadorId) {
     let count = 0;
     for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const etapa = etapas[i];
-        if (etapa) {
-            // Encontrar a maior pontuação da etapa
-            let maxPontos = 0;
-            let vencedorId = null;
-            
-            Object.entries(etapa).forEach(([id, pontos]) => {
-                if (pontos !== 'NJ' && pontos !== null) {
-                    const pontosNum = parseInt(pontos);
-                    if (!isNaN(pontosNum) && pontosNum > maxPontos) {
-                        maxPontos = pontosNum;
-                        vencedorId = id;
-                    }
-                }
-            });
-            
-            if (vencedorId === jogadorId) {
-                count++;
-            }
+        if (campeoesEtapa[i] === jogadorId) {
+            count++;
         }
     }
     return count;
@@ -2145,27 +2234,6 @@ function calcularTotalKO(jogadorId) {
         }
     }
     return totalKO;
-}
-
-// Função para encontrar o vencedor de cada etapa (para o ícone de troféu)
-function encontrarVencedorEtapa(etapaNum) {
-    const etapa = etapas[etapaNum];
-    if (!etapa) return null;
-    
-    let maxPontos = -1;
-    let vencedorId = null;
-    
-    Object.entries(etapa).forEach(([id, pontos]) => {
-        if (pontos !== 'NJ' && pontos !== null) {
-            const pontosNum = parseInt(pontos);
-            if (!isNaN(pontosNum) && pontosNum > maxPontos) {
-                maxPontos = pontosNum;
-                vencedorId = id;
-            }
-        }
-    });
-    
-    return vencedorId;
 }
 
 // Função para encontrar a maior pontuação KO de cada etapa
@@ -2213,7 +2281,7 @@ function calcularRankingGeral() {
         const melhoresPontuacoes = pontuacoes.sort((a, b) => b - a).slice(0, 10);
         const totalPontos = melhoresPontuacoes.reduce((sum, p) => sum + p, 0);
         
-        // Contar primeiros lugares
+        // Contar primeiros lugares (baseado nos campeões definidos manualmente)
         const primeirosLugares = contarPrimeirosLugares(jogador.id);
         
         // Calcular total KO
@@ -2359,13 +2427,12 @@ function atualizarRankingGeral() {
                 } else if (parseInt(score) > 0) {
                     etapaClass = 'present';
                     etapaText = score;
-                    
-                    // Verificar se o jogador foi campeão da etapa (maior pontuação)
-                    const vencedorEtapa = encontrarVencedorEtapa(i);
-                    if (vencedorEtapa === jogador.id) {
-                        iconeExtra = ' <span class="trophy-icon" title="Campeão da etapa">🏆</span>';
-                    }
                 }
+            }
+            
+            // Verificar se o jogador foi campeão da etapa (configurado manualmente)
+            if (campeoesEtapa[i] === jogador.id) {
+                iconeExtra = ' <span class="trophy-icon" title="Campeão da etapa">🏆</span>';
             }
             
             etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeExtra}</div></td>`;
@@ -2772,6 +2839,16 @@ window.removerJogador = async function(id, nome) {
             melhorMao = null;
         }
         
+        // Remover o jogador dos campeões de etapa se ele for campeão de alguma
+        const campeoesAtualizados = {};
+        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+            if (campeoesEtapa[i] !== id) {
+                campeoesAtualizados[i] = campeoesEtapa[i];
+            }
+        }
+        await db.set('campeoesEtapa', campeoesAtualizados);
+        campeoesEtapa = campeoesAtualizados;
+        
         alert('✅ Jogador removido com sucesso!');
         
         await carregarDados();
@@ -2779,6 +2856,7 @@ window.removerJogador = async function(id, nome) {
             renderizarPlayersPoints(adminTipo);
             renderizarAdminJogadores();
             atualizarSelectsEspeciais();
+            renderizarCampeoesEtapa();
         }
         
     } catch (e) {
@@ -2867,4 +2945,3 @@ senhaAdmin.addEventListener('keypress', (e) => {
 </script>
 </body>
 </html>
-
