@@ -1447,7 +1447,7 @@ body {
         </div>
 
         <div style="text-align: center; margin-top: 12px; color: var(--text-muted); font-size: 0.75rem; padding: 10px; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);">
-            ℹ️ Este ranking contabiliza as pontuações de cada Etapa + KO.
+            ℹ️ Critérios de desempate: 1º Pontos | 2º Participações | 3º 1º lugares | 4º KO acumulados
         </div>
     </div>
 
@@ -1462,23 +1462,11 @@ body {
                 <div style="color: var(--text-muted); font-size: 0.75rem;">
                     Ranking baseado nas pontuações de KO.
                 </div>
-                <!-- LEGENDAS ESPECIAIS DO RANKING KO -->
+                <!-- LEGENDA DO RANKING KO - APENAS ÍCONE DA LUVA -->
                 <div class="legendas-especiais">
                     <div class="legenda-item">
                         <span class="legenda-icone legenda-glove">🥊</span>
-                        <span>Maior pontuação KO da etapa (destaque laranja)</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone">0</span>
-                        <span>Participou mas não fez KO</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone">NJ</span>
-                        <span>Não jogou a etapa</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone">-</span>
-                        <span>Etapa não realizada</span>
+                        <span>Maior pontuação KO da etapa</span>
                     </div>
                 </div>
             </div>
@@ -1517,7 +1505,7 @@ body {
         </div>
 
         <div style="text-align: center; margin-top: 12px; color: var(--text-muted); font-size: 0.75rem; padding: 10px; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);">
-            ℹ️ Este ranking contabiliza apenas as pontuações de KO.
+            ℹ️ Critérios de desempate: 1º Pontos | 2º Participações | 3º 1º lugares
         </div>
     </div>
 
@@ -2284,6 +2272,33 @@ function encontrarMaiorKOEtapa(etapaNum) {
     return { max: maxPontos, jogadores: jogadoresComMax };
 }
 
+// Função para contar primeiros lugares no ranking KO (baseado nas pontuações)
+function contarPrimeirosLugaresKO(jogadorId) {
+    let count = 0;
+    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+        const etapa = etapasKO[i];
+        if (etapa) {
+            let maxPontos = 0;
+            let vencedorId = null;
+            
+            Object.entries(etapa).forEach(([id, pontos]) => {
+                if (pontos !== 'NJ' && pontos !== null) {
+                    const pontosNum = parseInt(pontos);
+                    if (!isNaN(pontosNum) && pontosNum > maxPontos) {
+                        maxPontos = pontosNum;
+                        vencedorId = id;
+                    }
+                }
+            });
+            
+            if (vencedorId === jogadorId) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
 // Funções de Ranking Geral
 function calcularRankingGeral() {
     const rankingCalculado = jogadores.map(jogador => {
@@ -2368,17 +2383,30 @@ function calcularRankingKO() {
         const melhoresPontuacoesKO = pontuacoesKO.sort((a, b) => b - a).slice(0, 10);
         const totalPontosKO = melhoresPontuacoesKO.reduce((sum, p) => sum + p, 0);
         
+        // Contar primeiros lugares no KO
+        const primeirosLugaresKO = contarPrimeirosLugaresKO(jogador.id);
+        
         return {
             ...jogador,
             totalPontosKO: totalPontosKO,
             participacoesKO: participacoesKO,
+            primeirosLugaresKO: primeirosLugaresKO,
             melhoresPontuacoesKO: melhoresPontuacoesKO
         };
     });
     
+    // Ordenar por critérios de desempate do KO
     rankingCalculado.sort((a, b) => {
+        // 1. Maior número de pontos
         if (b.totalPontosKO !== a.totalPontosKO) return b.totalPontosKO - a.totalPontosKO;
+        
+        // 2. Maior número de participações
         if (b.participacoesKO !== a.participacoesKO) return b.participacoesKO - a.participacoesKO;
+        
+        // 3. Maior número de 1º lugar nas etapas
+        if (b.primeirosLugaresKO !== a.primeirosLugaresKO) return b.primeirosLugaresKO - a.primeirosLugaresKO;
+        
+        // Desempate final por ordem alfabética
         return a.nome.localeCompare(b.nome);
     });
     
@@ -2583,9 +2611,6 @@ function atualizarRankingKO() {
         const tr = document.createElement('tr');
         tr.className = `ranking-row ${isTop10 ? 'top10 ko' : 'other'} pos-${isTop10 ? rank : ''}`;
         
-        // Verificar se o jogador tem a maior pontuação KO geral
-        const isMaiorKO = jogador.totalPontosKO === primeiroColocadoPontosKO && primeiroColocadoPontosKO > 0;
-        
         tr.innerHTML = `
             <td>
                 <div class="rank-cell">
@@ -2599,13 +2624,11 @@ function atualizarRankingKO() {
                          alt="${jogador.nome}"
                          onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
                     <div class="player-name">${jogador.nome}</div>
-                    ${isMaiorKO ? '<span class="glove-icon" title="Maior pontuação KO acumulada">🥊</span>' : ''}
                 </div>
             </td>
             <td class="points-cell">
-                <div class="points ko ${isMaiorKO ? 'highlight' : ''} pos-${rank <= 3 ? rank : ''}">
+                <div class="points ko pos-${rank <= 3 ? rank : ''}">
                     ${jogador.totalPontosKO}
-                    ${isMaiorKO ? ' 🥊' : ''}
                 </div>
             </td>
             <td class="diff-cell">
@@ -2908,7 +2931,7 @@ btnExportarCSV.onclick = function() {
     const ranking = calcularRankingGeral();
     const rankingKOCalc = calcularRankingKO();
     
-    let csv = 'Posição,Jogador,Pontos Totais (Geral),Participações (Geral),1º Lugares,Total KO,Diferença para Líder (Geral),Rei da Mesa,Melhor Mão,Pontos KO,Participações KO,Posição KO';
+    let csv = 'Posição,Jogador,Pontos Totais (Geral),Participações (Geral),1º Lugares,Total KO,Diferença para Líder (Geral),Rei da Mesa,Melhor Mão,Pontos KO,Participações KO,1º Lugares KO,Posição KO';
     
     for (let i = 1; i <= TOTAL_ETAPAS; i++) {
         csv += `,Etapa ${i} Geral`;
@@ -2925,11 +2948,12 @@ btnExportarCSV.onclick = function() {
         const jogadorKO = rankingKOCalc.find(j => j.id === jogador.id);
         const pontosKO = jogadorKO?.totalPontosKO || 0;
         const participacoesKO = jogadorKO?.participacoesKO || 0;
+        const primeirosLugaresKO = jogadorKO?.primeirosLugaresKO || 0;
         const posicaoKO = jogadorKO?.posicaoAtualKO || '-';
         const isReiDaMesa = jogador.id === reiDaMesa ? 'SIM' : 'NÃO';
         const isMelhorMao = jogador.id === melhorMao ? 'SIM' : 'NÃO';
         
-        csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.primeirosLugares},${jogador.totalKO},${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${posicaoKO}`;
+        csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.primeirosLugares},${jogador.totalKO},${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${primeirosLugaresKO},${posicaoKO}`;
         
         // Pontuações gerais
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
