@@ -1794,7 +1794,7 @@ let rankingKO = [];
 let viewAtual = 'rankingGeral';
 let reiDaMesa = null;
 let melhorMao = null;
-let campeoesEtapa = {}; // Objeto para armazenar os campeões de cada etapa
+let campeoesEtapa = {};
 
 class FirebaseDB {
     constructor(config) {
@@ -2083,16 +2083,13 @@ btnAdicionarJogador.onclick = async () => {
 
 // Atualizar selects especiais
 function atualizarSelectsEspeciais() {
-    // Limpar selects
     selectReiDaMesa.innerHTML = '<option value="">Selecione o Rei da Mesa</option>';
     selectMelhorMao.innerHTML = '<option value="">Selecione a Melhor Mão</option>';
     
-    // Ordenar jogadores alfabeticamente
     const jogadoresOrdenados = [...jogadores].sort((a, b) => 
         a.nome.localeCompare(b.nome)
     );
     
-    // Preencher selects
     jogadoresOrdenados.forEach(jogador => {
         const optionRei = document.createElement('option');
         optionRei.value = jogador.id;
@@ -2159,7 +2156,6 @@ window.salvarReiDaMesa = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Rei da Mesa definido como: ${jogadorSelecionado.nome}`);
         
-        // Atualizar ranking se estiver na view geral
         if (viewAtual === 'rankingGeral') {
             atualizarRankingGeral();
         }
@@ -2184,7 +2180,6 @@ window.salvarMelhorMao = async function() {
         const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
         alert(`✅ Melhor mão definida para: ${jogadorSelecionado.nome}`);
         
-        // Atualizar ranking se estiver na view geral
         if (viewAtual === 'rankingGeral') {
             atualizarRankingGeral();
         }
@@ -2194,7 +2189,6 @@ window.salvarMelhorMao = async function() {
     }
 };
 
-// NOVA FUNÇÃO: Salvar campeões de cada etapa
 window.salvarCampeoesEtapa = async function() {
     const novosCampeoes = {};
     
@@ -2211,7 +2205,6 @@ window.salvarCampeoesEtapa = async function() {
         
         alert('✅ Campeões das etapas salvos com sucesso!');
         
-        // Atualizar ranking se estiver na view geral
         if (viewAtual === 'rankingGeral') {
             atualizarRankingGeral();
         }
@@ -2221,7 +2214,7 @@ window.salvarCampeoesEtapa = async function() {
     }
 };
 
-// Função para contar quantas vezes o jogador terminou em primeiro lugar
+// Função para contar quantas vezes o jogador terminou em primeiro lugar no ranking geral
 function contarPrimeirosLugares(jogadorId) {
     let count = 0;
     for (let i = 1; i <= TOTAL_ETAPAS; i++) {
@@ -2272,28 +2265,32 @@ function encontrarMaiorKOEtapa(etapaNum) {
     return { max: maxPontos, jogadores: jogadoresComMax };
 }
 
-// Função para contar primeiros lugares no ranking KO (baseado nas pontuações)
+// Função para contar primeiros lugares no ranking KO
 function contarPrimeirosLugaresKO(jogadorId) {
     let count = 0;
     for (let i = 1; i <= TOTAL_ETAPAS; i++) {
         const etapa = etapasKO[i];
-        if (etapa) {
-            let maxPontos = 0;
-            let vencedorId = null;
+        if (!etapa) continue;
+        
+        let maxPontos = -1;
+        let vencedores = [];
+        
+        Object.entries(etapa).forEach(([id, pontos]) => {
+            if (pontos === 'NJ' || pontos === null) return;
             
-            Object.entries(etapa).forEach(([id, pontos]) => {
-                if (pontos !== 'NJ' && pontos !== null) {
-                    const pontosNum = parseInt(pontos);
-                    if (!isNaN(pontosNum) && pontosNum > maxPontos) {
-                        maxPontos = pontosNum;
-                        vencedorId = id;
-                    }
+            const pontosNum = parseInt(pontos);
+            if (!isNaN(pontosNum) && pontosNum > 0) {
+                if (pontosNum > maxPontos) {
+                    maxPontos = pontosNum;
+                    vencedores = [id];
+                } else if (pontosNum === maxPontos) {
+                    vencedores.push(id);
                 }
-            });
-            
-            if (vencedorId === jogadorId) {
-                count++;
             }
+        });
+        
+        if (maxPontos > 0 && vencedores.includes(jogadorId)) {
+            count++;
         }
     }
     return count;
@@ -2319,10 +2316,7 @@ function calcularRankingGeral() {
         const melhoresPontuacoes = pontuacoes.sort((a, b) => b - a).slice(0, 10);
         const totalPontos = melhoresPontuacoes.reduce((sum, p) => sum + p, 0);
         
-        // Contar primeiros lugares (baseado nos campeões definidos manualmente)
         const primeirosLugares = contarPrimeirosLugares(jogador.id);
-        
-        // Calcular total KO
         const totalKO = calcularTotalKO(jogador.id);
         
         return {
@@ -2337,21 +2331,11 @@ function calcularRankingGeral() {
         };
     });
     
-    // Ordenar por critérios de desempate
     rankingCalculado.sort((a, b) => {
-        // 1. Maior número de pontos
         if (b.totalPontos !== a.totalPontos) return b.totalPontos - a.totalPontos;
-        
-        // 2. Maior número de participações
         if (b.participacoes !== a.participacoes) return b.participacoes - a.participacoes;
-        
-        // 3. Maior número de vezes que terminou em primeiro lugar
         if (b.primeirosLugares !== a.primeirosLugares) return b.primeirosLugares - a.primeirosLugares;
-        
-        // 4. Melhor número de KO acumulados
         if (b.totalKO !== a.totalKO) return b.totalKO - a.totalKO;
-        
-        // Desempate final por ordem alfabética
         return a.nome.localeCompare(b.nome);
     });
     
@@ -2363,27 +2347,39 @@ function calcularRankingGeral() {
     return rankingCalculado;
 }
 
-// Funções de Ranking KO
+// Funções de Ranking KO - CORRIGIDA
 function calcularRankingKO() {
     const rankingCalculado = jogadores.map(jogador => {
         const pontuacoesKO = [];
         let participacoesKO = 0;
+        let totalPontosKO = 0;
         
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id];
-            if (score !== undefined && score !== null && score !== 'NJ') {
-                const pontos = parseInt(score);
-                if (!isNaN(pontos) && pontos > 0) {
-                    pontuacoesKO.push(pontos);
+            
+            if (score === undefined || score === null) {
+                continue;
+            }
+            
+            if (score === 'NJ') {
+                continue;
+            }
+            
+            const pontosNum = parseInt(score);
+            if (!isNaN(pontosNum)) {
+                if (pontosNum > 0) {
+                    pontuacoesKO.push(pontosNum);
+                    totalPontosKO += pontosNum;
+                    participacoesKO++;
+                } else if (pontosNum === 0) {
                     participacoesKO++;
                 }
             }
         }
         
-        const melhoresPontuacoesKO = pontuacoesKO.sort((a, b) => b - a).slice(0, 10);
-        const totalPontosKO = melhoresPontuacoesKO.reduce((sum, p) => sum + p, 0);
+        const melhoresPontuacoesKO = [...pontuacoesKO].sort((a, b) => b - a).slice(0, 10);
+        totalPontosKO = melhoresPontuacoesKO.reduce((sum, p) => sum + p, 0);
         
-        // Contar primeiros lugares no KO
         const primeirosLugaresKO = contarPrimeirosLugaresKO(jogador.id);
         
         return {
@@ -2395,18 +2391,10 @@ function calcularRankingKO() {
         };
     });
     
-    // Ordenar por critérios de desempate do KO
     rankingCalculado.sort((a, b) => {
-        // 1. Maior número de pontos
         if (b.totalPontosKO !== a.totalPontosKO) return b.totalPontosKO - a.totalPontosKO;
-        
-        // 2. Maior número de participações
         if (b.participacoesKO !== a.participacoesKO) return b.participacoesKO - a.participacoesKO;
-        
-        // 3. Maior número de 1º lugar nas etapas
         if (b.primeirosLugaresKO !== a.primeirosLugaresKO) return b.primeirosLugaresKO - a.primeirosLugaresKO;
-        
-        // Desempate final por ordem alfabética
         return a.nome.localeCompare(b.nome);
     });
     
@@ -2454,7 +2442,6 @@ function atualizarRankingGeral() {
         const diferencaPontos = primeiroColocadoPontos - jogador.totalPontos;
         const diffClass = rank === 1 ? 'leader' : '';
         
-        // Gerar ícones especiais
         let iconesHTML = '';
         if (jogador.isReiDaMesa) {
             iconesHTML += '<span class="player-icon crown-icon" title="Rei da Mesa">👑</span>';
@@ -2463,7 +2450,6 @@ function atualizarRankingGeral() {
             iconesHTML += '<span class="player-icon card-icon" title="Melhor mão da etapa">🃏</span>';
         }
         
-        // Gerar células de etapas
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapas[i]?.[jogador.id];
@@ -2481,7 +2467,6 @@ function atualizarRankingGeral() {
                 }
             }
             
-            // Verificar se o jogador foi campeão da etapa (configurado manualmente)
             if (campeoesEtapa[i] === jogador.id) {
                 iconeExtra = ' <span class="trophy-icon" title="Campeão da etapa">🏆</span>';
             }
@@ -2551,7 +2536,6 @@ function atualizarRankingKO() {
         const diferencaPontos = primeiroColocadoPontosKO - jogador.totalPontosKO;
         const diffClass = rank === 1 ? 'leader' : '';
         
-        // Verificar quais etapas já têm pontuação registrada (qualquer pontuação, inclusive 0)
         const etapasComRegistro = new Set();
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             if (etapasKO[i] && Object.keys(etapasKO[i]).length > 0) {
@@ -2559,16 +2543,14 @@ function atualizarRankingKO() {
             }
         }
         
-        // Gerar células de etapas para KO
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id];
             let etapaClass = 'empty';
-            let etapaText = '-'; // Padrão é "-" para etapas não jogadas
+            let etapaText = '-';
             let iconeExtra = '';
             
             if (score !== undefined && score !== null) {
-                // Etapa tem registro para este jogador
                 if (score === 'NJ') {
                     etapaClass = 'absent';
                     etapaText = 'NJ';
@@ -2579,27 +2561,22 @@ function atualizarRankingKO() {
                             etapaClass = 'present ko';
                             etapaText = pontosNum;
                             
-                            // Verificar se é a maior pontuação KO da etapa
                             const { max, jogadores } = encontrarMaiorKOEtapa(i);
                             if (max > 0 && jogadores.includes(jogador.id)) {
                                 etapaClass += ' highlight';
                                 iconeExtra = ' <span class="glove-icon" title="Maior pontuação KO da etapa">🥊</span>';
                             }
-                        } else {
-                            // Pontuação zero (participou mas não fez KO)
+                        } else if (pontosNum === 0) {
                             etapaClass = 'zero-ko';
                             etapaText = '0';
                         }
                     }
                 }
             } else {
-                // Verificar se a etapa já foi jogada (tem algum registro)
                 if (etapasComRegistro.has(i)) {
-                    // Etapa foi jogada mas jogador não tem registro (não participou)
                     etapaClass = 'absent';
                     etapaText = 'NJ';
                 } else {
-                    // Etapa ainda não foi jogada
                     etapaClass = 'empty';
                     etapaText = '-';
                 }
@@ -2891,7 +2868,6 @@ window.removerJogador = async function(id, nome) {
             await db.remove(`rankingEtapasKO/${i}/${id}`);
         }
         
-        // Se o jogador removido era o rei da mesa ou melhor mão, limpar essas configurações
         if (id === reiDaMesa) {
             await db.set('configuracoes/reiDaMesa', null);
             reiDaMesa = null;
@@ -2901,7 +2877,6 @@ window.removerJogador = async function(id, nome) {
             melhorMao = null;
         }
         
-        // Remover o jogador dos campeões de etapa se ele for campeão de alguma
         const campeoesAtualizados = {};
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             if (campeoesEtapa[i] !== id) {
@@ -2955,13 +2930,11 @@ btnExportarCSV.onclick = function() {
         
         csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.primeirosLugares},${jogador.totalKO},${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${primeirosLugaresKO},${posicaoKO}`;
         
-        // Pontuações gerais
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapas[i]?.[jogador.id] || '-';
             csv += `,"${score}"`;
         }
         
-        // Pontuações KO
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id] || '-';
             csv += `,"${score}"`;
