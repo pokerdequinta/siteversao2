@@ -221,6 +221,10 @@ body {
     color: var(--champion-color);
 }
 
+.legenda-glove {
+    color: var(--glove-color);
+}
+
 /* TABELA DE RANKING */
 .ranking-container {
     overflow-x: auto;
@@ -1458,6 +1462,25 @@ body {
                 <div style="color: var(--text-muted); font-size: 0.75rem;">
                     Ranking baseado nas pontuações de KO.
                 </div>
+                <!-- LEGENDAS ESPECIAIS DO RANKING KO -->
+                <div class="legendas-especiais">
+                    <div class="legenda-item">
+                        <span class="legenda-icone legenda-glove">🥊</span>
+                        <span>Maior pontuação KO da etapa (destaque laranja)</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="legenda-icone">0</span>
+                        <span>Participou mas não fez KO</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="legenda-icone">NJ</span>
+                        <span>Não jogou a etapa</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="legenda-icone">-</span>
+                        <span>Etapa não realizada</span>
+                    </div>
+                </div>
             </div>
             
             <div class="ranking-container">
@@ -2500,15 +2523,24 @@ function atualizarRankingKO() {
         const diferencaPontos = primeiroColocadoPontosKO - jogador.totalPontosKO;
         const diffClass = rank === 1 ? 'leader' : '';
         
+        // Verificar quais etapas já têm pontuação registrada (qualquer pontuação, inclusive 0)
+        const etapasComRegistro = new Set();
+        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
+            if (etapasKO[i] && Object.keys(etapasKO[i]).length > 0) {
+                etapasComRegistro.add(i);
+            }
+        }
+        
         // Gerar células de etapas para KO
         let etapasHTML = '';
         for (let i = 1; i <= TOTAL_ETAPAS; i++) {
             const score = etapasKO[i]?.[jogador.id];
             let etapaClass = 'empty';
-            let etapaText = '-';
+            let etapaText = '-'; // Padrão é "-" para etapas não jogadas
             let iconeExtra = '';
             
             if (score !== undefined && score !== null) {
+                // Etapa tem registro para este jogador
                 if (score === 'NJ') {
                     etapaClass = 'absent';
                     etapaText = 'NJ';
@@ -2526,16 +2558,23 @@ function atualizarRankingKO() {
                                 iconeExtra = ' <span class="glove-icon" title="Maior pontuação KO da etapa">🥊</span>';
                             }
                         } else {
-                            // Mostrar 0 quando não tiver pontuação
+                            // Pontuação zero (participou mas não fez KO)
                             etapaClass = 'zero-ko';
                             etapaText = '0';
                         }
                     }
                 }
             } else {
-                // Mostrar 0 quando não tiver registro
-                etapaClass = 'zero-ko';
-                etapaText = '0';
+                // Verificar se a etapa já foi jogada (tem algum registro)
+                if (etapasComRegistro.has(i)) {
+                    // Etapa foi jogada mas jogador não tem registro (não participou)
+                    etapaClass = 'absent';
+                    etapaText = 'NJ';
+                } else {
+                    // Etapa ainda não foi jogada
+                    etapaClass = 'empty';
+                    etapaText = '-';
+                }
             }
             
             etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeExtra}</div></td>`;
