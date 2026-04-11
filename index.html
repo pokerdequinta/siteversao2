@@ -3,1358 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ranking - Poker de Quinta</title>
+<title>Confirmação Antecipada - Poker de Quinta</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
-
-:root {
-    --gold: #FFD700;
-    --silver: #C0C0C0;
-    --bronze: #CD7F32;
-    --primary: #d4a121;
-    --primary-dark: #b38a1c;
-    --bg-dark: #0a150a;
-    --bg-card: #0f1f0f;
-    --bg-row: #122012;
-    --bg-row-alt: #0f1a0f;
-    --top10-row-odd: rgba(212, 161, 33, 0.15);
-    --top10-row-even: rgba(212, 161, 33, 0.10);
-    --success: #4CAF50;
-    --danger: #FF4757;
-    --text: #ffffff;
-    --text-muted: #aaaaaa;
-    --border: #1a2a1a;
-    --border-light: #152015;
-    --ko-color: #FF6B6B;
-    --ko-color-dark: #FF4757;
-    --ko-highlight: #FFA500;
-    --crown-gold: #FFD700;
-    --card-red: #FF4444;
-    --glove-color: #FF8C00;
-    --champion-color: #FFD700;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--bg-dark);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* Logo e Cabeçalho */
-.logo-container {
-    text-align: center;
-    padding: 12px;
-    background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-    border-bottom: 1px solid var(--border);
-}
-
-.logo-container img {
-    max-width: 220px;
-    height: auto;
-    filter: drop-shadow(0 0 5px rgba(212, 161, 33, 0.2));
-}
-
-.header {
-    text-align: center;
-    padding: 16px 12px;
-    margin-bottom: 12px;
-}
-
-.header h1 {
-    font-family: 'Anton', sans-serif;
-    font-size: 2rem;
-    color: var(--primary);
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-}
-
-.header .subtitle {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    font-weight: 300;
-}
-
-/* Container Principal */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 8px;
-}
-
-/* Botões de Visualização */
-.view-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.view-btn {
-    padding: 8px 20px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--primary);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.view-btn:hover {
-    background: rgba(212, 161, 33, 0.05);
-    border-color: var(--primary);
-}
-
-.view-btn.active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.view-btn.ko {
-    color: var(--ko-color);
-}
-
-.view-btn.ko:hover {
-    background: rgba(255, 107, 107, 0.05);
-    border-color: var(--ko-color);
-}
-
-.view-btn.ko.active {
-    background: var(--ko-color);
-    color: #000;
-    border-color: var(--ko-color);
-}
-
-/* SEÇÃO RANKING */
-.ranking-section {
-    background: var(--bg-card);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 12px;
-}
-
-.section-header {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-row);
-}
-
-.section-header h2 {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.3rem;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.section-header.ko h2 {
-    color: var(--ko-color);
-}
-
-.g10-badge {
-    background: linear-gradient(135deg, var(--gold), var(--primary));
-    color: #000;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    margin-left: 6px;
-}
-
-.g10-badge.ko {
-    background: linear-gradient(135deg, var(--ko-color), #FF8E8E);
-}
-
-/* LEGENDAS ESPECIAIS */
-.legendas-especiais {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-    padding: 8px 15px;
-    background: rgba(212, 161, 33, 0.05);
-    border-top: 1px solid var(--border);
-}
-
-.legenda-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
-
-.legenda-icone {
-    font-size: 1rem;
-}
-
-.legenda-crown {
-    color: var(--crown-gold);
-}
-
-.legenda-card {
-    color: var(--card-red);
-}
-
-.legenda-trophy {
-    color: var(--champion-color);
-}
-
-.legenda-glove {
-    color: var(--glove-color);
-}
-
-/* TABELA DE RANKING */
-.ranking-container {
-    overflow-x: auto;
-    padding: 0;
-}
-
-.ranking-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 0.85rem;
-}
-
-.ranking-table thead {
-    background: linear-gradient(180deg, #1a3d1a 0%, #163016 100%);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.ranking-table.ko thead {
-    background: linear-gradient(180deg, #3d1a1a 0%, #301616 100%);
-}
-
-.ranking-table th {
-    padding: 10px 8px;
-    text-align: left;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    color: var(--primary);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--primary);
-    white-space: nowrap;
-}
-
-.ranking-table.ko th {
-    color: var(--ko-color);
-    border-bottom: 2px solid var(--ko-color);
-}
-
-.ranking-table th:first-child {
-    padding-left: 15px;
-}
-
-.ranking-table th:last-child {
-    padding-right: 15px;
-}
-
-/* CABEÇALHO DAS ETAPAS - NÚMEROS 1-12 */
-.ranking-table th:nth-child(n+5) {
-    text-align: center;
-    min-width: 32px;
-    padding: 10px 2px;
-    font-family: 'Anton', sans-serif;
-    font-size: 0.8rem;
-}
-
-/* LINHAS DO RANKING */
-.ranking-row {
-    transition: all 0.2s ease;
-    border-bottom: 1px solid var(--border-light);
-    height: 36px;
-}
-
-/* TOP 10 - CORES FORTES INTERCALADAS COM DESTAQUE MÁXIMO */
-.ranking-row.top10 {
-    position: relative;
-}
-
-.ranking-row.top10:nth-child(odd) {
-    background: var(--top10-row-odd);
-}
-
-.ranking-row.top10:nth-child(even) {
-    background: var(--top10-row-even);
-}
-
-.ranking-row.top10:hover {
-    background: rgba(212, 161, 33, 0.2);
-}
-
-.ranking-row.top10.ko:nth-child(odd) {
-    background: rgba(255, 107, 107, 0.15);
-}
-
-.ranking-row.top10.ko:nth-child(even) {
-    background: rgba(255, 107, 107, 0.10);
-}
-
-.ranking-row.top10.ko:hover {
-    background: rgba(255, 107, 107, 0.2);
-}
-
-/* APÓS O 10º - CORES NORMAIS */
-.ranking-row.other:nth-child(odd) {
-    background: var(--bg-row);
-}
-
-.ranking-row.other:nth-child(even) {
-    background: var(--bg-row-alt);
-}
-
-.ranking-row.other:hover {
-    background: rgba(212, 161, 33, 0.03);
-}
-
-.ranking-row.other.ko:hover {
-    background: rgba(255, 107, 107, 0.03);
-}
-
-/* DESTAQUES POR POSIÇÃO COM BORDAS E CORES FORTES */
-.ranking-row.pos-1 {
-    border-left: 4px solid var(--gold) !important;
-    background: linear-gradient(90deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-2 {
-    border-left: 4px solid var(--silver) !important;
-    background: linear-gradient(90deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-3 {
-    border-left: 4px solid var(--bronze) !important;
-    background: linear-gradient(90deg, rgba(205, 127, 50, 0.2) 0%, rgba(205, 127, 50, 0.08) 100%) !important;
-}
-
-.ranking-row.pos-4 {
-    border-left: 4px solid #4CAF50 !important;
-    background: linear-gradient(90deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%) !important;
-}
-
-.ranking-row.pos-5 {
-    border-left: 4px solid #4CAF50 !important;
-    background: linear-gradient(90deg, rgba(76, 175, 80, 0.12) 0%, rgba(76, 175, 80, 0.04) 100%) !important;
-}
-
-.ranking-row.pos-6,
-.ranking-row.pos-7,
-.ranking-row.pos-8,
-.ranking-row.pos-9,
-.ranking-row.pos-10 {
-    border-left: 4px solid #4CAF50 !important;
-}
-
-/* CÉLULAS DA TABELA */
-.ranking-table td {
-    padding: 6px 8px;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.ranking-table td:first-child {
-    padding-left: 15px;
-}
-
-.ranking-table td:last-child {
-    padding-right: 15px;
-}
-
-/* NÚMERO DO RANKING */
-.rank-cell {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.rank-number {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--bg-card);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Anton', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    border: 1px solid var(--border);
-}
-
-.ranking-row.top10 .rank-number {
-    background: rgba(212, 161, 33, 0.2);
-    border-color: rgba(212, 161, 33, 0.4);
-}
-
-.ranking-row.top10.ko .rank-number {
-    background: rgba(255, 107, 107, 0.2);
-    border-color: rgba(255, 107, 107, 0.4);
-    color: var(--ko-color);
-}
-
-/* JOGADOR */
-.player-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-}
-
-.player-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--primary);
-    background: var(--bg-dark);
-}
-
-/* ÍCONES ESPECIAIS */
-.player-icons {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 4px;
-}
-
-.player-icon {
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.crown-icon {
-    color: var(--crown-gold);
-    filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
-    animation: crownGlow 2s ease-in-out infinite;
-}
-
-@keyframes crownGlow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-.card-icon {
-    color: var(--card-red);
-    filter: drop-shadow(0 0 2px rgba(255, 68, 68, 0.5));
-}
-
-.trophy-icon {
-    color: var(--gold);
-    filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
-    font-size: 1rem;
-    margin-left: 2px;
-    animation: trophyGlow 2s ease-in-out infinite;
-}
-
-@keyframes trophyGlow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
-
-.glove-icon {
-    color: var(--glove-color);
-    filter: drop-shadow(0 0 3px rgba(255, 140, 0, 0.5));
-    font-size: 0.9rem;
-    margin-left: 2px;
-}
-
-/* PONTUAÇÃO COM BORDA */
-.points-cell {
-    text-align: center;
-}
-
-.points {
-    font-family: 'Anton', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--primary);
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 15px;
-    background: rgba(212, 161, 33, 0.08);
-    border: 1px solid rgba(212, 161, 33, 0.2);
-    min-width: 70px;
-}
-
-.points.pos-1 { 
-    color: var(--gold);
-    background: rgba(255, 215, 0, 0.2);
-    border: 1px solid rgba(255, 215, 0, 0.4);
-}
-.points.pos-2 { 
-    color: var(--silver);
-    background: rgba(192, 192, 192, 0.2);
-    border: 1px solid rgba(192, 192, 192, 0.4);
-}
-.points.pos-3 { 
-    color: var(--bronze);
-    background: rgba(205, 127, 50, 0.2);
-    border: 1px solid rgba(205, 127, 50, 0.4);
-}
-
-.points.ko {
-    color: var(--ko-color);
-    background: rgba(255, 107, 107, 0.08);
-    border: 1px solid rgba(255, 107, 107, 0.2);
-}
-
-.points.ko.highlight {
-    color: var(--ko-highlight);
-    background: rgba(255, 165, 0, 0.2);
-    border: 1px solid rgba(255, 165, 0, 0.4);
-    font-weight: 800;
-}
-
-.points.ko.pos-1 { 
-    color: var(--gold);
-    background: rgba(255, 215, 0, 0.2);
-    border: 1px solid rgba(255, 215, 0, 0.4);
-}
-.points.ko.pos-2 { 
-    color: var(--silver);
-    background: rgba(192, 192, 192, 0.2);
-    border: 1px solid rgba(192, 192, 192, 0.4);
-}
-.points.ko.pos-3 { 
-    color: var(--bronze);
-    background: rgba(205, 127, 50, 0.2);
-    border: 1px solid rgba(205, 127, 50, 0.4);
-}
-
-.ranking-row.top10 .points:not(.pos-1):not(.pos-2):not(.pos-3) {
-    background: rgba(212, 161, 33, 0.15);
-    border: 1px solid rgba(212, 161, 33, 0.3);
-}
-
-.ranking-row.top10.ko .points.ko:not(.pos-1):not(.pos-2):not(.pos-3) {
-    background: rgba(255, 107, 107, 0.15);
-    border: 1px solid rgba(255, 107, 107, 0.3);
-}
-
-/* DIFERENÇA PARA O LÍDER - VERMELHA */
-.diff-cell {
-    text-align: center;
-}
-
-.diff {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: #FF4757;
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 10px;
-    background: rgba(255, 71, 87, 0.1);
-    border: 1px solid rgba(255, 71, 87, 0.2);
-}
-
-.diff.leader {
-    color: #4CAF50;
-    background: rgba(76, 175, 80, 0.15);
-    border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
-/* ETAPAS */
-.etapa-pill {
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    min-width: 28px;
-    text-align: center;
-    background: var(--bg-dark);
-    color: var(--text);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-}
-
-.etapa-pill.present {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    border: none;
-}
-
-.etapa-pill.present.ko {
-    background: linear-gradient(135deg, var(--ko-color), var(--ko-color-dark));
-}
-
-.etapa-pill.present.ko.highlight {
-    background: linear-gradient(135deg, var(--ko-highlight), #FF8C00);
-    color: #000;
-    font-weight: 700;
-}
-
-.etapa-pill.absent {
-    background: rgba(255, 71, 87, 0.15);
-    color: #FF4757;
-    border: 1px solid rgba(255, 71, 87, 0.2);
-}
-
-.etapa-pill.empty {
-    opacity: 0.2;
-    background: transparent;
-}
-
-.etapa-pill.zero-ko {
-    color: var(--text-muted);
-    background: rgba(255, 107, 107, 0.05);
-    border: 1px solid rgba(255, 107, 107, 0.1);
-}
-
-/* PAINEL ADMINISTRATIVO */
-.admin-section {
-    background: var(--bg-card);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 12px;
-}
-
-.admin-header {
-    padding: 12px 15px;
-    background: linear-gradient(135deg, #1a1a1a, #222);
-    border-bottom: 1px solid #8b0000;
-}
-
-.admin-header h2 {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.3rem;
-    color: #8b0000;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* CONFIGURAÇÕES ESPECIAIS */
-.config-especial {
-    background: var(--bg-card);
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-}
-
-.config-especial h3 {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.1rem;
-    color: var(--primary);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.config-especial .config-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-@media (max-width: 768px) {
-    .config-especial .config-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-.config-item {
-    background: var(--bg-row);
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-}
-
-.config-item h4 {
-    color: var(--primary);
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.config-item.crown h4 {
-    color: var(--crown-gold);
-}
-
-.config-item.card h4 {
-    color: var(--card-red);
-}
-
-.config-item.trophy h4 {
-    color: var(--champion-color);
-}
-
-/* SISTEMA DE PONTUAÇÃO */
-.points-system {
-    display: grid;
-    gap: 12px;
-    padding: 12px;
-}
-
-.stage-selector {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.stage-btn {
-    padding: 6px 12px;
-    background: var(--bg-row);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 60px;
-    text-align: center;
-    font-size: 0.8rem;
-}
-
-.stage-btn:hover {
-    border-color: var(--primary);
-    background: rgba(212, 161, 33, 0.05);
-}
-
-.stage-btn.active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.stage-btn.ko {
-    border-color: var(--ko-color);
-}
-
-.stage-btn.ko:hover {
-    border-color: var(--ko-color);
-    background: rgba(255, 107, 107, 0.05);
-}
-
-.stage-btn.ko.active {
-    background: var(--ko-color);
-    color: #000;
-    border-color: var(--ko-color);
-}
-
-/* Etapa Atual */
-.etapa-atual {
-    text-align: center;
-    margin: 8px 0;
-    padding: 8px;
-    background: var(--bg-row);
-    border-radius: 4px;
-    border: 1px solid var(--border);
-}
-
-.etapa-atual .numero {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin: 0 4px;
-}
-
-.etapa-atual.ko .numero {
-    color: var(--ko-color);
-}
-
-/* LISTA DE JOGADORES PARA PONTUAÇÃO - ORDEM ALFABÉTICA */
-.players-points-list {
-    margin-top: 12px;
-}
-
-.points-list-header {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 10px;
-    padding: 8px 12px;
-    background: var(--bg-row);
-    border-bottom: 1px solid var(--border);
-    font-weight: 600;
-    font-size: 0.8rem;
-    color: var(--primary);
-}
-
-.points-list-header.ko {
-    color: var(--ko-color);
-}
-
-.points-list-items {
-    max-height: 450px;
-    overflow-y: auto;
-}
-
-.point-item {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 10px;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border-light);
-    align-items: center;
-    transition: all 0.2s ease;
-}
-
-.point-item:nth-child(odd) {
-    background: var(--bg-row);
-}
-
-.point-item:nth-child(even) {
-    background: var(--bg-row-alt);
-}
-
-.point-item:hover {
-    background: rgba(212, 161, 33, 0.03);
-}
-
-.point-item.ko:hover {
-    background: rgba(255, 107, 107, 0.03);
-}
-
-.player-info-admin {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.player-info-admin .player-avatar {
-    width: 26px;
-    height: 26px;
-}
-
-.points-input-admin {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.points-input-admin input {
-    width: 80px;
-    padding: 6px 8px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.points-input-admin input:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-.points-input-admin input.NJ {
-    color: #FF4757;
-    border-color: #FF4757;
-}
-
-.points-input-admin.ko input:focus {
-    border-color: var(--ko-color);
-}
-
-.quick-actions {
-    display: flex;
-    gap: 3px;
-    margin-left: 5px;
-}
-
-.quick-action-btn {
-    padding: 4px 8px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text);
-    font-size: 0.7rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.quick-action-btn:hover {
-    background: var(--primary);
-    color: #000;
-}
-
-.quick-action-btn.ko:hover {
-    background: var(--ko-color);
-}
-
-/* ADMIN ACTIONS */
-.admin-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-    padding: 12px;
-    background: var(--bg-row);
-    border-radius: 6px;
-}
-
-.admin-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    min-width: 120px;
-    justify-content: center;
-    font-size: 0.8rem;
-}
-
-.save-btn {
-    background: #4CAF50;
-    color: white;
-}
-
-.save-btn:hover {
-    background: #45a049;
-}
-
-.save-btn.ko {
-    background: var(--ko-color);
-}
-
-.save-btn.ko:hover {
-    background: var(--ko-color-dark);
-}
-
-.clear-btn {
-    background: #FF4757;
-    color: white;
-}
-
-.clear-btn:hover {
-    background: #ff3742;
-}
-
-/* GERENCIAMENTO DE JOGADORES */
-.players-management {
-    background: var(--bg-card);
-    border-radius: 6px;
-    padding: 12px;
-    margin-top: 12px;
-    border: 1px solid var(--border);
-}
-
-.add-player-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 10px;
-    margin-bottom: 12px;
-    background: var(--bg-row);
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.form-group label {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-.form-group input {
-    padding: 8px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-/* STATUS INDICATOR */
-.status-indicator {
-    position: fixed;
-    top: 8px;
-    right: 8px;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    z-index: 1000;
-    background: rgba(26, 61, 26, 0.9);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(5px);
-}
-
-.status-indicator.connected {
-    background: rgba(76, 175, 80, 0.9);
-    border-color: #4CAF50;
-}
-
-/* ADMIN TOGGLE BUTTON - MUITO ESCONDIDO */
-.admin-toggle-btn {
-    position: fixed;
-    bottom: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(212, 161, 33, 0.05);
-    border: 1px solid rgba(212, 161, 33, 0.08);
-    color: rgba(212, 161, 33, 0.2);
-    font-size: 0.8rem;
-    cursor: pointer;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    opacity: 0.25;
-    box-shadow: none;
-}
-
-.admin-toggle-btn:hover {
-    background: rgba(212, 161, 33, 0.15);
-    border-color: rgba(212, 161, 33, 0.25);
-    color: rgba(212, 161, 33, 0.5);
-    opacity: 0.5;
-    transform: scale(1.1);
-}
-
-.admin-toggle-btn.active {
-    background: rgba(76, 175, 80, 0.8);
-    border-color: #4CAF50;
-    color: white;
-    opacity: 0.9;
-}
-
-/* MODAL */
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(2px);
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: var(--bg-card);
-    border: 1px solid var(--primary);
-    border-radius: 6px;
-    padding: 15px;
-    width: 90%;
-    max-width: 300px;
-    animation: modalSlideIn 0.2s ease;
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 6px;
-    margin-top: 12px;
-}
-
-/* BOTÃO EXPORTAR CSV */
-.export-btn {
-    margin-top: 12px;
-    text-align: center;
-}
-
-/* PAINEL ADMIN KO */
-.admin-ko-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding: 8px;
-    background: var(--bg-row);
-    border-radius: 4px;
-}
-
-.admin-ko-toggle-btn {
-    padding: 8px 16px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.admin-ko-toggle-btn:hover {
-    border-color: var(--primary);
-    background: rgba(212, 161, 33, 0.05);
-}
-
-.admin-ko-toggle-btn.active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.admin-ko-toggle-btn.ko {
-    border-color: var(--ko-color);
-    color: var(--ko-color);
-}
-
-.admin-ko-toggle-btn.ko:hover {
-    border-color: var(--ko-color);
-    background: rgba(255, 107, 107, 0.05);
-}
-
-.admin-ko-toggle-btn.ko.active {
-    background: var(--ko-color);
-    color: #000;
-    border-color: var(--ko-color);
-}
-
-/* SELECT DE JOGADORES PARA CONFIGURAÇÕES ESPECIAIS */
-.player-select-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.player-select {
-    width: 100%;
-    padding: 8px;
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-size: 0.85rem;
-    cursor: pointer;
-}
-
-.player-select:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-.player-select.crown:focus {
-    border-color: var(--crown-gold);
-}
-
-.player-select.card:focus {
-    border-color: var(--card-red);
-}
-
-.player-select.trophy:focus {
-    border-color: var(--champion-color);
-}
-
-.save-config-btn {
-    width: 100%;
-    padding: 8px;
-    background: var(--primary);
-    border: none;
-    border-radius: 4px;
-    color: #000;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-.save-config-btn:hover {
-    background: var(--primary-dark);
-}
-
-.save-config-btn.crown {
-    background: var(--crown-gold);
-    color: #000;
-}
-
-.save-config-btn.crown:hover {
-    background: #e6c200;
-}
-
-.save-config-btn.card {
-    background: var(--card-red);
-    color: white;
-}
-
-.save-config-btn.card:hover {
-    background: #ff2a2a;
-}
-
-.save-config-btn.trophy {
-    background: var(--champion-color);
-    color: #000;
-}
-
-.save-config-btn.trophy:hover {
-    background: #e6c200;
-}
-
-/* RESPONSIVIDADE */
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .ranking-table th,
-    .ranking-table td {
-        padding: 6px 4px;
-    }
-    
-    .rank-number {
-        width: 24px;
-        height: 24px;
-        font-size: 0.75rem;
-    }
-    
-    .player-avatar {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .points {
-        padding: 3px 8px;
-        font-size: 0.9rem;
-        min-width: 60px;
-    }
-    
-    .ranking-table th:nth-child(n+5) {
-        min-width: 28px;
-        font-size: 0.7rem;
-        padding: 10px 1px;
-    }
-    
-    .add-player-form {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    
-    .admin-actions {
-        flex-direction: column;
-        gap: 6px;
-    }
-    
-    .admin-btn {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    .admin-toggle-btn {
-        bottom: 6px;
-        right: 6px;
-        width: 28px;
-        height: 28px;
-        font-size: 0.7rem;
-    }
-    
-    .legendas-especiais {
-        flex-direction: column;
-        gap: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    .stage-selector {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .stage-btn {
-        padding: 5px 8px;
-        font-size: 0.75rem;
-        min-width: auto;
-    }
-    
-    .points-input-admin input {
-        width: 70px;
-    }
-    
-    .etapa-pill {
-        min-width: 24px;
-        font-size: 0.65rem;
-        padding: 1px 4px;
-    }
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-row);
-    border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto', sans-serif;background:#0d1b0d;color:#fff;min-height:100vh}
+.logo-top{text-align:center;padding:20px}
+.logo-top img{max-width:200px}
+.container{max-width:1000px;margin:auto;padding:20px}
+header{text-align:center;background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;margin-bottom:30px}
+h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
+.subtitle{margin-top:10px}
+
+.info-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:25px}
+.info-card{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;text-align:center}
+.info-card h2{font-family:'Anton';font-size:2.5em;color:#d4a121}
+
+.section{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;margin-bottom:25px}
+.section h3{color:#d4a121;margin-bottom:15px}
+
+.form-group{margin-bottom:15px}
+.form-group label{color:#d4a121;font-weight:bold;display:block;margin-bottom:8px}
+.form-group input,.form-group select{width:100%;padding:12px;border-radius:8px;border:1px solid #2d5016;background:#1a3d1a;color:#fff;font-size:1em}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#d4a121;box-shadow:0 0 5px rgba(212,161,33,0.3)}
+
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:1em;margin-bottom:10px;transition:all 0.3s}
+.btn-primary{background:#d4a121;color:#000}
+.btn-primary:hover{background:#e6b82e;transform:scale(1.02)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-secondary{background:#4CAF50;color:#fff}
+.btn-secondary:hover{background:#5cb85c}
+.btn-danger{background:#c72c48;color:#fff}
+.btn-danger:hover{background:#e63460}
+
+.payment-section{background:#1a3d1a;border:2px dashed #d4a121;border-radius:12px;padding:20px;margin:20px 0;display:none}
+.payment-section.active{display:block}
+.qr-code-container{text-align:center;margin:20px 0}
+.qr-code-container img{max-width:300px;border:3px solid #d4a121;border-radius:10px;padding:10px;background:#fff}
+.payment-info{background:rgba(212,161,33,0.1);border-left:4px solid #d4a121;padding:15px;border-radius:5px;margin:15px 0}
+.payment-info strong{color:#d4a121}
+
+.status-badge{display:inline-block;padding:8px 15px;border-radius:20px;font-weight:bold;margin:5px 0}
+.status-pending{background:#FF6600;color:#fff}
+.status-paid{background:#4CAF50;color:#fff}
+.status-confirmed{background:#1E90FF;color:#fff}
+
+.player-list{list-style:none}
+.player-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);padding:15px;border-radius:10px;margin-bottom:10px;gap:10px}
+.player-info{display:flex;gap:15px;align-items:center;flex:1}
+.player-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #d4a121}
+.player-number{font-family:'Anton';color:#d4a121;min-width:30px}
+.player-details{display:flex;flex-direction:column}
+.player-details small{opacity:.85}
+.player-badge{background:#d4a121;color:#000;padding:4px 10px;border-radius:20px;font-size:.8em;font-weight:bold}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000}
+.modal.active{display:flex}
+.modal-content{background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;width:90%;max-width:500px}
+.modal-buttons{display:flex;gap:10px;margin-top:20px}
+.modal-btn{flex:1;padding:12px;font-weight:bold;border:none;border-radius:8px;cursor:pointer}
+.modal-btn.confirm{background:#d4a121;color:#000}
+.modal-btn.cancel{background:#c72c48;color:#fff}
+
+.loading{text-align:center;padding:20px;opacity:0.7}
+.empty-state{text-align:center;opacity:.7;padding:30px}
+.status-indicator{position:fixed;top:10px;right:10px;background:#2d5016;padding:8px 15px;border-radius:20px;font-size:0.85em;border:1px solid #d4a121}
+.status-indicator.connected{background:#1a3d1a;border-color:#4CAF50}
+.status-indicator.error{background:#3d1a1a;border-color:#c72c48}
+
+.admin-panel{position:fixed;bottom:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:999}
+.admin-btn{width:auto;padding:8px 15px;background:rgba(13,27,13,0.3);border:1px solid rgba(212,161,33,0.1);opacity:0.15;font-size:0.7em;transition:opacity 0.3s;cursor:pointer;color:#fff;border-radius:5px}
+.admin-btn:hover{opacity:1;background:#d4a121;color:#000}
+.admin-btn.active{opacity:1;background:#4CAF50}
+
+.payment-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);padding:15px;border-radius:10px;margin-bottom:10px;border-left:4px solid #FF6600}
+.payment-item.paid{border-left-color:#4CAF50}
+.payment-item-info{flex:1}
+.payment-item-name{font-weight:bold;color:#d4a121}
+.payment-item-status{font-size:0.85em;opacity:0.8}
+.payment-actions{display:flex;gap:5px}
+.payment-action-btn{padding:6px 12px;background:#d4a121;border:none;border-radius:5px;cursor:pointer;color:#000;font-weight:bold;font-size:0.85em}
+.payment-action-btn.reject{background:#c72c48;color:#fff}
+
+@media(max-width:768px){
+.info-cards{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -1363,1621 +96,427 @@ body {
 
 <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
 
-<div class="logo-container">
-    <img src="logo pdq.png" alt="Poker de Quinta">
+<div class="logo-top">
+<img src="logo pdq.png" onerror="this.style.display='none'">
 </div>
 
 <div class="container">
 
-    <div class="header">
-        <h1>🏆 RANKING POKER DE QUINTA 2026 🏆</h1>
-        <div class="subtitle">📊 Ranking Oficial de Classificação da Temporada 2026</div>
-    </div>
+<header>
+<h1>CONFIRMAÇÃO ANTECIPADA</h1>
+<div class="subtitle" id="dataEvento">📅 Carregando...</div>
+<p style="margin-top:15px;font-size:0.95em;opacity:0.9">Confirme sua presença com antecedência e garanta sua vaga com um pagamento de <strong style="color:#d4a121">R$ 100,00</strong></p>
+</header>
 
-    <div class="view-toggle">
-        <button class="view-btn active" id="btnViewRanking">
-            <span>📊</span>
-            <span>Ranking Geral</span>
-        </button>
-        <button class="view-btn ko" id="btnViewRankingKO">
-            <span>🥊</span>
-            <span>Ranking KO</span>
-        </button>
-    </div>
-
-    <!-- VIEW RANKING GERAL -->
-    <div id="viewRanking">
-        <div class="ranking-section">
-            <div class="section-header">
-                <h2>
-                    <span>CLASSIFICAÇÃO GERAL</span>
-                    <span class="g10-badge">🏆 G - 10</span>
-                </h2>
-                <div style="color: var(--text-muted); font-size: 0.75rem;">
-                    Atualizado após a Última Etapa Jogada.
-                </div>
-                <!-- LEGENDAS ESPECIAIS -->
-                <div class="legendas-especiais">
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-crown">👑</span>
-                        <span>Rei da Mesa (alvo da próxima etapa)</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-card">🃏</span>
-                        <span>Melhor mão da etapa anterior</span>
-                    </div>
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-trophy">🏆</span>
-                        <span>Campeão da etapa</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="ranking-container">
-                <table class="ranking-table" id="rankingTable">
-                    <thead id="rankingTableHead">
-                        <tr>
-                            <th style="width: 60px;">POS</th>
-                            <th>JOGADOR</th>
-                            <th style="width: 90px; text-align: center;">PONTOS</th>
-                            <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
-                            <th>6</th>
-                            <th>7</th>
-                            <th>8</th>
-                            <th>9</th>
-                            <th>10</th>
-                            <th>11</th>
-                            <th>12</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rankingTableBody">
-                        <tr>
-                            <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                                Carregando ranking...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 12px; color: var(--text-muted); font-size: 0.75rem; padding: 10px; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);">
-            ℹ️ Critérios de desempate: 1º Pontos | 2º Participações | 3º 1º lugares | 4º KO acumulados
-        </div>
-    </div>
-
-    <!-- VIEW RANKING KO (Inicialmente oculta) -->
-    <div id="viewRankingKO" style="display: none;">
-        <div class="ranking-section">
-            <div class="section-header ko">
-                <h2>
-                    <span>CLASSIFICAÇÃO KO</span>
-                    <span class="g10-badge ko">🥊 KO</span>
-                </h2>
-                <div style="color: var(--text-muted); font-size: 0.75rem;">
-                    Ranking baseado nas pontuações de KO.
-                </div>
-                <!-- LEGENDA DO RANKING KO - APENAS ÍCONE DA LUVA -->
-                <div class="legendas-especiais">
-                    <div class="legenda-item">
-                        <span class="legenda-icone legenda-glove">🥊</span>
-                        <span>Maior pontuação KO da etapa</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="ranking-container">
-                <table class="ranking-table ko" id="rankingTableKO">
-                    <thead id="rankingTableHeadKO">
-                        <tr>
-                            <th style="width: 60px;">POS</th>
-                            <th>JOGADOR</th>
-                            <th style="width: 90px; text-align: center;">PONTOS KO</th>
-                            <th style="width: 90px; text-align: center;">DIF. LÍDER</th>
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
-                            <th>6</th>
-                            <th>7</th>
-                            <th>8</th>
-                            <th>9</th>
-                            <th>10</th>
-                            <th>11</th>
-                            <th>12</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rankingTableBodyKO">
-                        <tr>
-                            <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                                Carregando ranking KO...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 12px; color: var(--text-muted); font-size: 0.75rem; padding: 10px; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);">
-            ℹ️ Critérios de desempate: 1º Pontos | 2º Participações | 3º 1º lugares
-        </div>
-    </div>
-
-    <!-- VIEW ADMIN (Inicialmente oculta) -->
-    <div id="viewAdmin" style="display: none;">
-        <!-- Botões para alternar entre Geral e KO no Admin -->
-        <div class="admin-ko-toggle">
-            <button class="admin-ko-toggle-btn active" id="btnAdminGeral">
-                <span>📊</span>
-                <span>Pontuações Gerais</span>
-            </button>
-            <button class="admin-ko-toggle-btn ko" id="btnAdminKO">
-                <span>🥊</span>
-                <span>Pontuações KO</span>
-            </button>
-        </div>
-
-        <!-- CONFIGURAÇÕES ESPECIAIS -->
-        <div class="config-especial">
-            <h3>⚙️ CONFIGURAÇÕES ESPECIAIS</h3>
-            <div class="config-container">
-                <!-- CONFIGURAÇÃO REI DA MESA -->
-                <div class="config-item crown">
-                    <h4>
-                        <span class="crown-icon">👑</span>
-                        <span>REI DA MESA</span>
-                    </h4>
-                    <div class="player-select-container">
-                        <select class="player-select crown" id="selectReiDaMesa">
-                            <option value="">Selecione o Rei da Mesa</option>
-                        </select>
-                        <button class="save-config-btn crown" onclick="salvarReiDaMesa()">
-                            <span>💾</span>
-                            <span>Salvar Rei da Mesa</span>
-                        </button>
-                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
-                            O Rei da Mesa aparecerá com uma coroa 👑 ao lado do nome
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CONFIGURAÇÃO MELHOR MÃO -->
-                <div class="config-item card">
-                    <h4>
-                        <span class="card-icon">🃏</span>
-                        <span>MELHOR MÃO DA ETAPA</span>
-                    </h4>
-                    <div class="player-select-container">
-                        <select class="player-select card" id="selectMelhorMao">
-                            <option value="">Selecione a Melhor Mão</option>
-                        </select>
-                        <button class="save-config-btn card" onclick="salvarMelhorMao()">
-                            <span>💾</span>
-                            <span>Salvar Melhor Mão</span>
-                        </button>
-                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
-                            O jogador com a melhor mão aparecerá com uma carta 🃏 ao lado do nome
-                        </div>
-                    </div>
-                </div>
-
-                <!-- NOVA CONFIGURAÇÃO: CAMPEÃO DE CADA ETAPA -->
-                <div class="config-item trophy" style="grid-column: span 2;">
-                    <h4>
-                        <span class="trophy-icon">🏆</span>
-                        <span>CAMPEÕES POR ETAPA</span>
-                    </h4>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px;" id="campeoesEtapaContainer">
-                        <!-- Será preenchido dinamicamente -->
-                    </div>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <button class="save-config-btn trophy" onclick="salvarCampeoesEtapa()">
-                            <span>💾</span>
-                            <span>Salvar Campeões das Etapas</span>
-                        </button>
-                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
-                            Defina o campeão de cada etapa para aparecer o troféu 🏆 ao lado da pontuação no ranking geral
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN GERAL -->
-        <div id="adminGeral">
-            <div class="admin-section">
-                <div class="admin-header">
-                    <h2>
-                        <span>📊</span>
-                        <span>PONTUAÇÕES GERAIS</span>
-                    </h2>
-                    <div style="color: #aaaaaa; font-size: 0.75rem; margin-top: 3px;">
-                        Gerencie pontuações das etapas (Geral)
-                    </div>
-                </div>
-
-                <div class="points-system">
-                    <!-- Seletor de Etapas -->
-                    <div style="text-align: center; margin-bottom: 8px;">
-                        <div style="color: var(--primary); font-weight: 600; margin-bottom: 10px; font-size: 0.9rem;">
-                            SELECIONE A ETAPA:
-                        </div>
-                        <div class="stage-selector" id="etapaSelector"></div>
-                    </div>
-
-                    <!-- Etapa Atual -->
-                    <div class="etapa-atual">
-                        <div style="font-size: 0.9rem; font-weight: 700; color: var(--gold);">
-                            ETAPA <span class="numero" id="etapaAtualNumero">1</span>
-                        </div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 3px;">
-                            Atualize as pontuações dos jogadores
-                        </div>
-                    </div>
-
-                    <!-- Lista de Jogadores para Pontuação (ORDEM ALFABÉTICA) -->
-                    <div class="players-points-list">
-                        <div class="points-list-header">
-                            <div>JOGADOR</div>
-                            <div>PONTOS</div>
-                        </div>
-                        <div class="points-list-items" id="playersPointsList">
-                            <!-- Jogadores serão carregados dinamicamente em ordem alfabética -->
-                        </div>
-                    </div>
-
-                    <!-- Ações -->
-                    <div class="admin-actions">
-                        <button class="admin-btn clear-btn" onclick="limparPontuacoes('geral')">
-                            <span>🧹</span>
-                            <span>Limpar Tudo</span>
-                        </button>
-                        <button class="admin-btn save-btn" onclick="salvarEtapa('geral')">
-                            <span>💾</span>
-                            <span>Salvar Etapa</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN KO -->
-        <div id="adminKO" style="display: none;">
-            <div class="admin-section">
-                <div class="admin-header">
-                    <h2>
-                        <span>🥊</span>
-                        <span>PONTUAÇÕES KO</span>
-                    </h2>
-                    <div style="color: #aaaaaa; font-size: 0.75rem; margin-top: 3px;">
-                        Gerencie pontuações das etapas (KO)
-                    </div>
-                </div>
-
-                <div class="points-system">
-                    <!-- Seletor de Etapas KO -->
-                    <div style="text-align: center; margin-bottom: 8px;">
-                        <div style="color: var(--ko-color); font-weight: 600; margin-bottom: 10px; font-size: 0.9rem;">
-                            SELECIONE A ETAPA KO:
-                        </div>
-                        <div class="stage-selector" id="etapaSelectorKO"></div>
-                    </div>
-
-                    <!-- Etapa Atual KO -->
-                    <div class="etapa-atual ko">
-                        <div style="font-size: 0.9rem; font-weight: 700; color: var(--ko-color);">
-                            ETAPA KO <span class="numero" id="etapaAtualNumeroKO">1</span>
-                        </div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 3px;">
-                            Atualize as pontuações de KO dos jogadores
-                        </div>
-                    </div>
-
-                    <!-- Lista de Jogadores para Pontuação KO (ORDEM ALFABÉTICA) -->
-                    <div class="players-points-list">
-                        <div class="points-list-header ko">
-                            <div>JOGADOR</div>
-                            <div>PONTOS KO</div>
-                        </div>
-                        <div class="points-list-items" id="playersPointsListKO">
-                            <!-- Jogadores serão carregados dinamicamente em ordem alfabética -->
-                        </div>
-                    </div>
-
-                    <!-- Ações KO -->
-                    <div class="admin-actions">
-                        <button class="admin-btn clear-btn" onclick="limparPontuacoes('ko')">
-                            <span>🧹</span>
-                            <span>Limpar Tudo</span>
-                        </button>
-                        <button class="admin-btn save-btn ko" onclick="salvarEtapa('ko')">
-                            <span>💾</span>
-                            <span>Salvar Etapa KO</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gerenciamento de Jogadores -->
-        <div class="players-management">
-            <h3 style="color: var(--primary); margin-bottom: 12px; font-family: 'Anton', sans-serif; font-size: 1.2rem;">
-                👥 GERENCIAR JOGADORES
-            </h3>
-
-            <div class="add-player-form">
-                <div class="form-group">
-                    <label>Nome do Jogador</label>
-                    <input type="text" id="novoJogadorNome" placeholder="Nome completo">
-                </div>
-                <div class="form-group">
-                    <label>URL da Foto (opcional)</label>
-                    <input type="text" id="novoJogadorFoto" placeholder="https://exemplo.com/foto.jpg">
-                </div>
-                <div style="display: flex; align-items: flex-end;">
-                    <button class="admin-btn save-btn" id="btnAdicionarJogador" style="height: 36px; font-size: 0.8rem;">
-                        <span>➕</span>
-                        <span>Adicionar</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="listaJogadoresAdmin">
-                <!-- Lista de jogadores será carregada aqui -->
-            </div>
-        </div>
-        
-        <!-- Botão de Exportação CSV -->
-        <div class="export-btn">
-            <button class="admin-btn save-btn" id="btnExportarCSV" style="width: 100%; max-width: 220px; margin: 0 auto; font-size: 0.8rem;">
-                <span>📊</span>
-                <span>Exportar Ranking CSV</span>
-            </button>
-        </div>
-    </div>
+<div class="info-cards">
+<div class="info-card">
+<h2 id="antecipCount">0</h2>
+Confirmações Antecipadas
+</div>
+<div class="info-card">
+<h2 id="pagosCount">0</h2>
+Pagamentos Validados
+</div>
 </div>
 
-<button class="admin-toggle-btn" id="btnAdminToggle">🔐</button>
+<div class="section">
+<h3>📋 Confirmar Presença Antecipadamente</h3>
+<p style="opacity:0.8;margin-bottom:15px;font-size:0.9em">
+  ✅ Confirme sua presença agora • 💳 Realize o pagamento de R$ 100,00 • ✔️ Admin valida o pagamento • 📍 Você entra automaticamente na lista oficial
+</p>
 
-<div class="modal" id="modalAdmin">
-    <div class="modal-content">
-        <h2 style="color: #8b0000; font-size: 1.1rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <span>🔐</span>
-            <span>Acesso Administrativo</span>
-        </h2>
-        <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.8rem;">
-            Digite a senha de administrador:
-        </p>
-        <div class="form-group">
-            <input type="password" id="senhaAdmin" placeholder="Digite a senha" style="width: 100%;">
-        </div>
-        <div class="modal-buttons">
-            <button class="admin-btn clear-btn" id="btnFecharAdmin" style="flex: 1; font-size: 0.8rem;">
-                Cancelar
-            </button>
-            <button class="admin-btn save-btn" id="btnAcessarAdmin" style="flex: 1; font-size: 0.8rem;">
-                Acessar
-            </button>
-        </div>
-    </div>
+<div class="form-group">
+<label>Selecione seu nome</label>
+<select id="playerNameAntecipa" style="padding:10px;">
+<option value="">Carregando jogadores...</option>
+</select>
 </div>
 
-<script>
-const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
-    authDomain: "poker-de-quinta.firebaseapp.com",
-    databaseURL: "https://poker-de-quinta-default-rtdb.firebaseio.com",
-    projectId: "poker-de-quinta",
-    storageBucket: "poker-de-quinta.firebasestorage.app",
-    messagingSenderId: "776724152456",
-    appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
+<div id="playerPhotoPreviewAntecipa" style="display:none;text-align:center;margin:15px 0">
+<img src="" alt="Foto do jogador" style="width:80px;height:80px;border-radius:50%;border:2px solid #d4a121;object-fit:cover;">
+</div>
+
+<button class="btn btn-primary" id="btnConfirmarAntecipa">🎯 CONFIRMAR PRESENÇA ANTECIPADAMENTE</button>
+
+<div class="payment-section" id="paymentSection">
+<h3 style="color:#d4a121;margin-bottom:15px">💳 Realizar Pagamento</h3>
+
+<div class="payment-info">
+<strong>Valor:</strong> R$ 100,00<br>
+<strong>Beneficiário:</strong> (41) 9714-4470<br>
+<strong>Tipo:</strong> Pix
+</div>
+
+<div class="qr-code-container">
+<p style="margin-bottom:10px;opacity:0.8">Escaneie o QR Code abaixo para realizar o pagamento:</p>
+<img id="qrCodeImg" src="" alt="QR Code Pix" style="display:none">
+<p id="qrLoadingMsg" style="opacity:0.7">Gerando QR Code...</p>
+</div>
+
+<div class="payment-info" style="background:rgba(76,175,80,0.1);border-left-color:#4CAF50">
+<strong style="color:#4CAF50">⏱️ Após realizar o pagamento:</strong><br>
+O administrador validará seu pagamento em até 2 horas e você será automaticamente adicionado à lista oficial de confirmados.
+</div>
+
+<button class="btn btn-secondary" id="btnCopiarChave">📋 COPIAR CHAVE PIX</button>
+<button class="btn btn-danger" id="btnCancelarPagamento">❌ CANCELAR</button>
+</div>
+
+</div>
+
+<div class="section">
+<h3>✅ CONFIRMAÇÕES ANTECIPADAS</h3>
+<ul id="antecipList" class="player-list">
+<li class="loading">Carregando dados...</li>
+</ul>
+</div>
+
+</div>
+
+<div class="admin-panel">
+<button class="admin-btn" id="btnModoAdminAntecipa" style="background:rgba(13,27,13,0.3);">🔐</button>
+<button class="admin-btn" id="btnValidarPagamentos" style="display:none;">💳 Validar</button>
+<button class="admin-btn" id="btnSairAdminAntecipa" style="display:none;background:#c72c48;">🚪 Sair</button>
+</div>
+
+<!-- Modal Admin Login -->
+<div class="modal" id="modalAdminAntecipa">
+<div class="modal-content">
+<h2 style="color:#8b0000;">🔐 Modo Administrador</h2>
+<p style="margin:15px 0;opacity:0.8;">Digite a senha de administrador:</p>
+<div class="form-group">
+<label>Senha Admin</label>
+<input type="password" id="senhaAdminAntecipa" placeholder="Digite a senha">
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="btnFecharAdminAntecipa">Cancelar</button>
+<button class="modal-btn confirm" id="btnAcessarAdminAntecipa" style="background:#8b0000;color:#fff">Acessar</button>
+</div>
+</div>
+</div>
+
+<!-- Modal Validar Pagamentos -->
+<div class="modal" id="modalValidarPagamentos">
+<div class="modal-content" style="max-width:700px;max-height:80vh;overflow-y:auto">
+<h2 style="color:#d4a121;">💳 Validar Pagamentos</h2>
+<p style="margin:15px 0;opacity:0.8;">Confirme os pagamentos recebidos:</p>
+<div id="paymentsList" style="margin:20px 0">
+<div class="empty-state">Nenhum pagamento pendente</div>
+</div>
+<div class="modal-buttons" style="margin-top:20px">
+<button class="modal-btn cancel" id="btnFecharValidacao">Fechar</button>
+</div>
+</div>
+</div>
+
+<!-- Modal Sucesso -->
+<div class="modal" id="modalSucesso">
+<div class="modal-content">
+<h2 style="color:#4CAF50;text-align:center">✅ Confirmação Realizada!</h2>
+<p style="margin:20px 0;text-align:center;line-height:1.6">
+Sua presença foi confirmada com sucesso!<br><br>
+<strong>Próximo passo:</strong> Realize o pagamento de R$ 100,00 via Pix para o número <strong>(41) 9714-4470</strong><br><br>
+Após o administrador validar seu pagamento, você será automaticamente adicionado à lista oficial de confirmados.
+</p>
+<div class="modal-buttons">
+<button class="modal-btn confirm" id="btnFecharSucesso" style="width:100%">Entendi</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getDatabase, ref, set, onValue, remove, push, get, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
+  authDomain: "poker-de-quinta.firebaseapp.com",
+  databaseURL: "https://poker-de-quinta-default-rtdb.firebaseio.com",
+  projectId: "poker-de-quinta",
+  storageBucket: "poker-de-quinta.firebasestorage.app",
+  messagingSenderId: "776724152456",
+  appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
 };
 
-const TOTAL_ETAPAS = 12;
-const SENHA_ADMIN = "poker2026";
+const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+const CHAVE_PIX = '41997144470'; // Número sem formatação
+const VALOR_PAGAMENTO = 100.00;
 
+const ETAPAS = [
+    { numero: 1,  data: '2026-01-29', descricao: '1ª Etapa' },
+    { numero: 2,  data: '2026-02-26', descricao: '2ª Etapa' },
+    { numero: 3,  data: '2026-03-26', descricao: '3ª Etapa' },
+    { numero: 4,  data: '2026-04-30', descricao: '4ª Etapa' },
+    { numero: 5,  data: '2026-05-28', descricao: '5ª Etapa' },
+    { numero: 6,  data: '2026-06-25', descricao: '6ª Etapa' },
+    { numero: 7,  data: '2026-07-30', descricao: '7ª Etapa' },
+    { numero: 8,  data: '2026-08-27', descricao: '8ª Etapa' },
+    { numero: 9,  data: '2026-09-24', descricao: '9ª Etapa' },
+    { numero: 10, data: '2026-10-08', descricao: '10ª Etapa' },
+    { numero: 11, data: '2026-10-29', descricao: '11ª Etapa' },
+    { numero: 12, data: '2026-11-26', descricao: '12ª Etapa' },
+    { numero: 13, data: '2026-12-10', descricao: 'ÚLTIMA ETAPA 🏆' }
+];
+
+const JOGADORES_INICIAIS = [
+    "Amarildo", "Boy", "Buiu", "Caio", "Charles", "Cleversson", "Davi", "Gera", "Diego", 
+    "Dos Anjos", "Eduardo", "Fernando", "Gregory", "Gaspar", "Guilherme", "Guti", "Kastelo", 
+    "Izidio", "Jean", "Jean Rebuy", "Junior", "Leo", "Loreto", "Lucas", "Matheus", "Maykon", 
+    "Marcelo", "Neto", "Nil", "Peterson", "Rafael", "Ricardo Amarante", "Ricardo Linhares", 
+    "Ricardo Matoso", "Robson", "Sergio", "Solano", "Tigre", "Van Van", "Waltinho", "Wesley"
+];
+
+let config = { etapa: 3, dataEvento: '2026-03-26' };
+let db;
+let antecipacoes = [];
 let jogadores = [];
-let etapas = {};
-let etapasKO = {};
-let modoAdmin = false;
-let etapaAtualSelecionada = 1;
-let etapaAtualSelecionadaKO = 1;
-let adminTipo = 'geral';
-let rankingAtual = [];
-let rankingKO = [];
-let viewAtual = 'rankingGeral';
-let reiDaMesa = null;
-let melhorMao = null;
-let campeoesEtapa = {};
+let modoAdminAntecipa = false;
 
-class FirebaseDB {
-    constructor(config) {
-        this.dbUrl = config.databaseURL;
-    }
+const selectJogador = document.getElementById('playerNameAntecipa');
+const photoPreview = document.getElementById('playerPhotoPreviewAntecipa');
+const previewImg = photoPreview.querySelector('img');
 
-    async get(path) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`);
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao buscar dados:', error);
-            return null;
-        }
-    }
+// =============================================
+// INICIALIZAR FIREBASE
+// =============================================
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  document.getElementById('statusIndicator').textContent = '✅ Conectado';
+  document.getElementById('statusIndicator').classList.add('connected');
 
-    async set(path, data) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao salvar dados:', error);
-            throw error;
-        }
-    }
+  // Carregar fotos
+  const snapshotFotos = await get(ref(db, 'fotosJogadores'));
+  if (snapshotFotos.exists()) {
+    const fotosSalvas = snapshotFotos.val();
+    jogadores = JOGADORES_INICIAIS.map(nome => ({
+      nome: nome,
+      foto: fotosSalvas[nome] || FOTO_PADRAO
+    }));
+  } else {
+    jogadores = JOGADORES_INICIAIS.map(nome => ({
+      nome: nome,
+      foto: FOTO_PADRAO
+    }));
+  }
 
-    async update(path, data) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao atualizar dados:', error);
-            throw error;
-        }
-    }
+  preencherSelectJogadores();
 
-    async push(path, data) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao adicionar dados:', error);
-            throw error;
-        }
-    }
+  // Carregar config
+  const snapshotConfig = await get(ref(db, 'config'));
+  if (snapshotConfig.exists()) {
+    config = snapshotConfig.val();
+  }
+  atualizarInterfaceConfig();
 
-    async remove(path) {
-        try {
-            const response = await fetch(`${this.dbUrl}/${path}.json`, {
-                method: 'DELETE'
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro ao remover dados:', error);
-            throw error;
-        }
+  // Listener para antecipações
+  onValue(ref(db, 'antecipacoes'), (snapshot) => {
+    antecipacoes = [];
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        antecipacoes.push({...child.val(), id: child.key});
+      });
     }
+    atualizar();
+  });
+
+  // Listener para config
+  onValue(ref(db, 'config'), (snapshot) => {
+    if (snapshot.exists()) {
+      config = snapshot.val();
+      atualizarInterfaceConfig();
+    }
+  });
+
+} catch (e) {
+  document.getElementById('statusIndicator').textContent = '❌ Erro de conexão';
+  document.getElementById('statusIndicator').classList.add('error');
+  console.error('Erro Firebase:', e);
 }
 
-const db = new FirebaseDB(FIREBASE_CONFIG);
+function preencherSelectJogadores() {
+  selectJogador.innerHTML = '';
+  const optDefault = document.createElement('option');
+  optDefault.value = '';
+  optDefault.textContent = 'Selecione seu nome...';
+  selectJogador.appendChild(optDefault);
 
-// Elementos DOM
-const statusIndicator = document.getElementById('statusIndicator');
-const btnViewRanking = document.getElementById('btnViewRanking');
-const btnViewRankingKO = document.getElementById('btnViewRankingKO');
-const viewRanking = document.getElementById('viewRanking');
-const viewRankingKO = document.getElementById('viewRankingKO');
-const viewAdmin = document.getElementById('viewAdmin');
-const btnAdminToggle = document.getElementById('btnAdminToggle');
-const modalAdmin = document.getElementById('modalAdmin');
-const btnFecharAdmin = document.getElementById('btnFecharAdmin');
-const btnAcessarAdmin = document.getElementById('btnAcessarAdmin');
-const senhaAdmin = document.getElementById('senhaAdmin');
-const btnAdicionarJogador = document.getElementById('btnAdicionarJogador');
-const novoJogadorNome = document.getElementById('novoJogadorNome');
-const novoJogadorFoto = document.getElementById('novoJogadorFoto');
-const btnExportarCSV = document.getElementById('btnExportarCSV');
-const btnAdminGeral = document.getElementById('btnAdminGeral');
-const btnAdminKO = document.getElementById('btnAdminKO');
-const adminGeral = document.getElementById('adminGeral');
-const adminKO = document.getElementById('adminKO');
-const selectReiDaMesa = document.getElementById('selectReiDaMesa');
-const selectMelhorMao = document.getElementById('selectMelhorMao');
-const campeoesEtapaContainer = document.getElementById('campeoesEtapaContainer');
-
-async function carregarDados() {
-    try {
-        const dadosJogadores = await db.get('rankingJogadores');
-        const dadosEtapas = await db.get('rankingEtapas');
-        const dadosEtapasKO = await db.get('rankingEtapasKO');
-        const dadosConfig = await db.get('configuracoes');
-        const dadosCampeoes = await db.get('campeoesEtapa');
-        
-        if (dadosJogadores) {
-            jogadores = Object.keys(dadosJogadores).map(key => ({
-                ...dadosJogadores[key],
-                id: key
-            }));
-        }
-        
-        if (dadosEtapas) {
-            etapas = dadosEtapas;
-        }
-        
-        if (dadosEtapasKO) {
-            etapasKO = dadosEtapasKO;
-        }
-        
-        if (dadosConfig) {
-            reiDaMesa = dadosConfig.reiDaMesa || null;
-            melhorMao = dadosConfig.melhorMao || null;
-        }
-        
-        if (dadosCampeoes) {
-            campeoesEtapa = dadosCampeoes;
-        }
-        
-        statusIndicator.textContent = '✅ Conectado';
-        statusIndicator.classList.add('connected');
-        
-        calcularRankings();
-        atualizarSelectsEspeciais();
-        renderizarCampeoesEtapa();
-        
-    } catch (e) {
-        console.error('Erro ao carregar dados:', e);
-        statusIndicator.textContent = '❌ Erro de conexão';
-    }
+  jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
+    const o = document.createElement('option');
+    o.value = j.nome;
+    o.textContent = j.nome;
+    o.setAttribute('data-foto', j.foto);
+    selectJogador.appendChild(o);
+  });
 }
 
-// Sistema de Autenticação
-btnAdminToggle.onclick = () => {
-    modalAdmin.classList.add('active');
-    senhaAdmin.focus();
-};
-
-btnFecharAdmin.onclick = () => {
-    modalAdmin.classList.remove('active');
-    senhaAdmin.value = '';
-};
-
-btnAcessarAdmin.onclick = () => {
-    if (senhaAdmin.value === SENHA_ADMIN) {
-        modoAdmin = true;
-        modalAdmin.classList.remove('active');
-        btnAdminToggle.classList.add('active');
-        btnAdminToggle.innerHTML = '✅';
-        senhaAdmin.value = '';
-        
-        viewRanking.style.display = 'none';
-        viewRankingKO.style.display = 'none';
-        viewAdmin.style.display = 'block';
-        
-        renderizarSeletorEtapas();
-        renderizarSeletorEtapasKO();
-        renderizarPlayersPoints('geral');
-        renderizarAdminJogadores();
-        atualizarSelectsEspeciais();
-        renderizarCampeoesEtapa();
-        
-        setTimeout(() => {
-            alert('🔓 Modo Administrador ATIVADO!\n\nVocê agora pode gerenciar jogadores, pontuações e campeões de cada etapa.');
-        }, 300);
-        
-    } else {
-        alert('❌ Senha incorreta!');
-        senhaAdmin.value = '';
-        senhaAdmin.focus();
-    }
-};
-
-// Alternar entre Rankings
-btnViewRanking.onclick = () => {
-    if (!modoAdmin) {
-        viewAtual = 'rankingGeral';
-        btnViewRanking.classList.add('active');
-        btnViewRankingKO.classList.remove('active');
-        viewRanking.style.display = 'block';
-        viewRankingKO.style.display = 'none';
-        atualizarRankingGeral();
-    }
-};
-
-btnViewRankingKO.onclick = () => {
-    if (!modoAdmin) {
-        viewAtual = 'rankingKO';
-        btnViewRankingKO.classList.add('active');
-        btnViewRanking.classList.remove('active');
-        viewRanking.style.display = 'none';
-        viewRankingKO.style.display = 'block';
-        atualizarRankingKO();
-    }
-};
-
-// Alternar entre Geral e KO no Admin
-btnAdminGeral.onclick = () => {
-    adminTipo = 'geral';
-    btnAdminGeral.classList.add('active');
-    btnAdminKO.classList.remove('active');
-    adminGeral.style.display = 'block';
-    adminKO.style.display = 'none';
-    renderizarPlayersPoints('geral');
-};
-
-btnAdminKO.onclick = () => {
-    adminTipo = 'ko';
-    btnAdminKO.classList.add('active');
-    btnAdminGeral.classList.remove('active');
-    adminGeral.style.display = 'none';
-    adminKO.style.display = 'block';
-    renderizarPlayersPoints('ko');
-};
-
-// Voltar para o ranking do admin
-btnViewRanking.onclick = () => {
-    if (modoAdmin) {
-        viewRanking.style.display = 'block';
-        viewRankingKO.style.display = 'none';
-        viewAdmin.style.display = 'none';
-        carregarDados();
-    } else {
-        viewAtual = 'rankingGeral';
-        btnViewRanking.classList.add('active');
-        btnViewRankingKO.classList.remove('active');
-        viewRanking.style.display = 'block';
-        viewRankingKO.style.display = 'none';
-        atualizarRankingGeral();
-    }
-};
-
-// Adicionar novo jogador
-btnAdicionarJogador.onclick = async () => {
-    const nome = novoJogadorNome.value.trim();
-    if (!nome) {
-        alert('Digite o nome do jogador!');
-        return;
-    }
-    
-    const foto = novoJogadorFoto.value.trim();
-    
-    try {
-        const novoJogador = {
-            nome: nome,
-            foto: foto || null,
-            previousRank: 0,
-            dataCriacao: new Date().toISOString()
-        };
-        
-        await db.push('rankingJogadores', novoJogador);
-        
-        novoJogadorNome.value = '';
-        novoJogadorFoto.value = '';
-        
-        alert('✅ Jogador adicionado com sucesso!');
-        
-        await carregarDados();
-        if (modoAdmin) {
-            renderizarPlayersPoints(adminTipo);
-            renderizarAdminJogadores();
-            atualizarSelectsEspeciais();
-            renderizarCampeoesEtapa();
-        }
-        
-    } catch (e) {
-        alert('❌ Erro ao adicionar jogador: ' + e.message);
-    }
-};
-
-// Atualizar selects especiais
-function atualizarSelectsEspeciais() {
-    selectReiDaMesa.innerHTML = '<option value="">Selecione o Rei da Mesa</option>';
-    selectMelhorMao.innerHTML = '<option value="">Selecione a Melhor Mão</option>';
-    
-    const jogadoresOrdenados = [...jogadores].sort((a, b) => 
-        a.nome.localeCompare(b.nome)
-    );
-    
-    jogadoresOrdenados.forEach(jogador => {
-        const optionRei = document.createElement('option');
-        optionRei.value = jogador.id;
-        optionRei.textContent = jogador.nome;
-        if (jogador.id === reiDaMesa) {
-            optionRei.selected = true;
-        }
-        selectReiDaMesa.appendChild(optionRei);
-        
-        const optionMao = document.createElement('option');
-        optionMao.value = jogador.id;
-        optionMao.textContent = jogador.nome;
-        if (jogador.id === melhorMao) {
-            optionMao.selected = true;
-        }
-        selectMelhorMao.appendChild(optionMao);
-    });
+function atualizarInterfaceConfig() {
+  const etapaAtual = ETAPAS.find(e => e.numero === config.etapa) || ETAPAS[2];
+  const dataFormatada = new Date(config.dataEvento + 'T12:00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
+  document.getElementById('dataEvento').textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
 }
 
-// Renderizar selects para campeões de cada etapa
-function renderizarCampeoesEtapa() {
-    if (!campeoesEtapaContainer) return;
-    
-    campeoesEtapaContainer.innerHTML = '';
-    
-    const jogadoresOrdenados = [...jogadores].sort((a, b) => 
-        a.nome.localeCompare(b.nome)
-    );
-    
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const div = document.createElement('div');
-        div.style.backgroundColor = 'var(--bg-dark)';
-        div.style.padding = '8px';
-        div.style.borderRadius = '4px';
-        div.style.border = '1px solid var(--border)';
-        
-        div.innerHTML = `
-            <div style="font-weight: 700; color: var(--champion-color); margin-bottom: 5px; text-align: center;">
-                ETAPA ${i}
-            </div>
-            <select class="player-select trophy" id="campeaoEtapa_${i}" style="width: 100%;">
-                <option value="">Nenhum</option>
-                ${jogadoresOrdenados.map(j => `<option value="${j.id}" ${campeoesEtapa[i] === j.id ? 'selected' : ''}>${j.nome}</option>`).join('')}
-            </select>
-        `;
-        
-        campeoesEtapaContainer.appendChild(div);
-    }
-}
-
-// Funções para salvar configurações especiais
-window.salvarReiDaMesa = async function() {
-    const jogadorId = selectReiDaMesa.value;
-    
-    if (!jogadorId) {
-        alert('Selecione um jogador para ser o Rei da Mesa!');
-        return;
-    }
-    
-    try {
-        await db.set('configuracoes/reiDaMesa', jogadorId);
-        reiDaMesa = jogadorId;
-        
-        const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
-        alert(`✅ Rei da Mesa definido como: ${jogadorSelecionado.nome}`);
-        
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
-        
-    } catch (e) {
-        alert('❌ Erro ao salvar Rei da Mesa: ' + e.message);
-    }
-};
-
-window.salvarMelhorMao = async function() {
-    const jogadorId = selectMelhorMao.value;
-    
-    if (!jogadorId) {
-        alert('Selecione um jogador com a melhor mão!');
-        return;
-    }
-    
-    try {
-        await db.set('configuracoes/melhorMao', jogadorId);
-        melhorMao = jogadorId;
-        
-        const jogadorSelecionado = jogadores.find(j => j.id === jogadorId);
-        alert(`✅ Melhor mão definida para: ${jogadorSelecionado.nome}`);
-        
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
-        
-    } catch (e) {
-        alert('❌ Erro ao salvar Melhor Mão: ' + e.message);
-    }
-};
-
-window.salvarCampeoesEtapa = async function() {
-    const novosCampeoes = {};
-    
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const select = document.getElementById(`campeaoEtapa_${i}`);
-        if (select && select.value) {
-            novosCampeoes[i] = select.value;
-        }
-    }
-    
-    try {
-        await db.set('campeoesEtapa', novosCampeoes);
-        campeoesEtapa = novosCampeoes;
-        
-        alert('✅ Campeões das etapas salvos com sucesso!');
-        
-        if (viewAtual === 'rankingGeral') {
-            atualizarRankingGeral();
-        }
-        
-    } catch (e) {
-        alert('❌ Erro ao salvar campeões: ' + e.message);
-    }
-};
-
-// Função para contar quantas vezes o jogador terminou em primeiro lugar no ranking geral
-function contarPrimeirosLugares(jogadorId) {
-    let count = 0;
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        if (campeoesEtapa[i] === jogadorId) {
-            count++;
-        }
-    }
-    return count;
-}
-
-// Função para calcular total de KO acumulados
-function calcularTotalKO(jogadorId) {
-    let totalKO = 0;
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const score = etapasKO[i]?.[jogadorId];
-        if (score !== undefined && score !== null && score !== 'NJ') {
-            const pontos = parseInt(score);
-            if (!isNaN(pontos)) {
-                totalKO += pontos;
-            }
-        }
-    }
-    return totalKO;
-}
-
-// Função para encontrar a maior pontuação KO de cada etapa
-function encontrarMaiorKOEtapa(etapaNum) {
-    const etapa = etapasKO[etapaNum];
-    if (!etapa) return { max: 0, jogadores: [] };
-    
-    let maxPontos = 0;
-    let jogadoresComMax = [];
-    
-    Object.entries(etapa).forEach(([id, pontos]) => {
-        if (pontos !== 'NJ' && pontos !== null) {
-            const pontosNum = parseInt(pontos);
-            if (!isNaN(pontosNum)) {
-                if (pontosNum > maxPontos) {
-                    maxPontos = pontosNum;
-                    jogadoresComMax = [id];
-                } else if (pontosNum === maxPontos && maxPontos > 0) {
-                    jogadoresComMax.push(id);
-                }
-            }
-        }
-    });
-    
-    return { max: maxPontos, jogadores: jogadoresComMax };
-}
-
-// Função para contar primeiros lugares no ranking KO
-function contarPrimeirosLugaresKO(jogadorId) {
-    let count = 0;
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const etapa = etapasKO[i];
-        if (!etapa) continue;
-        
-        let maxPontos = -1;
-        let vencedores = [];
-        
-        Object.entries(etapa).forEach(([id, pontos]) => {
-            if (pontos === 'NJ' || pontos === null) return;
-            
-            const pontosNum = parseInt(pontos);
-            if (!isNaN(pontosNum) && pontosNum > 0) {
-                if (pontosNum > maxPontos) {
-                    maxPontos = pontosNum;
-                    vencedores = [id];
-                } else if (pontosNum === maxPontos) {
-                    vencedores.push(id);
-                }
-            }
-        });
-        
-        if (maxPontos > 0 && vencedores.includes(jogadorId)) {
-            count++;
-        }
-    }
-    return count;
-}
-
-// Funções de Ranking Geral
-function calcularRankingGeral() {
-    const rankingCalculado = jogadores.map(jogador => {
-        const pontuacoes = [];
-        let participacoes = 0;
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapas[i]?.[jogador.id];
-            if (score !== undefined && score !== null && score !== 'NJ') {
-                const pontos = parseInt(score);
-                if (!isNaN(pontos) && pontos > 0) {
-                    pontuacoes.push(pontos);
-                    participacoes++;
-                }
-            }
-        }
-        
-        const melhoresPontuacoes = pontuacoes.sort((a, b) => b - a).slice(0, 10);
-        const totalPontos = melhoresPontuacoes.reduce((sum, p) => sum + p, 0);
-        
-        const primeirosLugares = contarPrimeirosLugares(jogador.id);
-        const totalKO = calcularTotalKO(jogador.id);
-        
-        return {
-            ...jogador,
-            totalPontos: totalPontos,
-            participacoes: participacoes,
-            primeirosLugares: primeirosLugares,
-            totalKO: totalKO,
-            melhoresPontuacoes: melhoresPontuacoes,
-            isReiDaMesa: jogador.id === reiDaMesa,
-            isMelhorMao: jogador.id === melhorMao
-        };
-    });
-    
-    rankingCalculado.sort((a, b) => {
-        if (b.totalPontos !== a.totalPontos) return b.totalPontos - a.totalPontos;
-        if (b.participacoes !== a.participacoes) return b.participacoes - a.participacoes;
-        if (b.primeirosLugares !== a.primeirosLugares) return b.primeirosLugares - a.primeirosLugares;
-        if (b.totalKO !== a.totalKO) return b.totalKO - a.totalKO;
-        return a.nome.localeCompare(b.nome);
-    });
-    
-    rankingCalculado.forEach((jogador, index) => {
-        jogador.posicaoAtual = index + 1;
-    });
-    
-    rankingAtual = rankingCalculado;
-    return rankingCalculado;
-}
-
-// Funções de Ranking KO - CORRIGIDA
-function calcularRankingKO() {
-    const rankingCalculado = jogadores.map(jogador => {
-        const pontuacoesKO = [];
-        let participacoesKO = 0;
-        let totalPontosKO = 0;
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapasKO[i]?.[jogador.id];
-            
-            if (score === undefined || score === null) {
-                continue;
-            }
-            
-            if (score === 'NJ') {
-                continue;
-            }
-            
-            const pontosNum = parseInt(score);
-            if (!isNaN(pontosNum)) {
-                if (pontosNum > 0) {
-                    pontuacoesKO.push(pontosNum);
-                    totalPontosKO += pontosNum;
-                    participacoesKO++;
-                } else if (pontosNum === 0) {
-                    participacoesKO++;
-                }
-            }
-        }
-        
-        const melhoresPontuacoesKO = [...pontuacoesKO].sort((a, b) => b - a).slice(0, 10);
-        totalPontosKO = melhoresPontuacoesKO.reduce((sum, p) => sum + p, 0);
-        
-        const primeirosLugaresKO = contarPrimeirosLugaresKO(jogador.id);
-        
-        return {
-            ...jogador,
-            totalPontosKO: totalPontosKO,
-            participacoesKO: participacoesKO,
-            primeirosLugaresKO: primeirosLugaresKO,
-            melhoresPontuacoesKO: melhoresPontuacoesKO
-        };
-    });
-    
-    rankingCalculado.sort((a, b) => {
-        if (b.totalPontosKO !== a.totalPontosKO) return b.totalPontosKO - a.totalPontosKO;
-        if (b.participacoesKO !== a.participacoesKO) return b.participacoesKO - a.participacoesKO;
-        if (b.primeirosLugaresKO !== a.primeirosLugaresKO) return b.primeirosLugaresKO - a.primeirosLugaresKO;
-        return a.nome.localeCompare(b.nome);
-    });
-    
-    rankingCalculado.forEach((jogador, index) => {
-        jogador.posicaoAtualKO = index + 1;
-    });
-    
-    rankingKO = rankingCalculado;
-    return rankingCalculado;
-}
-
-function calcularRankings() {
-    calcularRankingGeral();
-    calcularRankingKO();
-    
-    if (viewAtual === 'rankingGeral') {
-        atualizarRankingGeral();
-    } else {
-        atualizarRankingKO();
-    }
-}
-
-function atualizarRankingGeral() {
-    const tbody = document.getElementById('rankingTableBody');
-    
-    if (rankingAtual.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                    Nenhum jogador cadastrado
-                </td>
-            </tr>
-        `;
-        return;
-    }
-    
-    const primeiroColocadoPontos = rankingAtual[0]?.totalPontos || 0;
-    
-    tbody.innerHTML = '';
-    
-    rankingAtual.forEach((jogador, index) => {
-        const rank = index + 1;
-        const isTop10 = rank <= 10;
-        
-        const diferencaPontos = primeiroColocadoPontos - jogador.totalPontos;
-        const diffClass = rank === 1 ? 'leader' : '';
-        
-        let iconesHTML = '';
-        if (jogador.isReiDaMesa) {
-            iconesHTML += '<span class="player-icon crown-icon" title="Rei da Mesa">👑</span>';
-        }
-        if (jogador.isMelhorMao) {
-            iconesHTML += '<span class="player-icon card-icon" title="Melhor mão da etapa">🃏</span>';
-        }
-        
-        let etapasHTML = '';
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapas[i]?.[jogador.id];
-            let etapaClass = 'empty';
-            let etapaText = '-';
-            let iconeExtra = '';
-            
-            if (score !== undefined && score !== null) {
-                if (score === 'NJ') {
-                    etapaClass = 'absent';
-                    etapaText = 'NJ';
-                } else if (parseInt(score) > 0) {
-                    etapaClass = 'present';
-                    etapaText = score;
-                }
-            }
-            
-            if (campeoesEtapa[i] === jogador.id) {
-                iconeExtra = ' <span class="trophy-icon" title="Campeão da etapa">🏆</span>';
-            }
-            
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeExtra}</div></td>`;
-        }
-        
-        const tr = document.createElement('tr');
-        tr.className = `ranking-row ${isTop10 ? 'top10' : 'other'} pos-${isTop10 ? rank : ''}`;
-        tr.innerHTML = `
-            <td>
-                <div class="rank-cell">
-                    <div class="rank-number">${rank}</div>
-                </div>
-            </td>
-            <td>
-                <div class="player-info">
-                    <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
-                         class="player-avatar"
-                         alt="${jogador.nome}"
-                         onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
-                    <div class="player-name">${jogador.nome}</div>
-                    <div class="player-icons">
-                        ${iconesHTML}
-                    </div>
-                </div>
-            </td>
-            <td class="points-cell">
-                <div class="points pos-${rank <= 3 ? rank : ''}">
-                    ${jogador.totalPontos}
-                </div>
-            </td>
-            <td class="diff-cell">
-                <div class="diff ${diffClass}">
-                    ${rank === 1 ? '—' : `-${diferencaPontos}`}
-                </div>
-            </td>
-            ${etapasHTML}
-        `;
-        
-        tbody.appendChild(tr);
-    });
-}
-
-function atualizarRankingKO() {
-    const tbody = document.getElementById('rankingTableBodyKO');
-    
-    if (rankingKO.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="16" style="text-align: center; padding: 25px; color: var(--text-muted);">
-                    Nenhum jogador cadastrado
-                </td>
-            </tr>
-        `;
-        return;
-    }
-    
-    const primeiroColocadoPontosKO = rankingKO[0]?.totalPontosKO || 0;
-    
-    tbody.innerHTML = '';
-    
-    rankingKO.forEach((jogador, index) => {
-        const rank = index + 1;
-        const isTop10 = rank <= 10;
-        
-        const diferencaPontos = primeiroColocadoPontosKO - jogador.totalPontosKO;
-        const diffClass = rank === 1 ? 'leader' : '';
-        
-        const etapasComRegistro = new Set();
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            if (etapasKO[i] && Object.keys(etapasKO[i]).length > 0) {
-                etapasComRegistro.add(i);
-            }
-        }
-        
-        let etapasHTML = '';
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapasKO[i]?.[jogador.id];
-            let etapaClass = 'empty';
-            let etapaText = '-';
-            let iconeExtra = '';
-            
-            if (score !== undefined && score !== null) {
-                if (score === 'NJ') {
-                    etapaClass = 'absent';
-                    etapaText = 'NJ';
-                } else {
-                    const pontosNum = parseInt(score);
-                    if (!isNaN(pontosNum)) {
-                        if (pontosNum > 0) {
-                            etapaClass = 'present ko';
-                            etapaText = pontosNum;
-                            
-                            const { max, jogadores } = encontrarMaiorKOEtapa(i);
-                            if (max > 0 && jogadores.includes(jogador.id)) {
-                                etapaClass += ' highlight';
-                                iconeExtra = ' <span class="glove-icon" title="Maior pontuação KO da etapa">🥊</span>';
-                            }
-                        } else if (pontosNum === 0) {
-                            etapaClass = 'zero-ko';
-                            etapaText = '0';
-                        }
-                    }
-                }
-            } else {
-                if (etapasComRegistro.has(i)) {
-                    etapaClass = 'absent';
-                    etapaText = 'NJ';
-                } else {
-                    etapaClass = 'empty';
-                    etapaText = '-';
-                }
-            }
-            
-            etapasHTML += `<td><div class="etapa-pill ${etapaClass}">${etapaText}${iconeExtra}</div></td>`;
-        }
-        
-        const tr = document.createElement('tr');
-        tr.className = `ranking-row ${isTop10 ? 'top10 ko' : 'other'} pos-${isTop10 ? rank : ''}`;
-        
-        tr.innerHTML = `
-            <td>
-                <div class="rank-cell">
-                    <div class="rank-number">${rank}</div>
-                </div>
-            </td>
-            <td>
-                <div class="player-info">
-                    <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
-                         class="player-avatar"
-                         alt="${jogador.nome}"
-                         onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${jogador.nome}') + '&background=0a150a&color=d4a121&bold=true'">
-                    <div class="player-name">${jogador.nome}</div>
-                </div>
-            </td>
-            <td class="points-cell">
-                <div class="points ko pos-${rank <= 3 ? rank : ''}">
-                    ${jogador.totalPontosKO}
-                </div>
-            </td>
-            <td class="diff-cell">
-                <div class="diff ${diffClass}">
-                    ${rank === 1 ? '—' : `-${diferencaPontos}`}
-                </div>
-            </td>
-            ${etapasHTML}
-        `;
-        
-        tbody.appendChild(tr);
-    });
-}
-
-// Sistema de Gerenciamento de Etapas (Admin)
-function renderizarSeletorEtapas() {
-    const container = document.getElementById('etapaSelector');
-    container.innerHTML = '';
-    
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'stage-btn';
-        if (i === etapaAtualSelecionada) {
-            btn.classList.add('active');
-        }
-        btn.textContent = `E${i}`;
-        btn.onclick = () => {
-            etapaAtualSelecionada = i;
-            renderizarSeletorEtapas();
-            renderizarPlayersPoints('geral');
-            document.getElementById('etapaAtualNumero').textContent = i;
-        };
-        container.appendChild(btn);
-    }
-}
-
-function renderizarSeletorEtapasKO() {
-    const container = document.getElementById('etapaSelectorKO');
-    container.innerHTML = '';
-    
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'stage-btn ko';
-        if (i === etapaAtualSelecionadaKO) {
-            btn.classList.add('active');
-        }
-        btn.textContent = `K${i}`;
-        btn.onclick = () => {
-            etapaAtualSelecionadaKO = i;
-            renderizarSeletorEtapasKO();
-            renderizarPlayersPoints('ko');
-            document.getElementById('etapaAtualNumeroKO').textContent = i;
-        };
-        container.appendChild(btn);
-    }
-}
-
-function renderizarPlayersPoints(tipo) {
-    const container = tipo === 'geral' ? 
-        document.getElementById('playersPointsList') : 
-        document.getElementById('playersPointsListKO');
-    
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    const jogadoresOrdenados = [...jogadores].sort((a, b) => 
-        a.nome.localeCompare(b.nome)
-    );
-    
-    jogadoresOrdenados.forEach(jogador => {
-        const scoreAtual = tipo === 'geral' ? 
-            etapas[etapaAtualSelecionada]?.[jogador.id] || '' :
-            etapasKO[etapaAtualSelecionadaKO]?.[jogador.id] || '';
-        
-        const item = document.createElement('div');
-        item.className = `point-item ${tipo === 'ko' ? 'ko' : ''}`;
-        item.innerHTML = `
-            <div class="player-info-admin">
-                <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
-                     class="player-avatar"
-                     alt="${jogador.nome}">
-                <div style="font-weight: 600; font-size: 0.8rem;">${jogador.nome}</div>
-            </div>
-            <div class="points-input-admin ${tipo === 'ko' ? 'ko' : ''}">
-                <input type="text" 
-                       id="${tipo}_score_${tipo === 'geral' ? etapaAtualSelecionada : etapaAtualSelecionadaKO}_${jogador.id}"
-                       value="${scoreAtual}"
-                       placeholder="Pts ou NJ"
-                       oninput="formatarInputPontos(this, '${tipo}')">
-                <div class="quick-actions">
-                    <button class="quick-action-btn ${tipo === 'ko' ? 'ko' : ''}" onclick="setPontuacao('${jogador.id}', 'NJ', '${tipo}')">NJ</button>
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(item);
-    });
-}
-
-// Funções auxiliares para o sistema de pontuação
-window.formatarInputPontos = function(input, tipo) {
-    let valor = input.value.trim().toUpperCase();
-    
-    if (valor === 'NJ') {
-        input.value = 'NJ';
-        input.classList.add('NJ');
-    } else {
-        valor = valor.replace(/[^0-9]/g, '');
-        input.value = valor;
-        input.classList.remove('NJ');
-    }
-    
-    if (tipo === 'ko') {
-        if (input.value === 'NJ') {
-            input.style.borderColor = '#FF4757';
-        } else {
-            input.style.borderColor = 'var(--ko-color)';
-        }
-    }
-};
-
-window.setPontuacao = function(jogadorId, pontos, tipo) {
-    const etapa = tipo === 'geral' ? etapaAtualSelecionada : etapaAtualSelecionadaKO;
-    const input = document.getElementById(`${tipo}_score_${etapa}_${jogadorId}`);
-    if (input) {
-        input.value = pontos;
-        formatarInputPontos(input, tipo);
-    }
-};
-
-window.limparPontuacoes = function(tipo) {
-    if (confirm(`Tem certeza que deseja limpar TODAS as pontuações ${tipo === 'geral' ? 'gerais' : 'KO'} desta etapa?`)) {
-        jogadores.forEach(jogador => {
-            const etapa = tipo === 'geral' ? etapaAtualSelecionada : etapaAtualSelecionadaKO;
-            const input = document.getElementById(`${tipo}_score_${etapa}_${jogador.id}`);
-            if (input) {
-                input.value = '';
-                input.classList.remove('NJ');
-                if (tipo === 'ko') {
-                    input.style.borderColor = 'var(--border)';
-                }
-            }
-        });
-    }
-};
-
-window.salvarEtapa = async function(tipo) {
-    try {
-        const novosScores = {};
-        let temAlteracoes = false;
-        
-        jogadores.forEach(jogador => {
-            const etapa = tipo === 'geral' ? etapaAtualSelecionada : etapaAtualSelecionadaKO;
-            const input = document.getElementById(`${tipo}_score_${etapa}_${jogador.id}`);
-            if (input) {
-                const valor = input.value.trim().toUpperCase();
-                if (valor) {
-                    novosScores[jogador.id] = valor === 'NJ' ? 'NJ' : parseInt(valor) || 0;
-                    temAlteracoes = true;
-                } else {
-                    novosScores[jogador.id] = null;
-                }
-            }
-        });
-        
-        if (!temAlteracoes) {
-            if (!confirm(`Nenhuma pontuação ${tipo === 'geral' ? 'geral' : 'KO'} foi alterada. Deseja salvar mesmo assim?`)) {
-                return;
-            }
-        }
-        
-        const caminho = tipo === 'geral' ? 
-            `rankingEtapas/${etapaAtualSelecionada}` : 
-            `rankingEtapasKO/${etapaAtualSelecionadaKO}`;
-        
-        await db.set(caminho, novosScores);
-        alert(`✅ Etapa ${tipo === 'geral' ? 'geral' : 'KO'} salva com sucesso!`);
-        
-        await carregarDados();
-        
-    } catch (e) {
-        alert(`❌ Erro ao salvar etapa ${tipo === 'geral' ? 'geral' : 'KO'}: ` + e.message);
-    }
-};
-
-// Gerenciamento de Jogadores (Admin)
-function renderizarAdminJogadores() {
-    const container = document.getElementById('listaJogadoresAdmin');
-    
-    if (!container) return;
-    
-    if (jogadores.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 15px; color: var(--text-muted); background: var(--bg-row); border-radius: 4px;">
-                Nenhum jogador cadastrado
-            </div>
-        `;
-        return;
-    }
-    
-    const jogadoresOrdenados = [...jogadores].sort((a, b) => 
-        a.nome.localeCompare(b.nome)
-    );
-    
-    let html = `
-        <div style="display: grid; gap: 6px; margin-top: 12px;">
-    `;
-    
-    jogadoresOrdenados.forEach(jogador => {
-        const posicaoGeral = (rankingAtual.findIndex(j => j.id === jogador.id) + 1) || '-';
-        const totalPontosGeral = rankingAtual.find(j => j.id === jogador.id)?.totalPontos || 0;
-        const posicaoKO = (rankingKO.findIndex(j => j.id === jogador.id) + 1) || '-';
-        const totalPontosKO = rankingKO.find(j => j.id === jogador.id)?.totalPontosKO || 0;
-        
-        let icones = '';
-        if (jogador.id === reiDaMesa) {
-            icones += ' 👑';
-        }
-        if (jogador.id === melhorMao) {
-            icones += ' 🃏';
-        }
-        
-        html += `
-            <div style="background: var(--bg-row); padding: 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="${jogador.foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(jogador.nome) + '&background=0a150a&color=d4a121&bold=true'}" 
-                         style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--primary);"
-                         alt="${jogador.nome}">
-                    <div>
-                        <div style="font-weight: 600; font-size: 0.85rem;">${jogador.nome}${icones}</div>
-                        <div style="display: flex; gap: 8px; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">
-                            <span>📊 Geral: #${posicaoGeral} (${totalPontosGeral} pts)</span>
-                            <span>🥊 KO: #${posicaoKO} (${totalPontosKO} pts)</span>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="removerJogador('${jogador.id}', '${jogador.nome.replace(/'/g, "\\'")}')" 
-                        style="background: #FF4757; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">
-                    🗑️
-                </button>
-            </div>
-        `;
-    });
-    
-    html += `</div>`;
-    container.innerHTML = html;
-}
-
-window.removerJogador = async function(id, nome) {
-    if (!confirm(`Tem certeza que deseja remover o jogador "${nome}"?\n\nEsta ação não pode ser desfeita!`)) {
-        return;
-    }
-    
-    try {
-        await db.remove(`rankingJogadores/${id}`);
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            await db.remove(`rankingEtapas/${i}/${id}`);
-            await db.remove(`rankingEtapasKO/${i}/${id}`);
-        }
-        
-        if (id === reiDaMesa) {
-            await db.set('configuracoes/reiDaMesa', null);
-            reiDaMesa = null;
-        }
-        if (id === melhorMao) {
-            await db.set('configuracoes/melhorMao', null);
-            melhorMao = null;
-        }
-        
-        const campeoesAtualizados = {};
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            if (campeoesEtapa[i] !== id) {
-                campeoesAtualizados[i] = campeoesEtapa[i];
-            }
-        }
-        await db.set('campeoesEtapa', campeoesAtualizados);
-        campeoesEtapa = campeoesAtualizados;
-        
-        alert('✅ Jogador removido com sucesso!');
-        
-        await carregarDados();
-        if (modoAdmin) {
-            renderizarPlayersPoints(adminTipo);
-            renderizarAdminJogadores();
-            atualizarSelectsEspeciais();
-            renderizarCampeoesEtapa();
-        }
-        
-    } catch (e) {
-        alert('❌ Erro ao remover jogador: ' + e.message);
-    }
-};
-
-// Exportar CSV
-btnExportarCSV.onclick = function() {
-    const ranking = calcularRankingGeral();
-    const rankingKOCalc = calcularRankingKO();
-    
-    let csv = 'Posição,Jogador,Pontos Totais (Geral),Participações (Geral),1º Lugares,Total KO,Diferença para Líder (Geral),Rei da Mesa,Melhor Mão,Pontos KO,Participações KO,1º Lugares KO,Posição KO';
-    
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        csv += `,Etapa ${i} Geral`;
-    }
-    for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-        csv += `,Etapa ${i} KO`;
-    }
-    csv += '\n';
-    
-    const primeiroPontos = ranking[0]?.totalPontos || 0;
-    
-    ranking.forEach(jogador => {
-        const diferencaGeral = primeiroPontos - jogador.totalPontos;
-        const jogadorKO = rankingKOCalc.find(j => j.id === jogador.id);
-        const pontosKO = jogadorKO?.totalPontosKO || 0;
-        const participacoesKO = jogadorKO?.participacoesKO || 0;
-        const primeirosLugaresKO = jogadorKO?.primeirosLugaresKO || 0;
-        const posicaoKO = jogadorKO?.posicaoAtualKO || '-';
-        const isReiDaMesa = jogador.id === reiDaMesa ? 'SIM' : 'NÃO';
-        const isMelhorMao = jogador.id === melhorMao ? 'SIM' : 'NÃO';
-        
-        csv += `${jogador.posicaoAtual},"${jogador.nome}",${jogador.totalPontos},${jogador.participacoes},${jogador.primeirosLugares},${jogador.totalKO},${diferencaGeral},${isReiDaMesa},${isMelhorMao},${pontosKO},${participacoesKO},${primeirosLugaresKO},${posicaoKO}`;
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapas[i]?.[jogador.id] || '-';
-            csv += `,"${score}"`;
-        }
-        
-        for (let i = 1; i <= TOTAL_ETAPAS; i++) {
-            const score = etapasKO[i]?.[jogador.id] || '-';
-            csv += `,"${score}"`;
-        }
-        csv += '\n';
-    });
-    
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `ranking-poker-quinta-completo-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    alert('📊 Ranking completo exportado com sucesso!');
-};
-
-// Event Listeners
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalAdmin.classList.contains('active')) {
-        modalAdmin.classList.remove('active');
-        senhaAdmin.value = '';
-    }
+selectJogador.addEventListener('change', function() {
+  const selectedOption = this.options[this.selectedIndex];
+  const foto = selectedOption.getAttribute('data-foto');
+  if (foto && this.value) {
+    previewImg.src = foto;
+    photoPreview.style.display = 'block';
+  } else {
+    photoPreview.style.display = 'none';
+  }
 });
 
-modalAdmin.addEventListener('click', (e) => {
-    if (e.target === modalAdmin) {
-        modalAdmin.classList.remove('active');
-        senhaAdmin.value = '';
-    }
-});
+// =============================================
+// CONFIRMAR PRESENÇA ANTECIPADA
+// =============================================
+document.getElementById('btnConfirmarAntecipa').onclick = async () => {
+  const nome = selectJogador.value;
+  if (!nome) return alert('Selecione seu nome!');
 
-// Inicializar aplicação
-document.addEventListener('DOMContentLoaded', () => {
-    carregarDados();
-});
+  // Verifica se já confirmou antecipadamente
+  const jaConfirmou = antecipacoes.some(a => a.nome === nome && a.etapa === config.etapa);
+  if (jaConfirmou) {
+    return alert('Você já confirmou presença antecipadamente nesta etapa!');
+  }
 
-senhaAdmin.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        btnAcessarAdmin.click();
-    }
-});
-</script>
-</body>
-</html>
+  try {
+    const agora = new Date().toISOString();
+    const fotoJogador = jogadores.find(j => j.nome === nome);
+
+    await push(ref(db, 'antecipacoes'), {
+      nome: nome,
+      etapa: config.etapa,
+      data: agora,
+      timestamp: Date.now(),
+      foto: fotoJogador ? fotoJogador.foto : FOTO_PADRAO,
+      statusPagamento: 'pendente',
+      validadoAdmin: false
+    });
+
+    document.getElementById('paymentSection').classList.add('active');
+    selectJogador.value = '';
+    photoPreview.style.display = 'none';
+
+    // Mostrar modal de sucesso
+    document.getElementById('modalSucesso').classList.add('active');
+
+    gerarQRCodePix(nome);
+
+  } catch (e) {
+    alert('Erro ao confirmar: ' + e.message);
+  }
+};
+
+// =============================================
+// GERAR QR CODE PIX
+// =============================================
+function gerarQRCodePix(nomeJogador) {
+  // Usando API brcode.dev para gerar QR Code Pix
+  const pixKey = CHAVE_PIX;
+  const amount = VALOR_PAGAMENTO;
+  const description = `Confirmacao Poker ${nomeJogador}`;
+
+  const url = `https://brcode.dev/api/v1/qr?key=${pixKey}&amount=${amount}&description=${encodeURIComponent(description)}`;
+
+  const qrImg = document.getElementById('qrCodeImg');
+  const qrLoading = document.getElementById('qrLoadingMsg');
+
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      const imgUrl = URL.createObjectURL(blob);
+      qrImg.src = imgUrl;
+      qrImg.style.display = 'block';
+      qrLoading.style.display = 'none';
+    })
+    .catch(e => {
+      console.error('Erro ao gerar QR Code:', e);
+      qrLoading.textContent = 'Erro ao gerar QR Code. Copie a chave Pix manualmente.';
+    });
+}
+
+document.getElementById('btnCopiarChave').onclick = () => {
+  navigator.clipboard.writeText(CHAVE_PIX).then(() => {
+    alert('✅ Chave Pix copiada para a área de transferência!');
+  }).catch(() => {
+    alert('Erro ao copiar. Chave: ' + CHAVE_PIX);
+  });
+};
+
+document.getElementById('btnCancelarPagamento').onclick = () => {
+  document.getElementById('paymentSection').classList.remove('active');
+};
+
+document.getElementById('btnFecharSucesso').onclick = () => {
+  document.getElementById('modalSucesso').classList.remove('active');
+};
+
+// =============================================
+// ATUALIZAR LISTAS
+// =============================================
+function atualizar() {
+  document.getElementById('antecipCount').textContent = antecipacoes.filter(a => a.etapa === config.etapa).length;
+  document.getElementById('pagosCount').textContent = antecipacoes.filter(a => a.etapa === config.etapa && a.validadoAdmin).length;
+
+  const antecipList = document.getElementById('antecipList');
+  const antecipOrdenadas = antecipacoes.filter(a => a.etapa === config.etapa).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+  antecipList.innerHTML = antecipOrdenadas.length ? '' : '<li class="empty-state">Nenhuma confirmação antecipada</li>';
+
+  antecipOrdenadas.forEach((a, i) => {
+    const statusClass = a.validadoAdmin ? 'status-confirmed' : 'status-pending';
+    const statusText = a.validadoAdmin ? '✅ CONFIRMADO' : '⏳ AGUARDANDO PAGAMENTO';
+    const foto = a.foto || FOTO_PADRAO;
+
+    antecipList.innerHTML += `<li class="player-item">
+      <div class="player-info">
+        <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${a.nome}">
+        <div class="player-number">${i+1}º</div>
+        <div class="player-details">
+          <strong>${a.nome}</strong>
+          <small>🕒 ${new Date(a.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small>
+        </div>
+      </div>
+      <span class="status-badge ${statusClass}">${statusText}</span>
+    </li>`;
+  });
+}
+
+// =============================================
+// MODO ADMIN
+// =============================================
+document.getElementById('btnModoAdminAntecipa').onclick = () => {
+  document.getElementById('modalAdminAntecipa').classList.add('active');
+};
+
+document.getElementById('btnFecharAdminAntecipa').onclick = () => {
+  document.getElementById('modalAdminAntecipa').classList.remove('active');
+};
+
+document.getElementById('btnAcessarAdminAntecipa').onclick = () => {
+  if (document.getElementById('senhaAdminAntecipa').value === "poker2026") {
+    modoAdminAntecipa = true;
+    document.getElementById('modalAdminAntecipa').classList.remove('active');
+    document.getElementById('btnValidarPagamentos').style.display = 'block';
+    document.getElementById('btnSairAdminAntecipa').style.display = 'block';
+    document.getElementById('btnModoAdminAntecipa').style.background = '#4CAF50';
+    document.getElementById('btnModoAdminAntecipa').style.opacity = '1';
+    alert("✅ Modo Administrador Ativado!");
+  } else {
+    alert('❌ Senha incorreta!');
+  }
+};
+
+document.getElementById('btnSairAdminAntecipa').onclick = () => {
+  modoAdminAntecipa = false;
+  document.getElementById('btnValidarPagamentos').style.display = 'none';
+  document.getElementById('btnSairAdminAntecipa').style.display = 'none';
+  document.getElementById('btnModoAdminAntecipa').style.background = 'rgba(13,27,13,0.3)';
+  document.getElementById('btnModoAdminAntecipa').style.opacity = '0.15';
+  alert("👋 Modo Administrador desativado.");
+};
+
+// =============================================
+//
+
