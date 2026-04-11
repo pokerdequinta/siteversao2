@@ -25,6 +25,7 @@
 .confirmacao-poker .logo-top {
   text-align: center;
   padding: 20px;
+  background: #0d1b0d;
 }
 
 .confirmacao-poker .logo-top img {
@@ -35,6 +36,7 @@
   max-width: 1000px;
   margin: auto;
   padding: 20px;
+  background: #0d1b0d;
 }
 
 .confirmacao-poker header {
@@ -250,6 +252,16 @@
 
 .confirmacao-poker .confirm-payment-btn {
   background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.confirmacao-poker .deny-payment-btn {
+  background: #c72c48;
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -606,7 +618,7 @@
   line-height: 1.7;
 }
 
-/* Estilos para QR Code */
+/* Estilos para QR Code e Linha Digitável */
 .qrcode-container {
   text-align: center;
   padding: 20px;
@@ -643,6 +655,17 @@
   font-size: 1.2em;
 }
 
+.linha-digitavel {
+  background: #0d1b0d;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-family: monospace;
+  font-size: 1.1em;
+  word-break: break-all;
+  border: 1px dashed #FFD700;
+}
+
 .copy-btn {
   background: #d4a121;
   color: #000;
@@ -651,7 +674,20 @@
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  margin-top: 10px;
+  margin: 5px;
+}
+
+.info-antecipacao {
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.15));
+  border: 1px solid #FFD700;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.info-antecipacao strong {
+  color: #FFD700;
 }
 
 .pagamentos-pendentes-list {
@@ -667,6 +703,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.pagamento-actions {
+  display: flex;
+  gap: 5px;
 }
 
 @media (max-width: 768px) {
@@ -745,10 +786,10 @@
   <!-- Modal Admin Login -->
   <div class="modal" id="modalAdmin">
     <div class="modal-content">
-      <h2 style="color: #8b0000;">🔐 Modo Administrador</h2>
-      <p style="margin: 15px 0; opacity: 0.8;">Digite a senha de administrador para acessar funções exclusivas:</p>
+      <h2 style="color: #8b0000;">🔐 Modo Organização</h2>
+      <p style="margin: 15px 0; opacity: 0.8;">Digite a senha de organização para acessar funções exclusivas:</p>
       <div class="form-group">
-        <label>Senha Admin</label>
+        <label>Senha Organização</label>
         <input type="password" id="senhaAdmin" placeholder="Digite a senha">
       </div>
       <div class="modal-buttons">
@@ -763,6 +804,11 @@
     <div class="modal-content" style="max-width: 550px;">
       <h2 style="color: #FFD700;">⭐ Inscrição Antecipada</h2>
       <p style="margin: 15px 0;">Garanta sua vaga agora mesmo! Valor: <strong style="color: #FFD700;">R$ 100,00</strong></p>
+      
+      <div class="info-antecipacao">
+        <strong>📌 INFORMAÇÃO IMPORTANTE:</strong><br><br>
+        Ao antecipar o pagamento da inscrição (R$ 100,00), no dia da etapa, se o pagamento for validado pela organização, você só precisará pagar os rebuys e add-ons que fizer durante o jogo. Sua inscrição já estará quitada!
+      </div>
       
       <div class="form-group">
         <label>Selecione seu nome</label>
@@ -781,9 +827,9 @@
 
   <!-- Modal QR Code PIX -->
   <div class="modal" id="modalQRCode">
-    <div class="modal-content" style="max-width: 550px;">
+    <div class="modal-content" style="max-width: 600px;">
       <h2 style="color: #FFD700;">📱 Pagamento PIX</h2>
-      <p style="margin: 10px 0;">Escaneie o QR Code ou copie a chave PIX</p>
+      <p style="margin: 10px 0;">Escaneie o QR Code ou use a linha digitável</p>
       
       <div class="pix-info">
         <div class="pix-value">R$ 100,00</div>
@@ -795,8 +841,14 @@
         <canvas id="qrcodeCanvas"></canvas>
       </div>
       
+      <div style="margin: 15px 0;">
+        <label style="color: #FFD700; display: block; margin-bottom: 5px;">💰 Linha Digitável (Copia e Cola):</label>
+        <div class="linha-digitavel" id="linhaDigitavelDisplay"></div>
+        <button class="copy-btn" id="btnCopiarLinhaDigitavel">📋 Copiar Linha Digitável</button>
+      </div>
+      
       <p style="margin: 15px 0; font-size: 0.9em; opacity: 0.8;">
-        Após o pagamento, um administrador confirmará sua inscrição antecipada.
+        Após o pagamento, a organização confirmará sua inscrição antecipada.
       </p>
       
       <div class="modal-buttons">
@@ -807,9 +859,9 @@
 
   <!-- Modal Gerenciar Pagamentos (Admin) -->
   <div class="modal" id="modalGerenciarPagamentos">
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content" style="max-width: 650px;">
       <h2 style="color: #FFD700;">💵 Gerenciar Pagamentos Antecipados</h2>
-      <p style="margin: 10px 0; opacity: 0.8;">Confirme os pagamentos para liberar as vagas antecipadas</p>
+      <p style="margin: 10px 0; opacity: 0.8;">Confirme ou negue os pagamentos pendentes</p>
       
       <div class="pagamentos-pendentes-list" id="pagamentosPendentesList">
         <div class="empty-state">Carregando...</div>
@@ -1244,10 +1296,21 @@ function getFotoJogador(nomeJogador) {
     return jogador ? jogador.foto : FOTO_PADRAO;
 }
 
-// ==================== GERAR QR CODE PIX ====================
+// ==================== GERAR QR CODE E LINHA DIGITÁVEL PIX ====================
+function gerarPIXPayload() {
+    // Payload PIX simplificado com valor fixo de R$ 100
+    const payload = `00020126580014br.gov.bcb.pix0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
+    return payload;
+}
+
+function gerarLinhaDigitavel() {
+    // Linha digitável simulada para copiar e colar no app do banco
+    return `00020126580014br.gov.bcb.pix0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
+}
+
 function gerarQRCodePIX() {
     const canvas = document.getElementById('qrcodeCanvas');
-    const pixPayload = `00020126580014BR.GOV.BCB.PIX0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
+    const pixPayload = gerarPIXPayload();
     
     QRCode.toCanvas(canvas, pixPayload, {
         width: 200,
@@ -1259,6 +1322,8 @@ function gerarQRCodePIX() {
     }, function(error) {
         if (error) console.error('Erro ao gerar QR Code:', error);
     });
+    
+    document.getElementById('linhaDigitavelDisplay').textContent = gerarLinhaDigitavel();
 }
 
 // ==================== INICIALIZAR FIREBASE ====================
@@ -1383,12 +1448,18 @@ document.getElementById('btnFecharQRCode').onclick = () => {
     selectAntecipar.value = '';
     anteciparPhotoPreview.style.display = 'none';
     jogadorSelecionadoAntecipar = '';
-    alert('✅ Solicitação enviada! Aguarde a confirmação do pagamento pelo administrador.');
+    alert('✅ Solicitação enviada! Aguarde a confirmação do pagamento pela organização.');
 };
 
 document.getElementById('btnCopiarPix').onclick = () => {
     navigator.clipboard.writeText(CHAVE_PIX);
     alert('✅ Chave PIX copiada!');
+};
+
+document.getElementById('btnCopiarLinhaDigitavel').onclick = () => {
+    const linha = document.getElementById('linhaDigitavelDisplay').textContent;
+    navigator.clipboard.writeText(linha);
+    alert('✅ Linha digitável copiada! Cole no seu app do banco.');
 };
 
 // ==================== MODAL CONFIRMAR PRESENÇA ====================
@@ -1686,7 +1757,7 @@ window.promoverJogadorManual = async (id) => {
   }
 };
 
-// ==================== MODO ADMIN ====================
+// ==================== MODO ORGANIZAÇÃO ====================
 document.getElementById('btnModoAdmin').onclick = () => document.getElementById('modalAdmin').classList.add('active');
 document.getElementById('btnFecharAdmin').onclick = () => document.getElementById('modalAdmin').classList.remove('active');
 
@@ -1706,7 +1777,7 @@ document.getElementById('btnAcessarAdmin').onclick = () => {
     document.getElementById('btnModoAdmin').style.opacity = '1';
     
     atualizarBotaoInscricoes();
-    alert("✅ Modo Administrador Ativado!");
+    alert("✅ Modo Organização Ativado!");
     atualizar();
   } else {
     alert('❌ Senha incorreta!');
@@ -1724,7 +1795,7 @@ btnSairAdmin.onclick = () => {
   btnSairAdmin.style.display = 'none';
   document.getElementById('btnModoAdmin').style.background = 'rgba(13,27,13,0.3)';
   document.getElementById('btnModoAdmin').style.opacity = '0.15';
-  alert("👋 Modo Administrador desativado.");
+  alert("👋 Modo Organização desativado.");
   atualizar();
 };
 
@@ -1744,7 +1815,7 @@ function atualizarBotaoInscricoes() {
   }
 }
 
-// ==================== GERENCIAR PAGAMENTOS (ADMIN) ====================
+// ==================== GERENCIAR PAGAMENTOS (ORGANIZAÇÃO) ====================
 btnGerenciarPagamentos.onclick = () => {
     atualizarListaPagamentos();
     document.getElementById('modalGerenciarPagamentos').classList.add('active');
@@ -1773,7 +1844,10 @@ function atualizarListaPagamentos() {
                 <small>Solicitado em: ${new Date(p.dataSolicitacao).toLocaleString('pt-BR')}</small><br>
                 <small style="color: #FFD700;">Valor: R$ ${p.valor},00</small>
             </div>
-            <button class="confirm-payment-btn" onclick="confirmarPagamento('${p.id}', '${p.nome}')">✅ Confirmar</button>
+            <div class="pagamento-actions">
+                <button class="confirm-payment-btn" onclick="confirmarPagamento('${p.id}', '${p.nome}')">✅ Confirmar</button>
+                <button class="deny-payment-btn" onclick="negarPagamento('${p.id}', '${p.nome}')">❌ Negar</button>
+            </div>
         `;
         lista.appendChild(div);
     });
@@ -1799,10 +1873,25 @@ window.confirmarPagamento = async (id, nome) => {
         await remove(ref(db, `pagamentosPendentes/${id}`));
         
         alert(`✅ Pagamento confirmado! ${nome} foi adicionado à lista de confirmados.`);
-        document.getElementById('modalGerenciarPagamentos').classList.remove('active');
+        atualizarListaPagamentos();
         
     } catch (e) {
         alert('Erro ao confirmar pagamento: ' + e.message);
+    }
+};
+
+window.negarPagamento = async (id, nome) => {
+    if (!confirm(`Negar pagamento de ${nome}? A solicitação será removida.`)) return;
+    
+    try {
+        // Remove da lista de pagamentos pendentes
+        await remove(ref(db, `pagamentosPendentes/${id}`));
+        
+        alert(`❌ Pagamento de ${nome} foi negado e removido.`);
+        atualizarListaPagamentos();
+        
+    } catch (e) {
+        alert('Erro ao negar pagamento: ' + e.message);
     }
 };
 
