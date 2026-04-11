@@ -112,6 +112,19 @@
   color: #000;
 }
 
+.confirmacao-poker .antecipar-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  border: 2px solid #d4a121;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: #000;
+  font-size: 1.1em;
+}
+
 .confirmacao-poker .cancel-btn-main {
   width: 100%;
   padding: 15px;
@@ -124,7 +137,8 @@
   color: #fff;
 }
 
-.confirmacao-poker .add-btn:disabled {
+.confirmacao-poker .add-btn:disabled,
+.confirmacao-poker .antecipar-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -209,6 +223,17 @@
   color: #fff;
 }
 
+.confirmacao-poker .antecipado {
+  background: #FFD700;
+  color: #000;
+  font-weight: bold;
+}
+
+.confirmacao-poker .pendente-pagamento {
+  background: #FF6600;
+  color: #fff;
+}
+
 .confirmacao-poker .penalized {
   background: #FF6600;
   color: #fff;
@@ -221,6 +246,16 @@
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.confirmacao-poker .confirm-payment-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
 .confirmacao-poker .empty-state {
@@ -292,20 +327,16 @@
   color: #fff;
 }
 
-.confirmacao-poker #playerName option {
+.confirmacao-poker #playerName option,
+.confirmacao-poker #anteciparPlayerName option {
   background: #1a3d1a;
   color: #fff;
   padding: 10px;
 }
 
-.confirmacao-poker #playerName option:hover {
+.confirmacao-poker #playerName option:hover,
+.confirmacao-poker #anteciparPlayerName option:hover {
   background: #2d5016;
-}
-
-.confirmacao-poker #playerName optgroup {
-  background: #102810;
-  color: #d4a121;
-  font-weight: bold;
 }
 
 .confirmacao-poker .modal-buttons {
@@ -368,6 +399,16 @@
   border-radius: 10px;
   font-size: 0.75em;
   margin-left: 5px;
+}
+
+.confirmacao-poker .antecipado-indicator {
+  background: #FFD700;
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  margin-left: 5px;
+  font-weight: bold;
 }
 
 .confirmacao-poker .penalty-indicator {
@@ -565,12 +606,77 @@
   line-height: 1.7;
 }
 
+/* Estilos para QR Code */
+.qrcode-container {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.qrcode-container svg {
+  max-width: 200px;
+  height: auto;
+}
+
+.pix-info {
+  background: #1a3d1a;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.pix-value {
+  font-size: 2em;
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.pix-key {
+  background: #0d1b0d;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+.copy-btn {
+  background: #d4a121;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.pagamentos-pendentes-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.pagamento-item {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .confirmacao-poker .info-cards {
     grid-template-columns: 1fr;
   }
 }
 </style>
+<!-- Biblioteca QR Code -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 
 <body>
@@ -601,6 +707,7 @@
       <div class="info-card"><h2 id="waitlistCount">0</h2>Espera</div>
     </div>
 
+    <button class="antecipar-btn" id="btnAntecipar">⭐ INSCRIÇÃO ANTECIPADA - GARANTA SUA VAGA (R$ 100)</button>
     <button class="add-btn" id="btnConfirmar" disabled>🔒 INSCRIÇÕES FECHADAS</button>
     <button class="cancel-btn-main" id="btnCancelarWhatsApp">❌ CANCELAR MINHA INSCRIÇÃO</button>
     <button class="add-btn export-btn" id="btnExportar">📊 EXPORTAR CSV</button>
@@ -631,6 +738,7 @@
     <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Etapa</button>
     <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Fotos</button>
     <button class="admin-btn" id="btnGerenciarPenalidades" style="display:none;">⚠️ Penalidades</button>
+    <button class="admin-btn" id="btnGerenciarPagamentos" style="display:none;">💵 Pagamentos</button>
     <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair</button>
   </div>
 
@@ -646,6 +754,69 @@
       <div class="modal-buttons">
         <button class="modal-btn cancel" id="btnFecharAdmin">Cancelar</button>
         <button class="modal-btn confirm" id="btnAcessarAdmin" style="background:#8b0000; color:#fff">Acessar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Antecipar Inscrição -->
+  <div class="modal" id="modalAntecipar">
+    <div class="modal-content" style="max-width: 550px;">
+      <h2 style="color: #FFD700;">⭐ Inscrição Antecipada</h2>
+      <p style="margin: 15px 0;">Garanta sua vaga agora mesmo! Valor: <strong style="color: #FFD700;">R$ 100,00</strong></p>
+      
+      <div class="form-group">
+        <label>Selecione seu nome</label>
+        <select id="anteciparPlayerName" style="padding:10px;"></select>
+        <div id="anteciparPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
+          <img src="" alt="Foto do jogador" style="width:60px;height:60px;border-radius:50%;border:2px solid #FFD700;object-fit:cover;">
+        </div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="btnCancelarAntecipar">Cancelar</button>
+        <button class="modal-btn confirm" id="btnGerarQRCode" style="background:#FFD700; color:#000;">Gerar PIX</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal QR Code PIX -->
+  <div class="modal" id="modalQRCode">
+    <div class="modal-content" style="max-width: 550px;">
+      <h2 style="color: #FFD700;">📱 Pagamento PIX</h2>
+      <p style="margin: 10px 0;">Escaneie o QR Code ou copie a chave PIX</p>
+      
+      <div class="pix-info">
+        <div class="pix-value">R$ 100,00</div>
+        <div class="pix-key" id="pixKeyDisplay">41997144470</div>
+        <button class="copy-btn" id="btnCopiarPix">📋 Copiar Chave PIX</button>
+      </div>
+      
+      <div class="qrcode-container" id="qrcodeContainer">
+        <canvas id="qrcodeCanvas"></canvas>
+      </div>
+      
+      <p style="margin: 15px 0; font-size: 0.9em; opacity: 0.8;">
+        Após o pagamento, um administrador confirmará sua inscrição antecipada.
+      </p>
+      
+      <div class="modal-buttons">
+        <button class="modal-btn confirm" id="btnFecharQRCode" style="background:#FFD700; color:#000;">Já paguei</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Gerenciar Pagamentos (Admin) -->
+  <div class="modal" id="modalGerenciarPagamentos">
+    <div class="modal-content" style="max-width: 600px;">
+      <h2 style="color: #FFD700;">💵 Gerenciar Pagamentos Antecipados</h2>
+      <p style="margin: 10px 0; opacity: 0.8;">Confirme os pagamentos para liberar as vagas antecipadas</p>
+      
+      <div class="pagamentos-pendentes-list" id="pagamentosPendentesList">
+        <div class="empty-state">Carregando...</div>
+      </div>
+      
+      <div class="modal-buttons" style="margin-top:20px;">
+        <button class="modal-btn cancel" id="btnFecharPagamentos">Fechar</button>
       </div>
     </div>
   </div>
@@ -689,6 +860,7 @@
       <p style="margin: 15px 0; line-height: 1.6; font-size:0.9em">
         <strong>Regras importantes:</strong><br>
         • Limite de 20 vagas confirmadas<br>
+        • <strong style="color: #FFD700;">⭐ Inscrição Antecipada:</strong> Garanta sua vaga agora por R$ 100<br>
         • Confirme a presença somente se for ir com CERTEZA<br>
         • Caso se inscreva e não possa ir a etapa, clique no botão CANCELAR MINHA INSCRIÇÃO<br>
         • Após 20 confirmações, novos jogadores vão para lista de espera<br>
@@ -791,6 +963,8 @@ const firebaseConfig = {
 
 const LIMITE_VAGAS = 20;
 const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+const CHAVE_PIX = '41997144470';
+const VALOR_ANTECIPADO = 100;
 
 // ==================== CALENDÁRIO OFICIAL ====================
 const ETAPAS = [
@@ -858,15 +1032,18 @@ let db;
 let confirmados = [];
 let listaEspera = [];
 let jogadoresPenalizados = [];
+let pagamentosPendentes = [];
 let modoAdmin = false;
 let timerInterval;
 let jogadores = [];
+let jogadorSelecionadoAntecipar = '';
 
 const btnToggleInscricoes = document.getElementById('btnToggleInscricoes');
 const btnProximaEtapa = document.getElementById('btnProximaEtapa');
 const btnSelecionarEtapa = document.getElementById('btnSelecionarEtapa');
 const btnGerenciarFotos = document.getElementById('btnGerenciarFotos');
 const btnGerenciarPenalidades = document.getElementById('btnGerenciarPenalidades');
+const btnGerenciarPagamentos = document.getElementById('btnGerenciarPagamentos');
 const btnSairAdmin = document.getElementById('btnSairAdmin');
 const dataEventoEl = document.getElementById('dataEvento');
 const timerHeader = document.getElementById('timerHeader');
@@ -903,6 +1080,7 @@ async function carregarFotosJogadores() {
         }));
     }
     preencherSelectJogadores();
+    preencherSelectAntecipar();
     preencherSelectPenalidade();
 }
 
@@ -916,6 +1094,7 @@ async function salvarFotosJogadores() {
         alert('✅ Fotos salvas com sucesso!');
         atualizar();
         preencherSelectJogadores();
+        preencherSelectAntecipar();
         document.getElementById('modalGerenciarFotos').classList.remove('active');
     } catch (e) {
         alert('Erro ao salvar fotos: ' + e.message);
@@ -924,6 +1103,24 @@ async function salvarFotosJogadores() {
 
 function preencherSelectJogadores() {
     const selectJogador = document.getElementById('playerName');
+    selectJogador.innerHTML = '';
+    
+    const optDefault = document.createElement('option');
+    optDefault.value = '';
+    optDefault.textContent = 'Selecione seu nome...';
+    selectJogador.appendChild(optDefault);
+    
+    jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
+        const o = document.createElement('option');
+        o.value = j.nome;
+        o.textContent = j.nome;
+        o.setAttribute('data-foto', j.foto);
+        selectJogador.appendChild(o);
+    });
+}
+
+function preencherSelectAntecipar() {
+    const selectJogador = document.getElementById('anteciparPlayerName');
     selectJogador.innerHTML = '';
     
     const optDefault = document.createElement('option');
@@ -1047,6 +1244,23 @@ function getFotoJogador(nomeJogador) {
     return jogador ? jogador.foto : FOTO_PADRAO;
 }
 
+// ==================== GERAR QR CODE PIX ====================
+function gerarQRCodePIX() {
+    const canvas = document.getElementById('qrcodeCanvas');
+    const pixPayload = `00020126580014BR.GOV.BCB.PIX0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
+    
+    QRCode.toCanvas(canvas, pixPayload, {
+        width: 200,
+        margin: 2,
+        color: {
+            dark: '#000000',
+            light: '#FFFFFF'
+        }
+    }, function(error) {
+        if (error) console.error('Erro ao gerar QR Code:', error);
+    });
+}
+
 // ==================== INICIALIZAR FIREBASE ====================
 try {
   const app = initializeApp(firebaseConfig);
@@ -1075,6 +1289,11 @@ try {
     atualizarListaPenalizados();
   });
   
+  onValue(ref(db, 'pagamentosPendentes'), (snapshot) => {
+    pagamentosPendentes = [];
+    if (snapshot.exists()) snapshot.forEach(child => { pagamentosPendentes.push({...child.val(), id: child.key}); });
+  });
+  
   onValue(ref(db, 'config'), (snapshot) => {
     if (snapshot.exists()) {
       config = snapshot.val();
@@ -1096,6 +1315,81 @@ try {
   document.getElementById('statusIndicator').textContent = '❌ Erro de conexão';
   document.getElementById('statusIndicator').classList.add('error');
 }
+
+// ==================== MODAL ANTECIPAR INSCRIÇÃO ====================
+const selectAntecipar = document.getElementById('anteciparPlayerName');
+const anteciparPhotoPreview = document.getElementById('anteciparPhotoPreview');
+const anteciparPreviewImg = anteciparPhotoPreview.querySelector('img');
+
+selectAntecipar.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const foto = selectedOption.getAttribute('data-foto');
+    if (foto && this.value) {
+        anteciparPreviewImg.src = foto;
+        anteciparPhotoPreview.style.display = 'block';
+        jogadorSelecionadoAntecipar = this.value;
+    } else {
+        anteciparPhotoPreview.style.display = 'none';
+        jogadorSelecionadoAntecipar = '';
+    }
+});
+
+document.getElementById('btnAntecipar').onclick = () => {
+    document.getElementById('modalAntecipar').classList.add('active');
+};
+
+document.getElementById('btnCancelarAntecipar').onclick = () => {
+    document.getElementById('modalAntecipar').classList.remove('active');
+    selectAntecipar.value = '';
+    anteciparPhotoPreview.style.display = 'none';
+    jogadorSelecionadoAntecipar = '';
+};
+
+document.getElementById('btnGerarQRCode').onclick = async () => {
+    const nome = selectAntecipar.value;
+    if (!nome) return alert('Selecione seu nome!');
+    
+    const jaInscrito = [...confirmados, ...listaEspera].some(p => !p.isGuest && p.nome === nome);
+    if (jaInscrito) {
+        return alert('Você já está inscrito!');
+    }
+    
+    const jaSolicitou = pagamentosPendentes.some(p => p.nome === nome && p.etapa === config.etapa);
+    if (jaSolicitou) {
+        return alert('Você já possui uma solicitação de inscrição antecipada pendente!');
+    }
+    
+    try {
+        await push(ref(db, 'pagamentosPendentes'), {
+            nome: nome,
+            dataSolicitacao: new Date().toISOString(),
+            etapa: config.etapa,
+            valor: VALOR_ANTECIPADO,
+            status: 'pendente'
+        });
+        
+        document.getElementById('modalAntecipar').classList.remove('active');
+        document.getElementById('pixKeyDisplay').textContent = CHAVE_PIX;
+        gerarQRCodePIX();
+        document.getElementById('modalQRCode').classList.add('active');
+        
+    } catch (e) {
+        alert('Erro ao processar: ' + e.message);
+    }
+};
+
+document.getElementById('btnFecharQRCode').onclick = () => {
+    document.getElementById('modalQRCode').classList.remove('active');
+    selectAntecipar.value = '';
+    anteciparPhotoPreview.style.display = 'none';
+    jogadorSelecionadoAntecipar = '';
+    alert('✅ Solicitação enviada! Aguarde a confirmação do pagamento pelo administrador.');
+};
+
+document.getElementById('btnCopiarPix').onclick = () => {
+    navigator.clipboard.writeText(CHAVE_PIX);
+    alert('✅ Chave PIX copiada!');
+};
 
 // ==================== MODAL CONFIRMAR PRESENÇA ====================
 const selectJogador = document.getElementById('playerName');
@@ -1245,9 +1539,13 @@ function atualizar() {
   confirmedList.innerHTML = confirmadosOrdenados.length ? '' : '<li class="empty-state">Nenhuma confirmação</li>';
   confirmadosOrdenados.forEach((p, i) => {
     const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',false)">❌</button>` : '';
-    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge member">MEMBRO</span>';
+    let badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge member">MEMBRO</span>';
+    if (p.antecipado) {
+        badge = '<span class="player-badge antecipado">⭐ ANTECIPADO</span>';
+    }
     const guestInfo = p.isGuest && p.guestOf ? ` <small style="opacity:0.7">(Convidado de ${p.guestOf})</small>` : '';
     const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
+    const antecipadoTag = p.antecipado ? '<span class="antecipado-indicator">⭐ INSCRIÇÃO ANTECIPADA</span>' : '';
     
     confirmedList.innerHTML += `<li class="player-item">
         <div class="player-info">
@@ -1255,8 +1553,12 @@ function atualizar() {
             <div class="player-number">${i+1}º</div>
             <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
         </div>
-        ${badge}
-        ${btnRemover}</li>`;
+        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+          ${badge}
+          ${antecipadoTag}
+          ${btnRemover}
+        </div>
+        </li>`;
   });
 
   const membrosEspera = listaEspera.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
@@ -1398,6 +1700,7 @@ document.getElementById('btnAcessarAdmin').onclick = () => {
     btnSelecionarEtapa.style.display = 'block';
     btnGerenciarFotos.style.display = 'block';
     btnGerenciarPenalidades.style.display = 'block';
+    btnGerenciarPagamentos.style.display = 'block';
     btnSairAdmin.style.display = 'block';
     document.getElementById('btnModoAdmin').style.background = '#4CAF50';
     document.getElementById('btnModoAdmin').style.opacity = '1';
@@ -1417,6 +1720,7 @@ btnSairAdmin.onclick = () => {
   btnSelecionarEtapa.style.display = 'none';
   btnGerenciarFotos.style.display = 'none';
   btnGerenciarPenalidades.style.display = 'none';
+  btnGerenciarPagamentos.style.display = 'none';
   btnSairAdmin.style.display = 'none';
   document.getElementById('btnModoAdmin').style.background = 'rgba(13,27,13,0.3)';
   document.getElementById('btnModoAdmin').style.opacity = '0.15';
@@ -1439,6 +1743,68 @@ function atualizarBotaoInscricoes() {
     btnToggleInscricoes.style.background = '#4CAF50';
   }
 }
+
+// ==================== GERENCIAR PAGAMENTOS (ADMIN) ====================
+btnGerenciarPagamentos.onclick = () => {
+    atualizarListaPagamentos();
+    document.getElementById('modalGerenciarPagamentos').classList.add('active');
+};
+
+document.getElementById('btnFecharPagamentos').onclick = () => {
+    document.getElementById('modalGerenciarPagamentos').classList.remove('active');
+};
+
+function atualizarListaPagamentos() {
+    const lista = document.getElementById('pagamentosPendentesList');
+    const pendentes = pagamentosPendentes.filter(p => p.status === 'pendente' && p.etapa === config.etapa);
+    
+    if (pendentes.length === 0) {
+        lista.innerHTML = '<div class="empty-state">Nenhum pagamento pendente</div>';
+        return;
+    }
+    
+    lista.innerHTML = '';
+    pendentes.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'pagamento-item';
+        div.innerHTML = `
+            <div>
+                <strong>${p.nome}</strong><br>
+                <small>Solicitado em: ${new Date(p.dataSolicitacao).toLocaleString('pt-BR')}</small><br>
+                <small style="color: #FFD700;">Valor: R$ ${p.valor},00</small>
+            </div>
+            <button class="confirm-payment-btn" onclick="confirmarPagamento('${p.id}', '${p.nome}')">✅ Confirmar</button>
+        `;
+        lista.appendChild(div);
+    });
+}
+
+window.confirmarPagamento = async (id, nome) => {
+    if (!confirm(`Confirmar pagamento de ${nome} e adicionar à lista de confirmados?`)) return;
+    
+    try {
+        // Adiciona como confirmado antecipado
+        await push(ref(db, 'confirmados'), {
+            nome: nome,
+            isGuest: false,
+            data: new Date().toISOString(),
+            timestamp: Date.now(),
+            foto: getFotoJogador(nome),
+            etapa: config.etapa,
+            antecipado: true,
+            valorPago: VALOR_ANTECIPADO
+        });
+        
+        // Remove da lista de pagamentos pendentes
+        await remove(ref(db, `pagamentosPendentes/${id}`));
+        
+        alert(`✅ Pagamento confirmado! ${nome} foi adicionado à lista de confirmados.`);
+        document.getElementById('modalGerenciarPagamentos').classList.remove('active');
+        
+    } catch (e) {
+        alert('Erro ao confirmar pagamento: ' + e.message);
+    }
+};
 
 // ==================== GERENCIAR FOTOS ====================
 btnGerenciarFotos.onclick = () => {
@@ -1607,9 +1973,9 @@ window.removerPenalidade = async (id, nome) => {
 
 // ==================== EXPORTAR CSV ====================
 document.getElementById('btnExportar').onclick = () => {
-  let csv = 'Posição,Nome,Status,Data/Hora\n';
+  let csv = 'Posição,Nome,Status,Data/Hora,Antecipado\n';
   confirmados.forEach((p, i) => {
-    csv += `${i+1},${p.nome},CONFIRMADO,${new Date(p.data).toLocaleString('pt-BR')}\n`;
+    csv += `${i+1},${p.nome},${p.antecipado ? 'CONFIRMADO-ANTECIPADO' : 'CONFIRMADO'},${new Date(p.data).toLocaleString('pt-BR')},${p.antecipado ? 'SIM' : 'NÃO'}\n`;
   });
   
   const listaEsperaOrdenada = [
@@ -1621,7 +1987,7 @@ document.getElementById('btnExportar').onclick = () => {
   listaEsperaOrdenada.forEach((p, i) => {
     const tipo = p.isGuest ? 'CONVIDADO' : p.penalizado ? 'ESPERA-PENALIZADO' : 'ESPERA';
     const nome = p.isGuest && p.guestOf ? `${p.nome} (Convidado de ${p.guestOf})` : p.nome;
-    csv += `${i+1},${nome},${tipo},${new Date(p.data).toLocaleString('pt-BR')}\n`;
+    csv += `${i+1},${nome},${tipo},${new Date(p.data).toLocaleString('pt-BR')},NÃO\n`;
   });
   
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
