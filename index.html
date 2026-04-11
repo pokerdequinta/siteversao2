@@ -3,229 +3,781 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirmação Antecipada - Poker de Quinta</title>
+<title>Confirmação de Presença - Poker de Quinta</title>
 
 <style>
+/* ========== ESTILOS POKER DE QUINTA - CONFIRMAÇÃO ========== */
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Roboto', sans-serif;background:#0d1b0d;color:#fff;min-height:100vh}
-.logo-top{text-align:center;padding:20px}
-.logo-top img{max-width:200px}
-.container{max-width:1000px;margin:auto;padding:20px}
-header{text-align:center;background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;margin-bottom:30px}
-h1{font-family:'Anton';color:#d4a121;letter-spacing:3px}
-.subtitle{margin-top:10px}
 
-.info-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:25px}
-.info-card{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;text-align:center}
-.info-card h2{font-family:'Anton';font-size:2.5em;color:#d4a121}
+.confirmacao-poker * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-.section{background:#102810;border:2px solid #d4a121;border-radius:12px;padding:20px;margin-bottom:25px}
-.section h3{color:#d4a121;margin-bottom:15px}
+.confirmacao-poker {
+  font-family: 'Roboto', sans-serif;
+  background: #0d1b0d;
+  color: #fff;
+  min-height: 100vh;
+}
 
-.form-group{margin-bottom:15px}
-.form-group label{color:#d4a121;font-weight:bold;display:block;margin-bottom:8px}
-.form-group input,.form-group select{width:100%;padding:12px;border-radius:8px;border:1px solid #2d5016;background:#1a3d1a;color:#fff;font-size:1em}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:#d4a121;box-shadow:0 0 5px rgba(212,161,33,0.3)}
+.confirmacao-poker .logo-top {
+  text-align: center;
+  padding: 20px;
+}
 
-.btn{width:100%;padding:15px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:1em;margin-bottom:10px;transition:all 0.3s}
-.btn-primary{background:#d4a121;color:#000}
-.btn-primary:hover{background:#e6b82e;transform:scale(1.02)}
-.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.btn-secondary{background:#4CAF50;color:#fff}
-.btn-secondary:hover{background:#5cb85c}
-.btn-danger{background:#c72c48;color:#fff}
-.btn-danger:hover{background:#e63460}
+.confirmacao-poker .logo-top img {
+  max-width: 200px;
+}
 
-.payment-section{background:#1a3d1a;border:2px dashed #d4a121;border-radius:12px;padding:20px;margin:20px 0;display:none}
-.payment-section.active{display:block}
-.qr-code-container{text-align:center;margin:20px 0}
-.qr-code-container img{max-width:300px;border:3px solid #d4a121;border-radius:10px;padding:10px;background:#fff}
-.payment-info{background:rgba(212,161,33,0.1);border-left:4px solid #d4a121;padding:15px;border-radius:5px;margin:15px 0}
-.payment-info strong{color:#d4a121}
+.confirmacao-poker .container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
 
-.status-badge{display:inline-block;padding:8px 15px;border-radius:20px;font-weight:bold;margin:5px 0}
-.status-pending{background:#FF6600;color:#fff}
-.status-paid{background:#4CAF50;color:#fff}
-.status-confirmed{background:#1E90FF;color:#fff}
+.confirmacao-poker header {
+  text-align: center;
+  background: #102810;
+  border: 2px solid #d4a121;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
 
-.player-list{list-style:none}
-.player-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);padding:15px;border-radius:10px;margin-bottom:10px;gap:10px;flex-wrap:wrap}
-.player-info{display:flex;gap:15px;align-items:center;flex:1;min-width:200px}
-.player-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #d4a121}
-.player-number{font-family:'Anton';color:#d4a121;min-width:30px}
-.player-details{display:flex;flex-direction:column}
-.player-details small{opacity:.85}
+.confirmacao-poker h1 {
+  font-family: 'Anton';
+  color: #d4a121;
+  letter-spacing: 3px;
+}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000}
-.modal.active{display:flex}
-.modal-content{background:#102810;border:2px solid #d4a121;border-radius:15px;padding:30px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto}
-.modal-buttons{display:flex;gap:10px;margin-top:20px}
-.modal-btn{flex:1;padding:12px;font-weight:bold;border:none;border-radius:8px;cursor:pointer}
-.modal-btn.confirm{background:#d4a121;color:#000}
-.modal-btn.cancel{background:#c72c48;color:#fff}
+.confirmacao-poker .subtitle {
+  margin-top: 10px;
+}
 
-.loading{text-align:center;padding:20px;opacity:0.7}
-.empty-state{text-align:center;opacity:.7;padding:30px}
-.status-indicator{position:fixed;top:10px;right:10px;background:#2d5016;padding:8px 15px;border-radius:20px;font-size:0.85em;border:1px solid #d4a121;z-index:500}
-.status-indicator.connected{background:#1a3d1a;border-color:#4CAF50}
-.status-indicator.error{background:#3d1a1a;border-color:#c72c48}
+.confirmacao-poker #countdownContainer {
+  background: #1a3d1a;
+  border: 2px dashed #d4a121;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-.admin-panel{position:fixed;bottom:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:999}
-.admin-btn{width:auto;padding:8px 15px;background:rgba(13,27,13,0.3);border:1px solid rgba(212,161,33,0.1);opacity:0.15;font-size:0.7em;transition:opacity 0.3s;cursor:pointer;color:#fff;border-radius:5px}
-.admin-btn:hover{opacity:1;background:#d4a121;color:#000}
+.confirmacao-poker .timer-header {
+  font-family: 'Anton';
+  font-size: 1.2em;
+  color: #fff;
+  margin-bottom: 5px;
+  display: block;
+}
 
-.payment-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);padding:15px;border-radius:10px;margin-bottom:10px;border-left:4px solid #FF6600;flex-wrap:wrap;gap:10px}
-.payment-item.paid{border-left-color:#4CAF50}
-.payment-item-info{flex:1;min-width:200px}
-.payment-item-name{font-weight:bold;color:#d4a121}
-.payment-item-status{font-size:0.85em;opacity:0.8;margin-top:5px}
-.payment-actions{display:flex;gap:5px;flex-wrap:wrap}
-.payment-action-btn{padding:6px 12px;background:#d4a121;border:none;border-radius:5px;cursor:pointer;color:#000;font-weight:bold;font-size:0.85em}
-.payment-action-btn.reject{background:#c72c48;color:#fff}
+.confirmacao-poker #timer {
+  font-family: 'Anton';
+  font-size: 1.8em;
+  color: #d4a121;
+}
 
-@media(max-width:768px){
-.info-cards{grid-template-columns:1fr}
-.player-item{flex-direction:column;align-items:flex-start}
+.confirmacao-poker .info-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.confirmacao-poker .info-card {
+  background: #102810;
+  border: 2px solid #d4a121;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.confirmacao-poker .info-card h2 {
+  font-family: 'Anton';
+  font-size: 2.5em;
+  color: #d4a121;
+}
+
+.confirmacao-poker .add-btn {
+  width: 100%;
+  padding: 15px;
+  background: #d4a121;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.confirmacao-poker .cancel-btn-main {
+  width: 100%;
+  padding: 15px;
+  background: #c72c48;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.confirmacao-poker .add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.confirmacao-poker .export-btn {
+  background: #2d5016;
+  color: #fff;
+}
+
+.confirmacao-poker .section {
+  background: #102810;
+  border: 2px solid #d4a121;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.confirmacao-poker .player-list {
+  list-style: none;
+}
+
+.confirmacao-poker .player-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,.05);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.confirmacao-poker .player-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.confirmacao-poker .player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d4a121;
+}
+
+.confirmacao-poker .player-number {
+  font-family: 'Anton';
+  color: #d4a121;
+}
+
+.confirmacao-poker .player-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.confirmacao-poker .player-details small {
+  opacity: .85;
+}
+
+.confirmacao-poker .player-badge {
+  background: #d4a121;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: .8em;
+  font-weight: bold;
+}
+
+.confirmacao-poker .wait {
+  background: #c72c48;
+  color: #fff;
+}
+
+.confirmacao-poker .guest {
+  background: #4CAF50;
+  color: #000;
+}
+
+.confirmacao-poker .member {
+  background: #1E90FF;
+  color: #fff;
+}
+
+.confirmacao-poker .penalized {
+  background: #FF6600;
+  color: #fff;
+}
+
+.confirmacao-poker .remove-btn {
+  background: #c72c48;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.confirmacao-poker .empty-state {
+  text-align: center;
+  opacity: .7;
+  padding: 30px;
+}
+
+.confirmacao-poker .modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmacao-poker .modal.active {
+  display: flex;
+}
+
+.confirmacao-poker .modal-content {
+  background: #102810;
+  border: 2px solid #d4a121;
+  border-radius: 15px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.confirmacao-poker .form-group {
+  margin-bottom: 15px;
+}
+
+.confirmacao-poker .form-group label {
+  color: #d4a121;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.confirmacao-poker .form-group input,
+.confirmacao-poker .form-group select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #2d5016;
+  background: #1a3d1a;
+  color: #fff;
+}
+
+.confirmacao-poker .player-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+}
+
+.confirmacao-poker .player-select img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d4a121;
+}
+
+.confirmacao-poker .player-select span {
+  color: #fff;
+}
+
+.confirmacao-poker #playerName option {
+  background: #1a3d1a;
+  color: #fff;
+  padding: 10px;
+}
+
+.confirmacao-poker #playerName option:hover {
+  background: #2d5016;
+}
+
+.confirmacao-poker #playerName optgroup {
+  background: #102810;
+  color: #d4a121;
+  font-weight: bold;
+}
+
+.confirmacao-poker .modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.confirmacao-poker .modal-btn {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.confirmacao-poker .modal-btn.confirm {
+  background: #d4a121;
+  color: #000;
+}
+
+.confirmacao-poker .modal-btn.cancel {
+  background: #c72c48;
+  color: #fff;
+}
+
+.confirmacao-poker .loading {
+  text-align: center;
+  padding: 20px;
+  opacity: 0.7;
+}
+
+.confirmacao-poker .status-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #2d5016;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  border: 1px solid #d4a121;
+  z-index: 999;
+}
+
+.confirmacao-poker .status-indicator.connected {
+  background: #1a3d1a;
+  border-color: #4CAF50;
+}
+
+.confirmacao-poker .status-indicator.error {
+  background: #3d1a1a;
+  border-color: #c72c48;
+}
+
+.confirmacao-poker .priority-indicator {
+  background: #FFA500;
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  margin-left: 5px;
+}
+
+.confirmacao-poker .penalty-indicator {
+  background: #FF4500;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  margin-left: 5px;
+}
+
+.confirmacao-poker .admin-panel {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 999;
+}
+
+.confirmacao-poker .admin-btn {
+  width: auto;
+  padding: 8px 15px;
+  background: rgba(13,27,13,0.3);
+  border: 1px solid rgba(212,161,33,0.1);
+  opacity: 0.15;
+  font-size: 0.7em;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.confirmacao-poker .admin-btn:hover {
+  opacity: 1;
+  background: #d4a121;
+  color: #000;
+}
+
+.confirmacao-poker .admin-btn.active {
+  opacity: 1;
+  background: #4CAF50;
+}
+
+.confirmacao-poker .etapa-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.confirmacao-poker .etapa-btn {
+  background: #1a3d1a;
+  border: 1px solid #d4a121;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.confirmacao-poker .etapa-btn:hover {
+  background: #d4a121;
+  color: #000;
+}
+
+.confirmacao-poker .etapa-btn.ativa {
+  background: #d4a121;
+  color: #000;
+  border-color: #fff;
+}
+
+.confirmacao-poker .foto-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.confirmacao-poker .foto-info {
+  min-width: 150px;
+  font-weight: bold;
+  color: #d4a121;
+}
+
+.confirmacao-poker .foto-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d4a121;
+}
+
+.confirmacao-poker .foto-input {
+  flex: 1;
+  padding: 10px;
+  background: #1a3d1a;
+  border: 1px solid #2d5016;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.confirmacao-poker .foto-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.confirmacao-poker .foto-btn {
+  padding: 8px 15px;
+  background: #d4a121;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.confirmacao-poker .foto-btn.reset {
+  background: #c72c48;
+  color: #fff;
+}
+
+.confirmacao-poker .fotos-header {
+  display: grid;
+  grid-template-columns: 80px 150px 1fr 100px;
+  gap: 15px;
+  padding: 10px 15px;
+  background: #102810;
+  border-bottom: 2px solid #d4a121;
+  font-weight: bold;
+  color: #d4a121;
+  margin-bottom: 10px;
+}
+
+.confirmacao-poker .penalty-modal-content {
+  max-width: 550px;
+}
+
+.confirmacao-poker .penalized-player-item {
+  background: rgba(255, 69, 0, 0.15);
+  border: 1px solid #FF4500;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.confirmacao-poker .penalized-player-item .player-name {
+  font-weight: bold;
+  color: #fff;
+}
+
+.confirmacao-poker .penalized-player-item .penalty-etapa {
+  font-size: 0.8em;
+  color: #FF6600;
+  opacity: 0.9;
+}
+
+.confirmacao-poker .remove-penalty-btn {
+  background: #c72c48;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.confirmacao-poker .penalty-warning-modal {
+  max-width: 480px;
+  border-color: #FF4500 !important;
+}
+
+.confirmacao-poker .penalty-warning-icon {
+  font-size: 3em;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.confirmacao-poker .penalty-warning-text {
+  background: rgba(255,69,0,0.15);
+  border: 1px solid #FF4500;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .confirmacao-poker .info-cards {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
+<div class="confirmacao-poker">
 
-<div class="logo-top">
-<img src="logo pdq.png" onerror="this.style.display='none'">
-</div>
+  <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
 
-<div class="container">
+  <div class="logo-top">
+    <img src="logo pdq.png" onerror="this.style.display='none'">
+  </div>
 
-<header>
-<h1>CONFIRMAÇÃO ANTECIPADA</h1>
-<div class="subtitle" id="dataEvento">📅 Carregando...</div>
-<p style="margin-top:15px;font-size:0.95em;opacity:0.9">Confirme sua presença com antecedência e garanta sua vaga com um pagamento de <strong style="color:#d4a121">R$ 100,00</strong></p>
-</header>
+  <div class="container">
 
-<div class="info-cards">
-<div class="info-card">
-<h2 id="antecipCount">0</h2>
-Confirmações Antecipadas
-</div>
-<div class="info-card">
-<h2 id="pagosCount">0</h2>
-Pagamentos Validados
-</div>
-</div>
+    <header>
+      <h1>LISTA DE PRESENÇA POKER DE QUINTA</h1>
+      <div class="subtitle" id="dataEvento">📅 Carregando...</div>
+    </header>
 
-<div class="section">
-<h3>📋 Confirmar Presença Antecipadamente</h3>
-<p style="opacity:0.8;margin-bottom:15px;font-size:0.9em">
-  ✅ Confirme sua presença agora • 💳 Realize o pagamento de R$ 100,00 • ✔️ Admin valida o pagamento • 📍 Você entra automaticamente na lista oficial
-</p>
+    <div id="countdownContainer">
+      <span class="timer-header" id="timerHeader">Calculando abertura das inscrições...</span>
+      <div id="timer">Calculando tempo...</div>
+    </div>
 
-<div class="form-group">
-<label>Selecione seu nome</label>
-<select id="playerNameAntecipa" style="padding:10px;">
-<option value="">Carregando jogadores...</option>
-</select>
-</div>
+    <div class="info-cards">
+      <div class="info-card"><h2 id="confirmedCount">0</h2>Confirmados</div>
+      <div class="info-card"><h2 id="vacancyCount">20</h2>Vagas</div>
+      <div class="info-card"><h2 id="waitlistCount">0</h2>Espera</div>
+    </div>
 
-<div id="playerPhotoPreviewAntecipa" style="display:none;text-align:center;margin:15px 0">
-<img src="" alt="Foto do jogador" style="width:80px;height:80px;border-radius:50%;border:2px solid #d4a121;object-fit:cover;">
-</div>
+    <button class="add-btn" id="btnConfirmar" disabled>🔒 INSCRIÇÕES FECHADAS</button>
+    <button class="cancel-btn-main" id="btnCancelarWhatsApp">❌ CANCELAR MINHA INSCRIÇÃO</button>
+    <button class="add-btn export-btn" id="btnExportar">📊 EXPORTAR CSV</button>
 
-<button class="btn btn-primary" id="btnConfirmarAntecipa">🎯 CONFIRMAR PRESENÇA ANTECIPADAMENTE</button>
+    <div class="section">
+      <h3>✅ CONFIRMADOS</h3>
+      <ul id="confirmedList" class="player-list">
+        <li class="loading">Carregando dados...</li>
+      </ul>
+    </div>
 
-<div class="payment-section" id="paymentSection">
-<h3 style="color:#d4a121;margin-bottom:15px">💳 Realizar Pagamento</h3>
+    <div class="section">
+      <h3>⏳ LISTA DE ESPERA</h3>
+      <p style="opacity:0.8;margin-bottom:15px;font-size:0.9em">
+        🔸 Membros têm prioridade sobre convidados • Ordem de chegada dentro de cada categoria
+      </p>
+      <ul id="waitlistList" class="player-list">
+        <li class="loading">Carregando dados...</li>
+      </ul>
+    </div>
 
-<div class="payment-info">
-<strong>Valor:</strong> R$ 100,00<br>
-<strong>Beneficiário:</strong> (41) 9714-4470<br>
-<strong>Tipo:</strong> Pix
-</div>
+  </div>
 
-<div class="qr-code-container">
-<p style="margin-bottom:10px;opacity:0.8">Escaneie o QR Code abaixo para realizar o pagamento:</p>
-<img id="qrCodeImg" src="" alt="QR Code Pix" style="display:none;max-width:250px">
-<p id="qrLoadingMsg" style="opacity:0.7">Gerando QR Code...</p>
-</div>
+  <div class="admin-panel">
+    <button class="admin-btn" id="btnModoAdmin" style="background:rgba(13,27,13,0.3);">🔐</button>
+    <button class="admin-btn" id="btnToggleInscricoes" style="display:none;">🔓 Abrir</button>
+    <button class="admin-btn" id="btnProximaEtapa" style="display:none;">⏭️ Próx</button>
+    <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Etapa</button>
+    <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Fotos</button>
+    <button class="admin-btn" id="btnGerenciarPenalidades" style="display:none;">⚠️ Penalidades</button>
+    <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair</button>
+  </div>
 
-<div class="payment-info" style="background:rgba(76,175,80,0.1);border-left-color:#4CAF50">
-<strong style="color:#4CAF50">⏱️ Após realizar o pagamento:</strong><br>
-O administrador validará seu pagamento em até 2 horas e você será automaticamente adicionado à lista oficial de confirmados.
-</div>
+  <!-- Modal Admin Login -->
+  <div class="modal" id="modalAdmin">
+    <div class="modal-content">
+      <h2 style="color: #8b0000;">🔐 Modo Administrador</h2>
+      <p style="margin: 15px 0; opacity: 0.8;">Digite a senha de administrador para acessar funções exclusivas:</p>
+      <div class="form-group">
+        <label>Senha Admin</label>
+        <input type="password" id="senhaAdmin" placeholder="Digite a senha">
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="btnFecharAdmin">Cancelar</button>
+        <button class="modal-btn confirm" id="btnAcessarAdmin" style="background:#8b0000; color:#fff">Acessar</button>
+      </div>
+    </div>
+  </div>
 
-<button class="btn btn-secondary" id="btnCopiarChave">📋 COPIAR CHAVE PIX</button>
-<button class="btn btn-danger" id="btnCancelarPagamento">❌ CANCELAR</button>
-</div>
+  <!-- Modal Gerenciar Fotos -->
+  <div class="modal" id="modalGerenciarFotos">
+    <div class="modal-content" style="max-width: 900px;">
+      <h2 style="color: #d4a121;">📸 Gerenciar Fotos dos Jogadores</h2>
+      <p style="margin: 15px 0; opacity: 0.8;">Configure as URLs das fotos de cada jogador:</p>
+      <div class="fotos-header">
+        <div>Prévia</div>
+        <div>Jogador</div>
+        <div>URL da Foto</div>
+        <div>Ações</div>
+      </div>
+      <div id="fotosList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;"></div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="btnFecharFotos">Fechar</button>
+        <button class="modal-btn confirm" id="btnSalvarFotos" style="background:#d4a121;">Salvar Todas</button>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <!-- Modal Selecionar Etapa -->
+  <div class="modal" id="modalSelecionarEtapa">
+    <div class="modal-content">
+      <h2 style="color: #d4a121;">📅 Selecionar Etapa</h2>
+      <p style="margin: 15px 0;">Escolha a etapa para configurar o sistema:</p>
+      <div class="etapa-selector" id="etapaSelector"></div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="btnCancelarSelecao">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
-<div class="section">
-<h3>✅ CONFIRMAÇÕES ANTECIPADAS</h3>
-<ul id="antecipList" class="player-list">
-<li class="loading">Carregando dados...</li>
-</ul>
-</div>
+  <!-- Modal Bem-vindo -->
+  <div class="modal" id="modalBemVindo">
+    <div class="modal-content">
+      <h2 style="color: #d4a121;">📋 Bem-vindo ao Poker de Quinta!</h2>
+      <p style="margin: 15px 0; line-height: 1.6;">Esta é a página oficial de inscrição do <strong>Poker de Quinta</strong>.</p>
+      <p style="margin: 15px 0; line-height: 1.6; font-size:0.9em">
+        <strong>Regras importantes:</strong><br>
+        • Limite de 20 vagas confirmadas<br>
+        • Confirme a presença somente se for ir com CERTEZA<br>
+        • Caso se inscreva e não possa ir a etapa, clique no botão CANCELAR MINHA INSCRIÇÃO<br>
+        • Após 20 confirmações, novos jogadores vão para lista de espera<br>
+        • Na lista de espera: membros têm prioridade sobre convidados
+      </p>
+      <div class="modal-buttons">
+        <button class="modal-btn confirm" id="btnEntendi" style="width:100%">Entendi!</button>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <!-- Modal Confirmar Presença -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>Confirmar Presença</h2>
+      <div class="form-group">
+        <label>Jogador</label>
+        <select id="playerName" style="padding:10px;"></select>
+        <div id="playerPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
+          <img src="" alt="Foto do jogador" style="width:60px;height:60px;border-radius:50%;border:2px solid #d4a121;object-fit:cover;">
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" id="isGuest"> Adicionar convidado
+      </div>
+      <div class="form-group" id="guestNameGroup" style="display:none">
+        <label>Nome do Convidado</label>
+        <input id="guestName" placeholder="Digite o nome completo">
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="btnCancelar">Cancelar</button>
+        <button class="modal-btn confirm" id="btnConfirmarModal">Confirmar</button>
+      </div>
+    </div>
+  </div>
 
-<div class="admin-panel">
-<button class="admin-btn" id="btnModoAdminAntecipa" style="background:rgba(13,27,13,0.3);">🔐</button>
-<button class="admin-btn" id="btnValidarPagamentos" style="display:none;">💳 Validar</button>
-<button class="admin-btn" id="btnSairAdminAntecipa" style="display:none;background:#c72c48;">🚪 Sair</button>
-</div>
+  <!-- Modal Aviso de Penalidade -->
+  <div class="modal" id="modalAvisoPenalidade">
+    <div class="modal-content penalty-warning-modal">
+      <div class="penalty-warning-icon">⚠️🃏</div>
+      <h2 style="color: #FF4500; text-align:center;">PENALIDADE APLICADA</h2>
+      <div class="penalty-warning-text">
+        <strong id="penaltyPlayerName" style="color:#FF6600; font-size:1.1em;"></strong>, você foi penalizado por <strong>falta em uma etapa anterior</strong> sem cancelamento prévio.<br><br>
+        Como penalidade, sua inscrição foi colocada automaticamente no <strong>último lugar da lista de espera</strong>, independente do horário de inscrição.
+      </div>
+      <p style="opacity:0.8; font-size:0.9em; text-align:center;">Entre em contato com a organização para mais informações.</p>
+      <div class="modal-buttons">
+        <button class="modal-btn confirm" id="btnFecharAvisoPenalidade" style="background:#FF4500; color:#fff;">Entendi</button>
+      </div>
+    </div>
+  </div>
 
-<!-- Modal Admin Login -->
-<div class="modal" id="modalAdminAntecipa">
-<div class="modal-content">
-<h2 style="color:#8b0000;">🔐 Modo Administrador</h2>
-<p style="margin:15px 0;opacity:0.8;">Digite a senha de administrador:</p>
-<div class="form-group">
-<label>Senha Admin</label>
-<input type="password" id="senhaAdminAntecipa" placeholder="Digite a senha">
-</div>
-<div class="modal-buttons">
-<button class="modal-btn cancel" id="btnFecharAdminAntecipa">Cancelar</button>
-<button class="modal-btn confirm" id="btnAcessarAdminAntecipa" style="background:#8b0000;color:#fff">Acessar</button>
-</div>
-</div>
-</div>
+  <!-- Modal Gerenciar Penalidades -->
+  <div class="modal" id="modalGerenciarPenalidades">
+    <div class="modal-content penalty-modal-content" style="max-width:600px;">
+      <h2 style="color: #FF4500;">⚠️ Gerenciar Penalidades</h2>
+      <p style="margin: 10px 0 5px; opacity: 0.8; font-size:0.9em;">Jogadores penalizados serão automaticamente enviados ao <strong>último lugar da lista de espera</strong> ao se inscreverem, com aviso de penalidade.</p>
 
-<!-- Modal Validar Pagamentos -->
-<div class="modal" id="modalValidarPagamentos">
-<div class="modal-content" style="max-width:700px">
-<h2 style="color:#d4a121;">💳 Validar Pagamentos</h2>
-<p style="margin:15px 0;opacity:0.8;">Confirme os pagamentos recebidos:</p>
-<div id="paymentsList" style="margin:20px 0;max-height:400px;overflow-y:auto">
-<div class="empty-state">Nenhum pagamento pendente</div>
-</div>
-<div class="modal-buttons" style="margin-top:20px">
-<button class="modal-btn cancel" id="btnFecharValidacao">Fechar</button>
-</div>
-</div>
-</div>
+      <div style="margin: 20px 0;">
+        <div class="form-group">
+          <label style="color:#FF6600;">Aplicar Penalidade a:</label>
+          <select id="penaltyPlayerSelect" style="padding:10px; width:100%; background:#1a3d1a; border:1px solid #FF4500; color:#fff; border-radius:8px;">
+            <option value="">Selecione o jogador...</option>
+          </select>
+        </div>
+        <button class="modal-btn confirm" id="btnAplicarPenalidade" style="background:#FF4500; color:#fff; width:100%; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:5px;">
+          ⚠️ APLICAR PENALIDADE
+        </button>
+      </div>
 
-<!-- Modal Sucesso -->
-<div class="modal" id="modalSucesso">
-<div class="modal-content">
-<h2 style="color:#4CAF50;text-align:center">✅ Confirmação Realizada!</h2>
-<p style="margin:20px 0;text-align:center;line-height:1.6">
-Sua presença foi confirmada com sucesso!<br><br>
-<strong>Próximo passo:</strong> Realize o pagamento de R$ 100,00 via Pix para o número <strong>(41) 9714-4470</strong><br><br>
-Após o administrador validar seu pagamento, você será automaticamente adicionado à lista oficial de confirmados.
-</p>
-<div class="modal-buttons">
-<button class="modal-btn confirm" id="btnFecharSucesso" style="width:100%">Entendi</button>
-</div>
-</div>
+      <div style="border-top: 1px solid #333; padding-top:15px; margin-top:5px;">
+        <h3 style="color:#FF6600; margin-bottom:12px;">Jogadores Penalizados Atualmente:</h3>
+        <div id="penalizedList" style="max-height:250px; overflow-y:auto;">
+          <div class="empty-state" id="emptyPenalizedMsg">Nenhum jogador penalizado no momento.</div>
+        </div>
+      </div>
+
+      <div class="modal-buttons" style="margin-top:20px;">
+        <button class="modal-btn cancel" id="btnFecharPenalidades">Fechar</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script type="module">
+// ==================== CONFIGURAÇÃO FIREBASE ====================
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, set, onValue, remove, push, get, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+import { getDatabase, ref, set, onValue, remove, push, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
@@ -237,10 +789,10 @@ const firebaseConfig = {
   appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
 };
 
+const LIMITE_VAGAS = 20;
 const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
-const CHAVE_PIX = '41997144470';
-const VALOR_PAGAMENTO = 100.00;
 
+// ==================== CALENDÁRIO OFICIAL ====================
 const ETAPAS = [
     { numero: 1,  data: '2026-01-29', descricao: '1ª Etapa' },
     { numero: 2,  data: '2026-02-26', descricao: '2ª Etapa' },
@@ -265,269 +817,820 @@ const JOGADORES_INICIAIS = [
     "Ricardo Matoso", "Robson", "Sergio", "Solano", "Tigre", "Van Van", "Waltinho", "Wesley"
 ];
 
-let config = { etapa: 3, dataEvento: '2026-03-26' };
-let db;
-let antecipacoes = [];
-let jogadores = [];
-let modoAdminAntecipa = false;
-
-const selectJogador = document.getElementById('playerNameAntecipa');
-const photoPreview = document.getElementById('playerPhotoPreviewAntecipa');
-const previewImg = photoPreview.querySelector('img');
-
-// =============================================
-// INICIALIZAR FIREBASE
-// =============================================
-async function inicializarFirebase() {
-  try {
-    const app = initializeApp(firebaseConfig);
-    db = getDatabase(app);
-
-    console.log('✅ Firebase inicializado');
-    document.getElementById('statusIndicator').textContent = '✅ Conectado';
-    document.getElementById('statusIndicator').classList.add('connected');
-
-    await carregarTodosDados();
-
-  } catch (e) {
-    console.error('❌ Erro ao inicializar Firebase:', e);
-    document.getElementById('statusIndicator').textContent = '❌ Erro de conexão';
-    document.getElementById('statusIndicator').classList.add('error');
-  }
+function calcularDataAbertura(dataEtapa) {
+    const data = new Date(dataEtapa + 'T19:00:00');
+    const diaDaSemana = data.getDay();
+    let diasAteSegunda;
+    
+    if (diaDaSemana === 1) {
+        diasAteSegunda = 7;
+    } else if (diaDaSemana === 0) {
+        diasAteSegunda = 6;
+    } else {
+        diasAteSegunda = diaDaSemana - 1;
+    }
+    
+    const dataAbertura = new Date(data);
+    dataAbertura.setDate(data.getDate() - diasAteSegunda);
+    dataAbertura.setHours(7, 0, 0, 0);
+    
+    return dataAbertura;
 }
 
-async function carregarTodosDados() {
-  try {
-    console.log('Carregando dados...');
-
-    // Carregar fotos
-    const snapshotFotos = await get(ref(db, 'fotosJogadores'));
-    if (snapshotFotos.exists()) {
-      const fotosSalvas = snapshotFotos.val();
-      console.log('✅ Fotos carregadas');
-      jogadores = JOGADORES_INICIAIS.map(nome => ({
-        nome: nome,
-        foto: fotosSalvas[nome] || FOTO_PADRAO
-      }));
-    } else {
-      console.log('⚠️ Usando fotos padrão');
-      jogadores = JOGADORES_INICIAIS.map(nome => ({
-        nome: nome,
-        foto: FOTO_PADRAO
-      }));
+function calcularDataAberturaEtapa(numero, dataEtapa) {
+    if (numero === 4) {
+        return new Date('2026-04-27T07:00:00');
     }
+    return calcularDataAbertura(dataEtapa);
+}
 
+let config = {
+    etapa: 3,
+    dataEvento: '2026-03-26',
+    dataAbertura: calcularDataAberturaEtapa(3, '2026-03-26').toISOString(),
+    inscricoesAbertas: false
+};
+
+let DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+let DATA_EVENTO = new Date(config.dataEvento);
+
+let db;
+let confirmados = [];
+let listaEspera = [];
+let jogadoresPenalizados = [];
+let modoAdmin = false;
+let timerInterval;
+let jogadores = [];
+
+const btnToggleInscricoes = document.getElementById('btnToggleInscricoes');
+const btnProximaEtapa = document.getElementById('btnProximaEtapa');
+const btnSelecionarEtapa = document.getElementById('btnSelecionarEtapa');
+const btnGerenciarFotos = document.getElementById('btnGerenciarFotos');
+const btnGerenciarPenalidades = document.getElementById('btnGerenciarPenalidades');
+const btnSairAdmin = document.getElementById('btnSairAdmin');
+const dataEventoEl = document.getElementById('dataEvento');
+const timerHeader = document.getElementById('timerHeader');
+const btnConfirmar = document.getElementById('btnConfirmar');
+
+function getEtapaAtual() {
+    return ETAPAS.find(e => e.numero === config.etapa) || ETAPAS[2];
+}
+
+function isJogadorPenalizado(nome) {
+    return jogadoresPenalizados.some(p => p.nome === nome);
+}
+
+async function carregarFotosJogadores() {
+    try {
+        const snapshot = await get(ref(db, 'fotosJogadores'));
+        if (snapshot.exists()) {
+            const fotosSalvas = snapshot.val();
+            jogadores = JOGADORES_INICIAIS.map(nome => ({
+                nome: nome,
+                foto: fotosSalvas[nome] || FOTO_PADRAO
+            }));
+        } else {
+            jogadores = JOGADORES_INICIAIS.map(nome => ({
+                nome: nome,
+                foto: FOTO_PADRAO
+            }));
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+        jogadores = JOGADORES_INICIAIS.map(nome => ({
+            nome: nome,
+            foto: FOTO_PADRAO
+        }));
+    }
     preencherSelectJogadores();
+    preencherSelectPenalidade();
+}
 
-    // Carregar config
-    const snapshotConfig = await get(ref(db, 'config'));
-    if (snapshotConfig.exists()) {
-      config = snapshotConfig.val();
-      console.log('✅ Config carregada - Etapa:', config.etapa);
-    } else {
-      console.log('⚠️ Config não encontrada');
-      await set(ref(db, 'config'), config);
-    }
-
-    atualizarInterfaceConfig();
-
-    // Listeners para dados em tempo real
-    onValue(ref(db, 'antecipacoes'), (snapshot) => {
-      antecipacoes = [];
-      if (snapshot.exists()) {
-        snapshot.forEach(child => {
-          antecipacoes.push({...child.val(), id: child.key});
+async function salvarFotosJogadores() {
+    try {
+        const fotosObj = {};
+        jogadores.forEach(j => {
+            fotosObj[j.nome] = j.foto;
         });
-      }
-      console.log('✅ Antecipações atualizadas:', antecipacoes.length);
-      atualizar();
-    });
-
-    onValue(ref(db, 'config'), (snapshot) => {
-      if (snapshot.exists()) {
-        config = snapshot.val();
-        console.log('✅ Config atualizada');
-        atualizarInterfaceConfig();
-      }
-    });
-
-  } catch (e) {
-    console.error('❌ Erro ao carregar dados:', e);
-  }
+        await set(ref(db, 'fotosJogadores'), fotosObj);
+        alert('✅ Fotos salvas com sucesso!');
+        atualizar();
+        preencherSelectJogadores();
+        document.getElementById('modalGerenciarFotos').classList.remove('active');
+    } catch (e) {
+        alert('Erro ao salvar fotos: ' + e.message);
+    }
 }
 
 function preencherSelectJogadores() {
-  selectJogador.innerHTML = '';
-  const optDefault = document.createElement('option');
-  optDefault.value = '';
-  optDefault.textContent = 'Selecione seu nome...';
-  selectJogador.appendChild(optDefault);
+    const selectJogador = document.getElementById('playerName');
+    selectJogador.innerHTML = '';
+    
+    const optDefault = document.createElement('option');
+    optDefault.value = '';
+    optDefault.textContent = 'Selecione seu nome...';
+    selectJogador.appendChild(optDefault);
+    
+    jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
+        const o = document.createElement('option');
+        o.value = j.nome;
+        o.textContent = j.nome;
+        o.setAttribute('data-foto', j.foto);
+        selectJogador.appendChild(o);
+    });
+}
 
-  jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
-    const o = document.createElement('option');
-    o.value = j.nome;
-    o.textContent = j.nome;
-    o.setAttribute('data-foto', j.foto);
-    selectJogador.appendChild(o);
-  });
+function preencherSelectPenalidade() {
+    const sel = document.getElementById('penaltyPlayerSelect');
+    sel.innerHTML = '<option value="">Selecione o jogador...</option>';
+    JOGADORES_INICIAIS.slice().sort((a,b) => a.localeCompare(b)).forEach(nome => {
+        const o = document.createElement('option');
+        o.value = nome;
+        o.textContent = nome;
+        sel.appendChild(o);
+    });
+}
+
+async function carregarConfig() {
+    try {
+        const snapshot = await get(ref(db, 'config'));
+        if (snapshot.exists()) {
+            config = snapshot.val();
+            if (config.etapa === 3) {
+                config.dataEvento = '2026-03-26';
+                config.dataAbertura = calcularDataAberturaEtapa(3, '2026-03-26').toISOString();
+            }
+            if (config.etapa === 4) {
+                config.dataEvento = '2026-04-30';
+                config.dataAbertura = calcularDataAberturaEtapa(4, '2026-04-30').toISOString();
+            }
+        } else {
+            await salvarConfig(config);
+        }
+        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+        DATA_EVENTO = new Date(config.dataEvento);
+        atualizarInterfaceConfig();
+    } catch (e) {
+        console.error('Erro ao carregar config:', e);
+    }
+}
+
+async function salvarConfig(novaConfig) {
+    try {
+        await set(ref(db, 'config'), novaConfig);
+        config = novaConfig;
+        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+        DATA_EVENTO = new Date(config.dataEvento);
+        atualizarInterfaceConfig();
+    } catch (e) {
+        console.error('Erro ao salvar config:', e);
+    }
 }
 
 function atualizarInterfaceConfig() {
-  const etapaAtual = ETAPAS.find(e => e.numero === config.etapa) || ETAPAS[2];
-  const dataFormatada = new Date(config.dataEvento + 'T12:00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
-  document.getElementById('dataEvento').textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
+    const etapaAtual = getEtapaAtual();
+    
+    let dataParaMostrar;
+    if (config.etapa === 3) {
+        dataParaMostrar = new Date('2026-03-26T12:00:00');
+    } else if (config.etapa === 4) {
+        dataParaMostrar = new Date('2026-04-30T12:00:00');
+    } else {
+        dataParaMostrar = DATA_EVENTO;
+    }
+    
+    const dataFormatada = dataParaMostrar.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
+    dataEventoEl.textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
+    
+    const dataAberturaObj = new Date(config.dataAbertura);
+    const dataAberturaStr = dataAberturaObj.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}) + 
+                            ' às ' + dataAberturaObj.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    timerHeader.textContent = `As Inscrições abrem ${dataAberturaStr}`;
+    
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(atualizarCronometro, 1000);
+    atualizarCronometro();
 }
+
+function atualizarCronometro() {
+    const agora = new Date().getTime();
+    const dist = DATA_ABERTURA - agora;
+
+    if (dist > 0) {
+        const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+        const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((dist % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+        
+        if ((config.inscricoesAbertas && new Date().getTime() >= DATA_ABERTURA) || modoAdmin) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
+        } else {
+            btnConfirmar.disabled = true;
+            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
+        }
+    } else {
+        document.getElementById("countdownContainer").style.display = "none";
+        if (config.inscricoesAbertas || modoAdmin) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
+        } else {
+            btnConfirmar.disabled = true;
+            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
+        }
+    }
+}
+
+function getFotoJogador(nomeJogador) {
+    const jogador = jogadores.find(j => j.nome === nomeJogador);
+    return jogador ? jogador.foto : FOTO_PADRAO;
+}
+
+// ==================== INICIALIZAR FIREBASE ====================
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  document.getElementById('statusIndicator').textContent = '✅ Conectado';
+  document.getElementById('statusIndicator').classList.add('connected');
+  
+  await carregarFotosJogadores();
+  await carregarConfig();
+  
+  onValue(ref(db, 'confirmados'), (snapshot) => {
+    confirmados = [];
+    if (snapshot.exists()) snapshot.forEach(child => { confirmados.push({...child.val(), id: child.key}); });
+    atualizar();
+  });
+  
+  onValue(ref(db, 'listaEspera'), (snapshot) => {
+    listaEspera = [];
+    if (snapshot.exists()) snapshot.forEach(child => { listaEspera.push({...child.val(), id: child.key}); });
+    atualizar();
+  });
+
+  onValue(ref(db, 'penalizados'), (snapshot) => {
+    jogadoresPenalizados = [];
+    if (snapshot.exists()) snapshot.forEach(child => { jogadoresPenalizados.push({...child.val(), id: child.key}); });
+    atualizarListaPenalizados();
+  });
+  
+  onValue(ref(db, 'config'), (snapshot) => {
+    if (snapshot.exists()) {
+      config = snapshot.val();
+      if (config.etapa === 3) {
+        config.dataEvento = '2026-03-26';
+        config.dataAbertura = calcularDataAberturaEtapa(3, '2026-03-26').toISOString();
+      }
+      if (config.etapa === 4) {
+        config.dataEvento = '2026-04-30';
+        config.dataAbertura = calcularDataAberturaEtapa(4, '2026-04-30').toISOString();
+      }
+      DATA_ABERTURA = new Date(config.dataAbertura).getTime();
+      DATA_EVENTO = new Date(config.dataEvento);
+      atualizarInterfaceConfig();
+    }
+  });
+  
+} catch (e) {
+  document.getElementById('statusIndicator').textContent = '❌ Erro de conexão';
+  document.getElementById('statusIndicator').classList.add('error');
+}
+
+// ==================== MODAL CONFIRMAR PRESENÇA ====================
+const selectJogador = document.getElementById('playerName');
+const photoPreview = document.getElementById('playerPhotoPreview');
+const previewImg = photoPreview.querySelector('img');
 
 selectJogador.addEventListener('change', function() {
-  const selectedOption = this.options[this.selectedIndex];
-  const foto = selectedOption.getAttribute('data-foto');
-  if (foto && this.value) {
-    previewImg.src = foto;
-    photoPreview.style.display = 'block';
-  } else {
-    photoPreview.style.display = 'none';
-  }
+    const selectedOption = this.options[this.selectedIndex];
+    const foto = selectedOption.getAttribute('data-foto');
+    if (foto && this.value) {
+        previewImg.src = foto;
+        photoPreview.style.display = 'block';
+    } else {
+        photoPreview.style.display = 'none';
+    }
 });
 
-// =============================================
-// CONFIRMAR PRESENÇA ANTECIPADA
-// =============================================
-document.getElementById('btnConfirmarAntecipa').onclick = async () => {
+document.getElementById('btnEntendi').onclick = () => document.getElementById('modalBemVindo').classList.remove('active');
+window.addEventListener('load', () => document.getElementById('modalBemVindo').classList.add('active'));
+
+btnConfirmar.onclick = () => {
+    if (!config.inscricoesAbertas && !modoAdmin) {
+        return alert("As inscrições estão fechadas no momento!");
+    }
+    document.getElementById('modal').classList.add('active');
+};
+
+document.getElementById('btnCancelar').onclick = () => {
+  document.getElementById('modal').classList.remove('active');
+  selectJogador.value = '';
+  photoPreview.style.display = 'none';
+  document.getElementById('isGuest').checked = false;
+  document.getElementById('guestNameGroup').style.display = 'none';
+  document.getElementById('guestName').value = '';
+};
+
+document.getElementById('isGuest').onchange = e => {
+  document.getElementById('guestNameGroup').style.display = e.target.checked ? 'block' : 'none';
+};
+
+document.getElementById('btnConfirmarModal').onclick = async () => {
   const nome = selectJogador.value;
   if (!nome) return alert('Selecione seu nome!');
-
-  const jaConfirmou = antecipacoes.some(a => a.nome === nome && a.etapa === config.etapa);
-  if (jaConfirmou) {
-    return alert('Você já confirmou presença antecipadamente nesta etapa!');
+  
+  const isGuestChecked = document.getElementById('isGuest').checked;
+  
+  if (!isGuestChecked) {
+    const jaInscrito = [...confirmados, ...listaEspera].some(p => !p.isGuest && p.nome === nome);
+    if (jaInscrito) {
+      return alert('Você já está inscrito!');
+    }
   }
-
+  
+  const agora = new Date().toISOString();
+  const penalizado = !isGuestChecked && isJogadorPenalizado(nome);
+  
   try {
-    const agora = new Date().toISOString();
-    const fotoJogador = jogadores.find(j => j.nome === nome);
-
-    await push(ref(db, 'antecipacoes'), {
-      nome: nome,
-      etapa: config.etapa,
-      data: agora,
-      timestamp: Date.now(),
-      foto: fotoJogador ? fotoJogador.foto : FOTO_PADRAO,
-      statusPagamento: 'pendente',
-      validadoAdmin: false
-    });
-
-    document.getElementById('paymentSection').classList.add('active');
+    if (!isGuestChecked) {
+      const snapshot = await get(ref(db, 'confirmados'));
+      const totalAtual = snapshot.exists() ? snapshot.size : 0;
+      
+      if (totalAtual < LIMITE_VAGAS && !penalizado) {
+        await push(ref(db, 'confirmados'), { 
+          nome, 
+          isGuest: false, 
+          data: agora,
+          timestamp: Date.now(),
+          foto: getFotoJogador(nome),
+          etapa: config.etapa
+        });
+        alert('✅ Presença confirmada! Você está na lista de confirmados.');
+      } else {
+        const tsInscricao = penalizado ? Date.now() + (1000 * 60 * 60 * 24 * 365) : Date.now();
+        
+        await push(ref(db, 'listaEspera'), { 
+          nome, 
+          isGuest: false, 
+          data: agora,
+          timestamp: tsInscricao,
+          foto: getFotoJogador(nome),
+          etapa: config.etapa,
+          penalizado: penalizado
+        });
+        
+        if (penalizado) {
+          document.getElementById('modal').classList.remove('active');
+          selectJogador.value = '';
+          photoPreview.style.display = 'none';
+          document.getElementById('isGuest').checked = false;
+          document.getElementById('guestNameGroup').style.display = 'none';
+          document.getElementById('guestName').value = '';
+          
+          document.getElementById('penaltyPlayerName').textContent = nome;
+          document.getElementById('modalAvisoPenalidade').classList.add('active');
+          return;
+        } else {
+          alert('⏳ Você foi adicionado à LISTA DE ESPERA.');
+        }
+      }
+    } else {
+      const gNome = document.getElementById('guestName').value.trim();
+      if (!gNome) return alert('Digite o nome do convidado!');
+      
+      await push(ref(db, 'listaEspera'), { 
+        nome: gNome, 
+        isGuest: true, 
+        guestOf: nome, 
+        data: agora,
+        timestamp: Date.now(),
+        etapa: config.etapa
+      });
+      alert('✅ Convidado adicionado à lista de espera!');
+    }
+    
+    document.getElementById('modal').classList.remove('active');
     selectJogador.value = '';
     photoPreview.style.display = 'none';
-
-    document.getElementById('modalSucesso').classList.add('active');
-
-    gerarQRCodePix(nome);
-
-  } catch (e) {
-    alert('Erro ao confirmar: ' + e.message);
+    document.getElementById('isGuest').checked = false;
+    document.getElementById('guestNameGroup').style.display = 'none';
+    document.getElementById('guestName').value = '';
+    
+  } catch (e) { 
+    alert('Erro ao confirmar: ' + e.message); 
   }
 };
 
-// =============================================
-// GERAR QR CODE PIX
-// =============================================
-function gerarQRCodePix(nomeJogador) {
-  const pixKey = CHAVE_PIX;
-  const amount = VALOR_PAGAMENTO;
-  const description = `Confirmacao Poker ${nomeJogador}`;
-
-  const url = `https://brcode.dev/api/v1/qr?key=${pixKey}&amount=${amount}&description=${encodeURIComponent(description)}`;
-
-  const qrImg = document.getElementById('qrCodeImg');
-  const qrLoading = document.getElementById('qrLoadingMsg');
-
-  fetch(url)
-    .then(response => response.blob())
-    .then(blob => {
-      const imgUrl = URL.createObjectURL(blob);
-      qrImg.src = imgUrl;
-      qrImg.style.display = 'block';
-      qrLoading.style.display = 'none';
-    })
-    .catch(e => {
-      console.error('Erro ao gerar QR Code:', e);
-      qrLoading.textContent = 'Erro ao gerar QR Code. Copie a chave Pix manualmente.';
-    });
-}
-
-document.getElementById('btnCopiarChave').onclick = () => {
-  navigator.clipboard.writeText(CHAVE_PIX).then(() => {
-    alert('✅ Chave Pix copiada!');
-  }).catch(() => {
-    alert('Chave: ' + CHAVE_PIX);
-  });
+document.getElementById('btnFecharAvisoPenalidade').onclick = () => {
+  document.getElementById('modalAvisoPenalidade').classList.remove('active');
 };
 
-document.getElementById('btnCancelarPagamento').onclick = () => {
-  document.getElementById('paymentSection').classList.remove('active');
+document.getElementById('btnCancelarWhatsApp').onclick = () => {
+  const msg = encodeURIComponent('Gostaria de cancelar minha inscrição no Poker de Quinta.\nNome: ');
+  window.open(`https://wa.me/5541987210685?text=${msg}`, '_blank');
 };
 
-document.getElementById('btnFecharSucesso').onclick = () => {
-  document.getElementById('modalSucesso').classList.remove('active');
-};
-
-// =============================================
-// ATUALIZAR LISTAS
-// =============================================
+// ==================== FUNÇÃO ATUALIZAR LISTAS ====================
 function atualizar() {
-  const antecipEtapa = antecipacoes.filter(a => a.etapa === config.etapa);
-  document.getElementById('antecipCount').textContent = antecipEtapa.length;
-  document.getElementById('pagosCount').textContent = antecipEtapa.filter(a => a.validadoAdmin).length;
+  document.getElementById('confirmedCount').textContent = confirmados.length;
+  document.getElementById('vacancyCount').textContent = Math.max(0, LIMITE_VAGAS - confirmados.length);
+  document.getElementById('waitlistCount').textContent = listaEspera.length;
 
-  const antecipList = document.getElementById('antecipList');
-  const antecipOrdenadas = antecipEtapa.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const confirmedList = document.getElementById('confirmedList');
+  const waitlistList = document.getElementById('waitlistList');
 
-  antecipList.innerHTML = antecipOrdenadas.length ? '' : '<li class="empty-state">Nenhuma confirmação antecipada</li>';
-
-  antecipOrdenadas.forEach((a, i) => {
-    const statusClass = a.validadoAdmin ? 'status-confirmed' : 'status-pending';
-    const statusText = a.validadoAdmin ? '✅ CONFIRMADO' : '⏳ AGUARDANDO PAGAMENTO';
-    const foto = a.foto || FOTO_PADRAO;
-
-    antecipList.innerHTML += `<li class="player-item">
-      <div class="player-info">
-        <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${a.nome}">
-        <div class="player-number">${i+1}º</div>
-        <div class="player-details">
-          <strong>${a.nome}</strong>
-          <small>🕒 ${new Date(a.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small>
+  const confirmadosOrdenados = [...confirmados].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  
+  confirmedList.innerHTML = confirmadosOrdenados.length ? '' : '<li class="empty-state">Nenhuma confirmação</li>';
+  confirmadosOrdenados.forEach((p, i) => {
+    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',false)">❌</button>` : '';
+    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge member">MEMBRO</span>';
+    const guestInfo = p.isGuest && p.guestOf ? ` <small style="opacity:0.7">(Convidado de ${p.guestOf})</small>` : '';
+    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
+    
+    confirmedList.innerHTML += `<li class="player-item">
+        <div class="player-info">
+            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
+            <div class="player-number">${i+1}º</div>
+            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
         </div>
-      </div>
-      <span class="status-badge ${statusClass}">${statusText}</span>
-    </li>`;
+        ${badge}
+        ${btnRemover}</li>`;
+  });
+
+  const membrosEspera = listaEspera.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const convidadosEspera = listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const penalizadosEspera = listaEspera.filter(p => p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  const listaEsperaOrdenada = [...membrosEspera, ...convidadosEspera, ...penalizadosEspera];
+
+  waitlistList.innerHTML = listaEsperaOrdenada.length ? '' : '<li class="empty-state">Lista vazia</li>';
+  listaEsperaOrdenada.forEach((p, i) => {
+    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',true)">❌</button>` : '';
+    const btnPromover = modoAdmin && confirmados.length < LIMITE_VAGAS ? 
+      `<button class="remove-btn" style="background:#4CAF50" onclick="promoverJogadorManual('${p.id}')">↗️ PROMOVER</button>` : '';
+    const guestInfo = p.isGuest && p.guestOf ? ` (Convidado de ${p.guestOf})` : '';
+    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : 
+                  p.penalizado ? '<span class="player-badge penalized">MEMBRO</span>' :
+                  '<span class="player-badge wait">MEMBRO</span>';
+    const prioridade = !p.isGuest && !p.penalizado && i < membrosEspera.length ? '<span class="priority-indicator">PRIORIDADE</span>' : '';
+    const penalizadoTag = p.penalizado ? '<span class="penalty-indicator">⚠️ PENALIZADO</span>' : '';
+    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
+    
+    waitlistList.innerHTML += `<li class="player-item">
+        <div class="player-info">
+            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
+            <div class="player-number">${i+1}º</div>
+            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+          ${badge}
+          ${prioridade}
+          ${penalizadoTag}
+          ${btnPromover}
+          ${btnRemover}
+        </div>
+        </li>`;
   });
 }
 
-// =============================================
-// MODO ADMIN
-// =============================================
-document.getElementById('btnModoAdminAntecipa').onclick = () => {
-  document.getElementById('modalAdminAntecipa').classList.add('active');
+// ==================== REMOVER / PROMOVER JOGADORES ====================
+window.removerJogador = async (id, isWait) => {
+  if(!confirm('Tem certeza que deseja remover este jogador?')) return;
+  try {
+    const path = isWait ? 'listaEspera' : 'confirmados';
+    await remove(ref(db, `${path}/${id}`));
+    if (!isWait) {
+      await promoverDaListaDeEspera();
+    }
+    alert('Jogador removido com sucesso!');
+  } catch (e) {
+    alert('Erro ao remover: ' + e.message);
+  }
 };
 
-document.getElementById('btnFecharAdminAntecipa').onclick = () => {
-  document.getElementById('modalAdminAntecipa').classList.remove('active');
+async function promoverDaListaDeEspera() {
+  try {
+    const snapshotConfirmados = await get(ref(db, 'confirmados'));
+    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
+    
+    if (totalConfirmados < LIMITE_VAGAS) {
+      const snapshotEspera = await get(ref(db, 'listaEspera'));
+      
+      if (snapshotEspera.exists()) {
+        let candidatos = [];
+        snapshotEspera.forEach(child => {
+          candidatos.push({...child.val(), id: child.key});
+        });
+        
+        const membros = candidatos.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        
+        if (membros.length > 0) {
+          const promovido = membros[0];
+          
+          await push(ref(db, 'confirmados'), {
+            nome: promovido.nome,
+            isGuest: false,
+            data: promovido.data,
+            timestamp: promovido.timestamp,
+            foto: promovido.foto || getFotoJogador(promovido.nome),
+            promovido: true,
+            dataPromocao: new Date().toISOString(),
+            etapa: config.etapa
+          });
+          
+          await remove(ref(db, `listaEspera/${promovido.id}`));
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Erro ao promover da lista de espera:', e);
+  }
+}
+
+window.promoverJogadorManual = async (id) => {
+  try {
+    const snapshotConfirmados = await get(ref(db, 'confirmados'));
+    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
+    
+    if (totalConfirmados >= LIMITE_VAGAS) {
+      return alert('❌ Não há vagas disponíveis!');
+    }
+    
+    const snapshot = await get(ref(db, `listaEspera/${id}`));
+    if (!snapshot.exists()) return alert('Jogador não encontrado!');
+    
+    const jogador = snapshot.val();
+    if (!confirm(`Promover ${jogador.nome} para confirmados?`)) return;
+    
+    await push(ref(db, 'confirmados'), {
+      nome: jogador.nome,
+      isGuest: jogador.isGuest,
+      guestOf: jogador.guestOf || null,
+      data: jogador.data,
+      timestamp: jogador.timestamp,
+      foto: jogador.foto || (!jogador.isGuest ? getFotoJogador(jogador.nome) : null),
+      promovido: true,
+      promocaoManual: true,
+      dataPromocao: new Date().toISOString(),
+      etapa: config.etapa
+    });
+    
+    await remove(ref(db, `listaEspera/${id}`));
+    alert(`✅ ${jogador.nome} foi promovido!`);
+    
+  } catch (e) {
+    alert('Erro ao promover: ' + e.message);
+  }
 };
 
-document.getElementById('btnAcessarAdminAntecipa').onclick = () => {
-  if (document.getElementById('senhaAdminAntecipa').value === "poker2026") {
-    modoAdminAntecipa = true;
-    document.getElementById('modalAdminAntecipa').classList.remove('active');
-    document.getElementById('btnValidarPagamentos').style.display = 'block';
-    document.getElementById('btnSairAdminAntecipa').style.display = 'block';
-    document.getElementById('btnModoAdminAntecipa').style.background = '#4CAF50';
-    document.getElementById('btnModoAdminAntecipa').style.opacity = '1';
+// ==================== MODO ADMIN ====================
+document.getElementById('btnModoAdmin').onclick = () => document.getElementById('modalAdmin').classList.add('active');
+document.getElementById('btnFecharAdmin').onclick = () => document.getElementById('modalAdmin').classList.remove('active');
+
+document.getElementById('btnAcessarAdmin').onclick = () => {
+  if (document.getElementById('senhaAdmin').value === "poker2026") {
+    modoAdmin = true;
+    document.getElementById('modalAdmin').classList.remove('active');
+    
+    btnToggleInscricoes.style.display = 'block';
+    btnProximaEtapa.style.display = 'block';
+    btnSelecionarEtapa.style.display = 'block';
+    btnGerenciarFotos.style.display = 'block';
+    btnGerenciarPenalidades.style.display = 'block';
+    btnSairAdmin.style.display = 'block';
+    document.getElementById('btnModoAdmin').style.background = '#4CAF50';
+    document.getElementById('btnModoAdmin').style.opacity = '1';
+    
+    atualizarBotaoInscricoes();
     alert("✅ Modo Administrador Ativado!");
+    atualizar();
   } else {
     alert('❌ Senha incorreta!');
-    document.getElementById('senhaAdminAntecipa').value = '';
   }
 };
 
-document.getElementById('btnSairAdminA
+btnSairAdmin.onclick = () => {
+  modoAdmin = false;
+  btnToggleInscricoes.style.display = 'none';
+  btnProximaEtapa.style.display = 'none';
+  btnSelecionarEtapa.style.display = 'none';
+  btnGerenciarFotos.style.display = 'none';
+  btnGerenciarPenalidades.style.display = 'none';
+  btnSairAdmin.style.display = 'none';
+  document.getElementById('btnModoAdmin').style.background = 'rgba(13,27,13,0.3)';
+  document.getElementById('btnModoAdmin').style.opacity = '0.15';
+  alert("👋 Modo Administrador desativado.");
+  atualizar();
+};
 
+btnToggleInscricoes.onclick = async () => {
+  const novaConfig = {...config, inscricoesAbertas: !config.inscricoesAbertas};
+  await salvarConfig(novaConfig);
+  atualizarBotaoInscricoes();
+};
+
+function atualizarBotaoInscricoes() {
+  if (config.inscricoesAbertas) {
+    btnToggleInscricoes.textContent = '🔒 Fechar';
+    btnToggleInscricoes.style.background = '#c72c48';
+  } else {
+    btnToggleInscricoes.textContent = '🔓 Abrir';
+    btnToggleInscricoes.style.background = '#4CAF50';
+  }
+}
+
+// ==================== GERENCIAR FOTOS ====================
+btnGerenciarFotos.onclick = () => {
+  const fotosList = document.getElementById('fotosList');
+  fotosList.innerHTML = '';
+  
+  jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach((jogador, index) => {
+    const div = document.createElement('div');
+    div.className = 'foto-item';
+    div.innerHTML = `
+        <img class="foto-preview" src="${jogador.foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${jogador.nome}">
+        <div class="foto-info">${jogador.nome}</div>
+        <input type="text" class="foto-input" id="foto-${index}" value="${jogador.foto}" placeholder="URL da foto do ${jogador.nome}">
+        <div class="foto-actions">
+            <button class="foto-btn" onclick="document.getElementById('foto-${index}').value='${FOTO_PADRAO}'">Padrão</button>
+        </div>
+    `;
+    fotosList.appendChild(div);
+  });
+  
+  document.getElementById('modalGerenciarFotos').classList.add('active');
+};
+
+document.getElementById('btnFecharFotos').onclick = () => {
+  document.getElementById('modalGerenciarFotos').classList.remove('active');
+};
+
+document.getElementById('btnSalvarFotos').onclick = () => {
+  jogadores.forEach((jogador, index) => {
+    const input = document.getElementById(`foto-${index}`);
+    if (input) {
+      jogador.foto = input.value || FOTO_PADRAO;
+    }
+  });
+  salvarFotosJogadores();
+};
+
+// ==================== SELECIONAR ETAPA ====================
+btnSelecionarEtapa.onclick = () => {
+  const selector = document.getElementById('etapaSelector');
+  selector.innerHTML = '';
+  
+  ETAPAS.forEach(etapa => {
+    const btn = document.createElement('button');
+    btn.className = `etapa-btn ${etapa.numero === config.etapa ? 'ativa' : ''}`;
+    btn.textContent = `${etapa.numero}ª`;
+    btn.title = etapa.descricao;
+    btn.onclick = () => selecionarEtapa(etapa.numero);
+    selector.appendChild(btn);
+  });
+  
+  document.getElementById('modalSelecionarEtapa').classList.add('active');
+};
+
+document.getElementById('btnCancelarSelecao').onclick = () => {
+  document.getElementById('modalSelecionarEtapa').classList.remove('active');
+};
+
+async function selecionarEtapa(numero) {
+  const etapa = ETAPAS.find(e => e.numero === numero);
+  if (!etapa) return;
+  
+  if (!confirm(`Deseja ir para a ${etapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) return;
+  
+  try {
+    await set(ref(db, 'confirmados'), null);
+    await set(ref(db, 'listaEspera'), null);
+    
+    const dataAbertura = calcularDataAberturaEtapa(numero, etapa.data);
+    
+    await salvarConfig({
+      etapa: etapa.numero,
+      dataEvento: etapa.data,
+      dataAbertura: dataAbertura.toISOString(),
+      inscricoesAbertas: false
+    });
+    
+    document.getElementById('modalSelecionarEtapa').classList.remove('active');
+    alert(`✅ Configurado para ${etapa.descricao}!`);
+    
+  } catch (e) {
+    alert('Erro ao mudar de etapa: ' + e.message);
+  }
+}
+
+btnProximaEtapa.onclick = () => {
+  const proximaEtapa = ETAPAS.find(e => e.numero === config.etapa + 1) || ETAPAS[0];
+  if (!confirm(`Avançar para ${proximaEtapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) return;
+  selecionarEtapa(proximaEtapa.numero);
+};
+
+// ==================== SISTEMA DE PENALIDADES ====================
+btnGerenciarPenalidades.onclick = () => {
+  preencherSelectPenalidade();
+  atualizarListaPenalizados();
+  document.getElementById('modalGerenciarPenalidades').classList.add('active');
+};
+
+document.getElementById('btnFecharPenalidades').onclick = () => {
+  document.getElementById('modalGerenciarPenalidades').classList.remove('active');
+};
+
+document.getElementById('btnAplicarPenalidade').onclick = async () => {
+  const nome = document.getElementById('penaltyPlayerSelect').value;
+  if (!nome) return alert('Selecione um jogador!');
+  
+  if (isJogadorPenalizado(nome)) {
+    return alert(`⚠️ ${nome} já está na lista de penalizados!`);
+  }
+  
+  if (!confirm(`Aplicar penalidade a ${nome}?\n\nEle será colocado automaticamente no último lugar da lista de espera ao se inscrever e receberá um aviso de penalidade.`)) return;
+  
+  try {
+    await push(ref(db, 'penalizados'), {
+      nome: nome,
+      etapaFalta: config.etapa,
+      dataAplicacao: new Date().toISOString()
+    });
+    alert(`⚠️ Penalidade aplicada a ${nome}!`);
+    document.getElementById('penaltyPlayerSelect').value = '';
+  } catch (e) {
+    alert('Erro ao aplicar penalidade: ' + e.message);
+  }
+};
+
+function atualizarListaPenalizados() {
+  const lista = document.getElementById('penalizedList');
+  const emptyMsg = document.getElementById('emptyPenalizedMsg');
+  
+  if (!lista) return;
+  
+  Array.from(lista.children).forEach(child => {
+    if (child.id !== 'emptyPenalizedMsg') child.remove();
+  });
+  
+  if (jogadoresPenalizados.length === 0) {
+    if (emptyMsg) emptyMsg.style.display = 'block';
+    return;
+  }
+  
+  if (emptyMsg) emptyMsg.style.display = 'none';
+  
+  jogadoresPenalizados.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'penalized-player-item';
+    div.innerHTML = `
+      <div>
+        <div class="player-name">⚠️ ${p.nome}</div>
+        <div class="penalty-etapa">Penalizado na ${p.etapaFalta}ª etapa · ${new Date(p.dataAplicacao).toLocaleDateString('pt-BR')}</div>
+      </div>
+      <button class="remove-penalty-btn" onclick="removerPenalidade('${p.id}', '${p.nome}')">Remover</button>
+    `;
+    lista.appendChild(div);
+  });
+}
+
+window.removerPenalidade = async (id, nome) => {
+  if (!confirm(`Remover a penalidade de ${nome}?`)) return;
+  try {
+    await remove(ref(db, `penalizados/${id}`));
+    alert(`✅ Penalidade de ${nome} removida!`);
+  } catch (e) {
+    alert('Erro ao remover penalidade: ' + e.message);
+  }
+};
+
+// ==================== EXPORTAR CSV ====================
+document.getElementById('btnExportar').onclick = () => {
+  let csv = 'Posição,Nome,Status,Data/Hora\n';
+  confirmados.forEach((p, i) => {
+    csv += `${i+1},${p.nome},CONFIRMADO,${new Date(p.data).toLocaleString('pt-BR')}\n`;
+  });
+  
+  const listaEsperaOrdenada = [
+    ...listaEspera.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)),
+    ...listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)),
+    ...listaEspera.filter(p => p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+  ];
+  
+  listaEsperaOrdenada.forEach((p, i) => {
+    const tipo = p.isGuest ? 'CONVIDADO' : p.penalizado ? 'ESPERA-PENALIZADO' : 'ESPERA';
+    const nome = p.isGuest && p.guestOf ? `${p.nome} (Convidado de ${p.guestOf})` : p.nome;
+    csv += `${i+1},${nome},${tipo},${new Date(p.data).toLocaleString('pt-BR')}\n`;
+  });
+  
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `lista-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+};
+</script>
+
+</body>
+</html>
