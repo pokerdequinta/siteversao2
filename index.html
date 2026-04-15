@@ -618,7 +618,7 @@
   line-height: 1.7;
 }
 
-/* Estilos para QR Code e Linha Digitável */
+/* Estilos para QR Code e PIX Copia e Cola */
 .qrcode-container {
   text-align: center;
   padding: 20px;
@@ -646,24 +646,25 @@
   font-weight: bold;
 }
 
-.pix-key {
-  background: #0d1b0d;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-  font-family: monospace;
-  font-size: 1.2em;
-}
-
-.linha-digitavel {
+.pix-copia-cola-container {
   background: #0d1b0d;
   padding: 15px;
   border-radius: 5px;
   margin: 10px 0;
-  font-family: monospace;
-  font-size: 1.1em;
-  word-break: break-all;
   border: 1px dashed #FFD700;
+}
+
+.pix-copia-cola {
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9em;
+  word-break: break-all;
+  margin: 10px 0;
+  border: 1px solid #FFD700;
+  max-height: 100px;
+  overflow-y: auto;
 }
 
 .copy-btn {
@@ -708,6 +709,16 @@
 .pagamento-actions {
   display: flex;
   gap: 5px;
+}
+
+.aviso-pix {
+  background: #FFD700;
+  color: #000;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -829,27 +840,25 @@
   <div class="modal" id="modalQRCode">
     <div class="modal-content" style="max-width: 600px;">
       <h2 style="color: #FFD700;">📱 Pagamento PIX</h2>
-      <p style="margin: 10px 0;">Escaneie o QR Code ou use a linha digitável</p>
+      <p style="margin: 10px 0;">Escaneie o QR Code ou copie o código PIX</p>
       
       <div class="pix-info">
         <div class="pix-value">R$ 100,00</div>
-        <div class="pix-key" id="pixKeyDisplay">41997144470</div>
-        <button class="copy-btn" id="btnCopiarPix">📋 Copiar Chave PIX</button>
       </div>
       
       <div class="qrcode-container" id="qrcodeContainer">
         <canvas id="qrcodeCanvas"></canvas>
       </div>
       
-      <div style="margin: 15px 0;">
-        <label style="color: #FFD700; display: block; margin-bottom: 5px;">💰 Linha Digitável (Copia e Cola):</label>
-        <div class="linha-digitavel" id="linhaDigitavelDisplay"></div>
-        <button class="copy-btn" id="btnCopiarLinhaDigitavel">📋 Copiar Linha Digitável</button>
+      <div class="pix-copia-cola-container">
+        <label style="color: #FFD700; display: block; margin-bottom: 10px;">💰 PIX Copia e Cola:</label>
+        <div class="pix-copia-cola" id="pixCopiaCola"></div>
+        <button class="copy-btn" id="btnCopiarPixCopiaCola">📋 Copiar Código PIX</button>
       </div>
       
-      <p style="margin: 15px 0; font-size: 0.9em; opacity: 0.8;">
-        Após o pagamento, a organização confirmará sua inscrição antecipada.
-      </p>
+      <div class="aviso-pix">
+        ⚠️ Após o pagamento, a organização confirmará manualmente sua inscrição.
+      </div>
       
       <div class="modal-buttons">
         <button class="modal-btn confirm" id="btnFecharQRCode" style="background:#FFD700; color:#000;">Já paguei</button>
@@ -1017,6 +1026,8 @@ const LIMITE_VAGAS = 20;
 const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
 const CHAVE_PIX = '41997144470';
 const VALOR_ANTECIPADO = 100;
+const NOME_RECEBEDOR = 'Poker de Quinta';
+const CIDADE = 'Curitiba';
 
 // ==================== CALENDÁRIO OFICIAL ====================
 const ETAPAS = [
@@ -1296,21 +1307,48 @@ function getFotoJogador(nomeJogador) {
     return jogador ? jogador.foto : FOTO_PADRAO;
 }
 
-// ==================== GERAR QR CODE E LINHA DIGITÁVEL PIX ====================
-function gerarPIXPayload() {
-    // Payload PIX simplificado com valor fixo de R$ 100
-    const payload = `00020126580014br.gov.bcb.pix0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
-    return payload;
+// ==================== GERAR PIX COPIA E COLA (FUNCIONAL) ====================
+function gerarPixCopiaCola() {
+    // Formato do PIX Copia e Cola conforme especificação do Banco Central
+    const payload = [
+        '000201', // Payload Format Indicator
+        '010211', // Merchant Account Information (PIX)
+        '26580014br.gov.bcb.pix', // PIX GUI
+        '01' + CHAVE_PIX.length.toString().padStart(2, '0') + CHAVE_PIX, // Chave PIX
+        '52040000', // Merchant Category Code
+        '5303986', // Currency (986 = BRL)
+        '54' + VALOR_ANTECIPADO.toFixed(2).replace('.', '').length.toString().padStart(2, '0') + VALOR_ANTECIPADO.toFixed(2).replace('.', ''), // Valor
+        '5802BR', // Country Code
+        '59' + NOME_RECEBEDOR.length.toString().padStart(2, '0') + NOME_RECEBEDOR, // Nome do recebedor
+        '60' + CIDADE.length.toString().padStart(2, '0') + CIDADE, // Cidade
+        '62070503***', // Transaction ID (gerado automaticamente)
+        '6304' // CRC16 (será calculado)
+    ].join('');
+    
+    // Calcula o CRC16
+    const crc = calcularCRC16(payload);
+    return payload + crc.toString(16).toUpperCase().padStart(4, '0');
 }
 
-function gerarLinhaDigitavel() {
-    // Linha digitável simulada para copiar e colar no app do banco
-    return `00020126580014br.gov.bcb.pix0136${CHAVE_PIX}5204000053039865405${VALOR_ANTECIPADO}.005802BR5913Poker Quinta6009Sao Paulo62070503***6304`;
+function calcularCRC16(payload) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < payload.length; i++) {
+        crc ^= payload.charCodeAt(i) << 8;
+        for (let j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc = crc << 1;
+            }
+        }
+        crc &= 0xFFFF;
+    }
+    return crc;
 }
 
 function gerarQRCodePIX() {
     const canvas = document.getElementById('qrcodeCanvas');
-    const pixPayload = gerarPIXPayload();
+    const pixPayload = gerarPixCopiaCola();
     
     QRCode.toCanvas(canvas, pixPayload, {
         width: 200,
@@ -1323,7 +1361,7 @@ function gerarQRCodePIX() {
         if (error) console.error('Erro ao gerar QR Code:', error);
     });
     
-    document.getElementById('linhaDigitavelDisplay').textContent = gerarLinhaDigitavel();
+    document.getElementById('pixCopiaCola').textContent = pixPayload;
 }
 
 // ==================== INICIALIZAR FIREBASE ====================
@@ -1434,7 +1472,6 @@ document.getElementById('btnGerarQRCode').onclick = async () => {
         });
         
         document.getElementById('modalAntecipar').classList.remove('active');
-        document.getElementById('pixKeyDisplay').textContent = CHAVE_PIX;
         gerarQRCodePIX();
         document.getElementById('modalQRCode').classList.add('active');
         
@@ -1451,15 +1488,13 @@ document.getElementById('btnFecharQRCode').onclick = () => {
     alert('✅ Solicitação enviada! Aguarde a confirmação do pagamento pela organização.');
 };
 
-document.getElementById('btnCopiarPix').onclick = () => {
-    navigator.clipboard.writeText(CHAVE_PIX);
-    alert('✅ Chave PIX copiada!');
-};
-
-document.getElementById('btnCopiarLinhaDigitavel').onclick = () => {
-    const linha = document.getElementById('linhaDigitavelDisplay').textContent;
-    navigator.clipboard.writeText(linha);
-    alert('✅ Linha digitável copiada! Cole no seu app do banco.');
+document.getElementById('btnCopiarPixCopiaCola').onclick = () => {
+    const pixTexto = document.getElementById('pixCopiaCola').textContent;
+    navigator.clipboard.writeText(pixTexto).then(() => {
+        alert('✅ Código PIX copiado! Cole no seu app do banco.');
+    }).catch(() => {
+        alert('❌ Erro ao copiar. Por favor, copie manualmente.');
+    });
 };
 
 // ==================== MODAL CONFIRMAR PRESENÇA ====================
