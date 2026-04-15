@@ -1,2125 +1,1010 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirmação de Presença - Poker de Quinta</title>
-
-<style>
-/* ========== ESTILOS POKER DE QUINTA - CONFIRMAÇÃO ========== */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
-
-.confirmacao-poker * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.confirmacao-poker {
-  font-family: 'Roboto', sans-serif;
-  background: #0d1b0d;
-  color: #fff;
-  min-height: 100vh;
-}
-
-.confirmacao-poker .logo-top {
-  text-align: center;
-  padding: 20px;
-  background: #0d1b0d;
-}
-
-.confirmacao-poker .logo-top img {
-  max-width: 200px;
-}
-
-.confirmacao-poker .container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
-  background: #0d1b0d;
-}
-
-.confirmacao-poker header {
-  text-align: center;
-  background: #102810;
-  border: 2px solid #d4a121;
-  border-radius: 15px;
-  padding: 30px;
-  margin-bottom: 30px;
-}
-
-.confirmacao-poker h1 {
-  font-family: 'Anton';
-  color: #d4a121;
-  letter-spacing: 3px;
-}
-
-.confirmacao-poker .subtitle {
-  margin-top: 10px;
-}
-
-.confirmacao-poker #countdownContainer {
-  background: #1a3d1a;
-  border: 2px dashed #d4a121;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.confirmacao-poker .timer-header {
-  font-family: 'Anton';
-  font-size: 1.2em;
-  color: #fff;
-  margin-bottom: 5px;
-  display: block;
-}
-
-.confirmacao-poker #timer {
-  font-family: 'Anton';
-  font-size: 1.8em;
-  color: #d4a121;
-}
-
-.confirmacao-poker .info-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.confirmacao-poker .info-card {
-  background: #102810;
-  border: 2px solid #d4a121;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-}
-
-.confirmacao-poker .info-card h2 {
-  font-family: 'Anton';
-  font-size: 2.5em;
-  color: #d4a121;
-}
-
-.confirmacao-poker .add-btn {
-  width: 100%;
-  padding: 15px;
-  background: #d4a121;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 10px;
-  color: #000;
-}
-
-.confirmacao-poker .antecipar-btn {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  border: 2px solid #d4a121;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 10px;
-  color: #000;
-  font-size: 1.1em;
-}
-
-.confirmacao-poker .cancel-btn-main {
-  width: 100%;
-  padding: 15px;
-  background: #c72c48;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.confirmacao-poker .add-btn:disabled,
-.confirmacao-poker .antecipar-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.confirmacao-poker .export-btn {
-  background: #2d5016;
-  color: #fff;
-}
-
-.confirmacao-poker .section {
-  background: #102810;
-  border: 2px solid #d4a121;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.confirmacao-poker .player-list {
-  list-style: none;
-}
-
-.confirmacao-poker .player-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,.05);
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  gap: 10px;
-}
-
-.confirmacao-poker .player-info {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.confirmacao-poker .player-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #d4a121;
-}
-
-.confirmacao-poker .player-number {
-  font-family: 'Anton';
-  color: #d4a121;
-}
-
-.confirmacao-poker .player-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.confirmacao-poker .player-details small {
-  opacity: .85;
-}
-
-.confirmacao-poker .player-badge {
-  background: #d4a121;
-  color: #000;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: .8em;
-  font-weight: bold;
-}
-
-.confirmacao-poker .wait {
-  background: #c72c48;
-  color: #fff;
-}
-
-.confirmacao-poker .guest {
-  background: #4CAF50;
-  color: #000;
-}
-
-.confirmacao-poker .member {
-  background: #1E90FF;
-  color: #fff;
-}
-
-.confirmacao-poker .antecipado {
-  background: #FFD700;
-  color: #000;
-  font-weight: bold;
-}
-
-.confirmacao-poker .pendente-pagamento {
-  background: #FF6600;
-  color: #fff;
-}
-
-.confirmacao-poker .penalized {
-  background: #FF6600;
-  color: #fff;
-}
-
-.confirmacao-poker .remove-btn {
-  background: #c72c48;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.confirmacao-poker .confirm-payment-btn {
-  background: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.confirmacao-poker .deny-payment-btn {
-  background: #c72c48;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.confirmacao-poker .empty-state {
-  text-align: center;
-  opacity: .7;
-  padding: 30px;
-}
-
-.confirmacao-poker .modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.confirmacao-poker .modal.active {
-  display: flex;
-}
-
-.confirmacao-poker .modal-content {
-  background: #102810;
-  border: 2px solid #d4a121;
-  border-radius: 15px;
-  padding: 30px;
-  width: 90%;
-  max-width: 500px;
-}
-
-.confirmacao-poker .form-group {
-  margin-bottom: 15px;
-}
-
-.confirmacao-poker .form-group label {
-  color: #d4a121;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.confirmacao-poker .form-group input,
-.confirmacao-poker .form-group select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #2d5016;
-  background: #1a3d1a;
-  color: #fff;
-}
-
-.confirmacao-poker .player-select {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px;
-}
-
-.confirmacao-poker .player-select img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #d4a121;
-}
-
-.confirmacao-poker .player-select span {
-  color: #fff;
-}
-
-.confirmacao-poker #playerName option,
-.confirmacao-poker #anteciparPlayerName option {
-  background: #1a3d1a;
-  color: #fff;
-  padding: 10px;
-}
-
-.confirmacao-poker #playerName option:hover,
-.confirmacao-poker #anteciparPlayerName option:hover {
-  background: #2d5016;
-}
-
-.confirmacao-poker .modal-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.confirmacao-poker .modal-btn {
-  flex: 1;
-  padding: 10px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.confirmacao-poker .modal-btn.confirm {
-  background: #d4a121;
-  color: #000;
-}
-
-.confirmacao-poker .modal-btn.cancel {
-  background: #c72c48;
-  color: #fff;
-}
-
-.confirmacao-poker .loading {
-  text-align: center;
-  padding: 20px;
-  opacity: 0.7;
-}
-
-.confirmacao-poker .status-indicator {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: #2d5016;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  border: 1px solid #d4a121;
-  z-index: 999;
-}
-
-.confirmacao-poker .status-indicator.connected {
-  background: #1a3d1a;
-  border-color: #4CAF50;
-}
-
-.confirmacao-poker .status-indicator.error {
-  background: #3d1a1a;
-  border-color: #c72c48;
-}
-
-.confirmacao-poker .priority-indicator {
-  background: #FFA500;
-  color: #000;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.75em;
-  margin-left: 5px;
-}
-
-.confirmacao-poker .antecipado-indicator {
-  background: #FFD700;
-  color: #000;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.75em;
-  margin-left: 5px;
-  font-weight: bold;
-}
-
-.confirmacao-poker .penalty-indicator {
-  background: #FF4500;
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.75em;
-  margin-left: 5px;
-}
-
-.confirmacao-poker .admin-panel {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 999;
-}
-
-.confirmacao-poker .admin-btn {
-  width: auto;
-  padding: 8px 15px;
-  background: rgba(13,27,13,0.3);
-  border: 1px solid rgba(212,161,33,0.1);
-  opacity: 0.15;
-  font-size: 0.7em;
-  transition: opacity 0.3s;
-  cursor: pointer;
-  color: #fff;
-  border-radius: 5px;
-}
-
-.confirmacao-poker .admin-btn:hover {
-  opacity: 1;
-  background: #d4a121;
-  color: #000;
-}
-
-.confirmacao-poker .admin-btn.active {
-  opacity: 1;
-  background: #4CAF50;
-}
-
-.confirmacao-poker .etapa-selector {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.confirmacao-poker .etapa-btn {
-  background: #1a3d1a;
-  border: 1px solid #d4a121;
-  color: #fff;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.confirmacao-poker .etapa-btn:hover {
-  background: #d4a121;
-  color: #000;
-}
-
-.confirmacao-poker .etapa-btn.ativa {
-  background: #d4a121;
-  color: #000;
-  border-color: #fff;
-}
-
-.confirmacao-poker .foto-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.confirmacao-poker .foto-info {
-  min-width: 150px;
-  font-weight: bold;
-  color: #d4a121;
-}
-
-.confirmacao-poker .foto-preview {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #d4a121;
-}
-
-.confirmacao-poker .foto-input {
-  flex: 1;
-  padding: 10px;
-  background: #1a3d1a;
-  border: 1px solid #2d5016;
-  color: #fff;
-  border-radius: 5px;
-  font-size: 0.9em;
-}
-
-.confirmacao-poker .foto-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.confirmacao-poker .foto-btn {
-  padding: 8px 15px;
-  background: #d4a121;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: #000;
-  font-size: 0.9em;
-  font-weight: bold;
-}
-
-.confirmacao-poker .foto-btn.reset {
-  background: #c72c48;
-  color: #fff;
-}
-
-.confirmacao-poker .fotos-header {
-  display: grid;
-  grid-template-columns: 80px 150px 1fr 100px;
-  gap: 15px;
-  padding: 10px 15px;
-  background: #102810;
-  border-bottom: 2px solid #d4a121;
-  font-weight: bold;
-  color: #d4a121;
-  margin-bottom: 10px;
-}
-
-.confirmacao-poker .penalty-modal-content {
-  max-width: 550px;
-}
-
-.confirmacao-poker .penalized-player-item {
-  background: rgba(255, 69, 0, 0.15);
-  border: 1px solid #FF4500;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.confirmacao-poker .penalized-player-item .player-name {
-  font-weight: bold;
-  color: #fff;
-}
-
-.confirmacao-poker .penalized-player-item .penalty-etapa {
-  font-size: 0.8em;
-  color: #FF6600;
-  opacity: 0.9;
-}
-
-.confirmacao-poker .remove-penalty-btn {
-  background: #c72c48;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.85em;
-}
-
-.confirmacao-poker .penalty-warning-modal {
-  max-width: 480px;
-  border-color: #FF4500 !important;
-}
-
-.confirmacao-poker .penalty-warning-icon {
-  font-size: 3em;
-  text-align: center;
-  margin: 10px 0;
-}
-
-.confirmacao-poker .penalty-warning-text {
-  background: rgba(255,69,0,0.15);
-  border: 1px solid #FF4500;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0;
-  line-height: 1.7;
-}
-
-/* Estilos para QR Code e PIX Copia e Cola */
-.qrcode-container {
-  text-align: center;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  margin: 20px 0;
-}
-
-.qrcode-container svg {
-  max-width: 200px;
-  height: auto;
-}
-
-.pix-info {
-  background: #1a3d1a;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  text-align: center;
-}
-
-.pix-value {
-  font-size: 2em;
-  color: #FFD700;
-  font-weight: bold;
-}
-
-.pix-copia-cola-container {
-  background: #0d1b0d;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 10px 0;
-  border: 1px dashed #FFD700;
-}
-
-.pix-copia-cola {
-  background: #1a1a1a;
-  padding: 15px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.9em;
-  word-break: break-all;
-  margin: 10px 0;
-  border: 1px solid #FFD700;
-  max-height: 100px;
-  overflow-y: auto;
-}
-
-.copy-btn {
-  background: #d4a121;
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  margin: 5px;
-}
-
-.info-antecipacao {
-  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.15));
-  border: 1px solid #FFD700;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0;
-  text-align: left;
-}
-
-.info-antecipacao strong {
-  color: #FFD700;
-}
-
-.pagamentos-pendentes-list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.pagamento-item {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.pagamento-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.aviso-pix {
-  background: #FFD700;
-  color: #000;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-  font-weight: bold;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .confirmacao-poker .info-cards {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-<!-- Biblioteca QR Code -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caderno do Dealer - Poker de Quinta</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0d1b0d;
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .logo-top {
+            text-align: center;
+            padding: 20px;
+            background: #0d1b0d;
+            border-bottom: 2px solid #d4a121;
+        }
+        
+        .logo-top img {
+            max-width: 150px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-family: 'Anton';
+            color: #d4a121;
+            letter-spacing: 3px;
+            font-size: 2em;
+        }
+        
+        h2 {
+            font-family: 'Anton';
+            color: #d4a121;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            color: #d4a121;
+            margin-bottom: 10px;
+        }
+        
+        .mesa-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .mesa-btn {
+            padding: 15px 30px;
+            font-family: 'Anton';
+            font-size: 1.2em;
+            border: 2px solid #d4a121;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .mesa-btn.preta {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        .mesa-btn.amarela {
+            background: #d4a121;
+            color: #000;
+        }
+        
+        .mesa-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
+        }
+        
+        .mesa-btn.preta.active {
+            background: #333;
+            border-color: #fff;
+        }
+        
+        .mesa-btn.amarela.active {
+            background: #FFD700;
+            border-color: #000;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .btn-primary {
+            background: #d4a121;
+            color: #000;
+        }
+        
+        .btn-secondary {
+            background: #2d5016;
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: #c72c48;
+            color: #fff;
+        }
+        
+        .btn-info {
+            background: #1E90FF;
+            color: #fff;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .stat-value {
+            font-family: 'Anton';
+            font-size: 2em;
+            color: #d4a121;
+        }
+        
+        .mesas-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .mesa-section {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .mesa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d4a121;
+        }
+        
+        .mesa-title {
+            font-family: 'Anton';
+            font-size: 1.5em;
+        }
+        
+        .mesa-preta .mesa-title {
+            color: #fff;
+        }
+        
+        .mesa-amarela .mesa-title {
+            color: #FFD700;
+        }
+        
+        .jogadores-grid {
+            display: grid;
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .jogador-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #d4a121;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .jogador-card:hover {
+            background: rgba(212, 161, 33, 0.1);
+        }
+        
+        .jogador-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .jogador-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #d4a121;
+        }
+        
+        .jogador-detalhes {
+            flex: 1;
+        }
+        
+        .jogador-nome {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .jogador-status {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        
+        .badge-antecipado {
+            background: #FFD700;
+            color: #000;
+        }
+        
+        .badge-rebuy {
+            background: #FF6600;
+            color: #fff;
+        }
+        
+        .badge-addon {
+            background: #4CAF50;
+            color: #fff;
+        }
+        
+        .jogador-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+        
+        .btn-rebuy {
+            background: #FF6600;
+            color: #fff;
+        }
+        
+        .btn-rebuy-duplo {
+            background: #FF4500;
+            color: #fff;
+        }
+        
+        .btn-addon {
+            background: #4CAF50;
+            color: #fff;
+        }
+        
+        .btn-remover {
+            background: #c72c48;
+            color: #fff;
+        }
+        
+        .resumo-section {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .resumo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .resumo-table th {
+            background: #1a3d1a;
+            color: #d4a121;
+            padding: 12px;
+            text-align: left;
+            font-family: 'Anton';
+        }
+        
+        .resumo-table td {
+            padding: 10px;
+            border-bottom: 1px solid #2d5016;
+        }
+        
+        .resumo-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .total-geral {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1a3d1a;
+            border-radius: 8px;
+            text-align: right;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d4a121;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: #d4a121;
+            color: #000;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            color: #d4a121;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #2d5016;
+            background: #1a3d1a;
+            color: #fff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .status-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #2d5016;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            border: 1px solid #d4a121;
+            z-index: 999;
+        }
+        
+        .status-indicator.connected {
+            background: #1a3d1a;
+            border-color: #4CAF50;
+        }
+        
+        @media (max-width: 768px) {
+            .mesas-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="confirmacao-poker">
+<div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
 
-  <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
+<div class="logo-top">
+    <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
+    <h2 style="color: #d4a121; margin-top: 10px;">🎲 CADERNO DO DEALER</h2>
+</div>
 
-  <div class="logo-top">
-    <img src="logo pdq.png" onerror="this.style.display='none'">
-  </div>
-
-  <div class="container">
-
-    <header>
-      <h1>LISTA DE PRESENÇA POKER DE QUINTA</h1>
-      <div class="subtitle" id="dataEvento">📅 Carregando...</div>
-    </header>
-
-    <div id="countdownContainer">
-      <span class="timer-header" id="timerHeader">Calculando abertura das inscrições...</span>
-      <div id="timer">Calculando tempo...</div>
+<div class="container">
+    
+    <div class="mesa-selector">
+        <button class="mesa-btn preta active" id="btnMesaPreta">♠️ MESA PRETA</button>
+        <button class="mesa-btn amarela" id="btnMesaAmarela">♦️ MESA AMARELA</button>
     </div>
-
-    <div class="info-cards">
-      <div class="info-card"><h2 id="confirmedCount">0</h2>Confirmados</div>
-      <div class="info-card"><h2 id="vacancyCount">20</h2>Vagas</div>
-      <div class="info-card"><h2 id="waitlistCount">0</h2>Espera</div>
+    
+    <div class="controls">
+        <button class="btn btn-primary" id="btnImportarJogadores">📥 IMPORTAR JOGADORES DA ETAPA</button>
+        <button class="btn btn-secondary" id="btnExportarCSV">📊 EXPORTAR CSV</button>
+        <button class="btn btn-info" id="btnLimparMesa">🔄 LIMPAR MESA ATUAL</button>
     </div>
-
-    <button class="antecipar-btn" id="btnAntecipar">⭐ INSCRIÇÃO ANTECIPADA - GARANTA SUA VAGA (R$ 100)</button>
-    <button class="add-btn" id="btnConfirmar" disabled>🔒 INSCRIÇÕES FECHADAS</button>
-    <button class="cancel-btn-main" id="btnCancelarWhatsApp">❌ CANCELAR MINHA INSCRIÇÃO</button>
-    <button class="add-btn export-btn" id="btnExportar">📊 EXPORTAR CSV</button>
-
-    <div class="section">
-      <h3>✅ CONFIRMADOS</h3>
-      <ul id="confirmedList" class="player-list">
-        <li class="loading">Carregando dados...</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h3>⏳ LISTA DE ESPERA</h3>
-      <p style="opacity:0.8;margin-bottom:15px;font-size:0.9em">
-        🔸 Membros têm prioridade sobre convidados • Ordem de chegada dentro de cada categoria
-      </p>
-      <ul id="waitlistList" class="player-list">
-        <li class="loading">Carregando dados...</li>
-      </ul>
-    </div>
-
-  </div>
-
-  <div class="admin-panel">
-    <button class="admin-btn" id="btnModoAdmin" style="background:rgba(13,27,13,0.3);">🔐</button>
-    <button class="admin-btn" id="btnToggleInscricoes" style="display:none;">🔓 Abrir</button>
-    <button class="admin-btn" id="btnProximaEtapa" style="display:none;">⏭️ Próx</button>
-    <button class="admin-btn" id="btnSelecionarEtapa" style="display:none;">📅 Etapa</button>
-    <button class="admin-btn" id="btnGerenciarFotos" style="display:none;">📸 Fotos</button>
-    <button class="admin-btn" id="btnGerenciarPenalidades" style="display:none;">⚠️ Penalidades</button>
-    <button class="admin-btn" id="btnGerenciarPagamentos" style="display:none;">💵 Pagamentos</button>
-    <button class="admin-btn" id="btnSairAdmin" style="display:none; background:#c72c48;">🚪 Sair</button>
-  </div>
-
-  <!-- Modal Admin Login -->
-  <div class="modal" id="modalAdmin">
-    <div class="modal-content">
-      <h2 style="color: #8b0000;">🔐 Modo Organização</h2>
-      <p style="margin: 15px 0; opacity: 0.8;">Digite a senha de organização para acessar funções exclusivas:</p>
-      <div class="form-group">
-        <label>Senha Organização</label>
-        <input type="password" id="senhaAdmin" placeholder="Digite a senha">
-      </div>
-      <div class="modal-buttons">
-        <button class="modal-btn cancel" id="btnFecharAdmin">Cancelar</button>
-        <button class="modal-btn confirm" id="btnAcessarAdmin" style="background:#8b0000; color:#fff">Acessar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Antecipar Inscrição -->
-  <div class="modal" id="modalAntecipar">
-    <div class="modal-content" style="max-width: 550px;">
-      <h2 style="color: #FFD700;">⭐ Inscrição Antecipada</h2>
-      <p style="margin: 15px 0;">Garanta sua vaga agora mesmo! Valor: <strong style="color: #FFD700;">R$ 100,00</strong></p>
-      
-      <div class="info-antecipacao">
-        <strong>📌 INFORMAÇÃO IMPORTANTE:</strong><br><br>
-        Ao antecipar o pagamento da inscrição (R$ 100,00), no dia da etapa, se o pagamento for validado pela organização, você só precisará pagar os rebuys e add-ons que fizer durante o jogo. Sua inscrição já estará quitada!
-      </div>
-      
-      <div class="form-group">
-        <label>Selecione seu nome</label>
-        <select id="anteciparPlayerName" style="padding:10px;"></select>
-        <div id="anteciparPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
-          <img src="" alt="Foto do jogador" style="width:60px;height:60px;border-radius:50%;border:2px solid #FFD700;object-fit:cover;">
+    
+    <div class="stats-cards">
+        <div class="stat-card">
+            <h3>Total Jogadores</h3>
+            <div class="stat-value" id="totalJogadores">0</div>
         </div>
-      </div>
-      
-      <div class="modal-buttons">
-        <button class="modal-btn cancel" id="btnCancelarAntecipar">Cancelar</button>
-        <button class="modal-btn confirm" id="btnGerarQRCode" style="background:#FFD700; color:#000;">Gerar PIX</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal QR Code PIX -->
-  <div class="modal" id="modalQRCode">
-    <div class="modal-content" style="max-width: 600px;">
-      <h2 style="color: #FFD700;">📱 Pagamento PIX</h2>
-      <p style="margin: 10px 0;">Escaneie o QR Code ou copie o código PIX</p>
-      
-      <div class="pix-info">
-        <div class="pix-value">R$ 100,00</div>
-      </div>
-      
-      <div class="qrcode-container" id="qrcodeContainer">
-        <canvas id="qrcodeCanvas"></canvas>
-      </div>
-      
-      <div class="pix-copia-cola-container">
-        <label style="color: #FFD700; display: block; margin-bottom: 10px;">💰 PIX Copia e Cola:</label>
-        <div class="pix-copia-cola" id="pixCopiaCola"></div>
-        <button class="copy-btn" id="btnCopiarPixCopiaCola">📋 Copiar Código PIX</button>
-      </div>
-      
-      <div class="aviso-pix">
-        ⚠️ Após o pagamento, a organização confirmará manualmente sua inscrição.
-      </div>
-      
-      <div class="modal-buttons">
-        <button class="modal-btn confirm" id="btnFecharQRCode" style="background:#FFD700; color:#000;">Já paguei</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Gerenciar Pagamentos (Admin) -->
-  <div class="modal" id="modalGerenciarPagamentos">
-    <div class="modal-content" style="max-width: 650px;">
-      <h2 style="color: #FFD700;">💵 Gerenciar Pagamentos Antecipados</h2>
-      <p style="margin: 10px 0; opacity: 0.8;">Confirme ou negue os pagamentos pendentes</p>
-      
-      <div class="pagamentos-pendentes-list" id="pagamentosPendentesList">
-        <div class="empty-state">Carregando...</div>
-      </div>
-      
-      <div class="modal-buttons" style="margin-top:20px;">
-        <button class="modal-btn cancel" id="btnFecharPagamentos">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Gerenciar Fotos -->
-  <div class="modal" id="modalGerenciarFotos">
-    <div class="modal-content" style="max-width: 900px;">
-      <h2 style="color: #d4a121;">📸 Gerenciar Fotos dos Jogadores</h2>
-      <p style="margin: 15px 0; opacity: 0.8;">Configure as URLs das fotos de cada jogador:</p>
-      <div class="fotos-header">
-        <div>Prévia</div>
-        <div>Jogador</div>
-        <div>URL da Foto</div>
-        <div>Ações</div>
-      </div>
-      <div id="fotosList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;"></div>
-      <div class="modal-buttons">
-        <button class="modal-btn cancel" id="btnFecharFotos">Fechar</button>
-        <button class="modal-btn confirm" id="btnSalvarFotos" style="background:#d4a121;">Salvar Todas</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Selecionar Etapa -->
-  <div class="modal" id="modalSelecionarEtapa">
-    <div class="modal-content">
-      <h2 style="color: #d4a121;">📅 Selecionar Etapa</h2>
-      <p style="margin: 15px 0;">Escolha a etapa para configurar o sistema:</p>
-      <div class="etapa-selector" id="etapaSelector"></div>
-      <div class="modal-buttons">
-        <button class="modal-btn cancel" id="btnCancelarSelecao">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Bem-vindo -->
-  <div class="modal" id="modalBemVindo">
-    <div class="modal-content">
-      <h2 style="color: #d4a121;">📋 Bem-vindo ao Poker de Quinta!</h2>
-      <p style="margin: 15px 0; line-height: 1.6;">Esta é a página oficial de inscrição do <strong>Poker de Quinta</strong>.</p>
-      <p style="margin: 15px 0; line-height: 1.6; font-size:0.9em">
-        <strong>Regras importantes:</strong><br>
-        • Limite de 20 vagas confirmadas<br>
-        • <strong style="color: #FFD700;">⭐ Inscrição Antecipada:</strong> Garanta sua vaga agora por R$ 100<br>
-        • Confirme a presença somente se for ir com CERTEZA<br>
-        • Caso se inscreva e não possa ir a etapa, clique no botão CANCELAR MINHA INSCRIÇÃO<br>
-        • Após 20 confirmações, novos jogadores vão para lista de espera<br>
-        • Na lista de espera: membros têm prioridade sobre convidados
-      </p>
-      <div class="modal-buttons">
-        <button class="modal-btn confirm" id="btnEntendi" style="width:100%">Entendi!</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Confirmar Presença -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2>Confirmar Presença</h2>
-      <div class="form-group">
-        <label>Jogador</label>
-        <select id="playerName" style="padding:10px;"></select>
-        <div id="playerPhotoPreview" style="display:none; margin-top:10px; text-align:center;">
-          <img src="" alt="Foto do jogador" style="width:60px;height:60px;border-radius:50%;border:2px solid #d4a121;object-fit:cover;">
+        <div class="stat-card">
+            <h3>Total Rebuys</h3>
+            <div class="stat-value" id="totalRebuys">0</div>
         </div>
-      </div>
-      <div class="form-group">
-        <input type="checkbox" id="isGuest"> Adicionar convidado
-      </div>
-      <div class="form-group" id="guestNameGroup" style="display:none">
-        <label>Nome do Convidado</label>
-        <input id="guestName" placeholder="Digite o nome completo">
-      </div>
-      <div class="modal-buttons">
-        <button class="modal-btn cancel" id="btnCancelar">Cancelar</button>
-        <button class="modal-btn confirm" id="btnConfirmarModal">Confirmar</button>
-      </div>
+        <div class="stat-card">
+            <h3>Total Addons</h3>
+            <div class="stat-value" id="totalAddons">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Valor Total</h3>
+            <div class="stat-value" id="valorTotal">R$ 0</div>
+        </div>
     </div>
-  </div>
-
-  <!-- Modal Aviso de Penalidade -->
-  <div class="modal" id="modalAvisoPenalidade">
-    <div class="modal-content penalty-warning-modal">
-      <div class="penalty-warning-icon">⚠️🃏</div>
-      <h2 style="color: #FF4500; text-align:center;">PENALIDADE APLICADA</h2>
-      <div class="penalty-warning-text">
-        <strong id="penaltyPlayerName" style="color:#FF6600; font-size:1.1em;"></strong>, você foi penalizado por <strong>falta em uma etapa anterior</strong> sem cancelamento prévio.<br><br>
-        Como penalidade, sua inscrição foi colocada automaticamente no <strong>último lugar da lista de espera</strong>, independente do horário de inscrição.
-      </div>
-      <p style="opacity:0.8; font-size:0.9em; text-align:center;">Entre em contato com a organização para mais informações.</p>
-      <div class="modal-buttons">
-        <button class="modal-btn confirm" id="btnFecharAvisoPenalidade" style="background:#FF4500; color:#fff;">Entendi</button>
-      </div>
+    
+    <div class="tabs">
+        <button class="tab active" data-tab="mesas">🎯 MESAS</button>
+        <button class="tab" data-tab="resumo">📋 RESUMO FINANCEIRO</button>
+        <button class="tab" data-tab="estatisticas">📈 ESTATÍSTICAS</button>
     </div>
-  </div>
+    
+    <div class="tab-content active" id="tab-mesas">
+        <div class="mesas-container">
+            <!-- Mesa Preta -->
+            <div class="mesa-section mesa-preta">
+                <div class="mesa-header">
+                    <div class="mesa-title">♠️ MESA PRETA</div>
+                    <div>
+                        <span class="badge" style="background: #1a1a1a;">Jogadores: <span id="countPreta">0</span></span>
+                    </div>
+                </div>
+                <div class="jogadores-grid" id="mesaPretaGrid">
+                    <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
+                        Nenhum jogador na mesa preta
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mesa Amarela -->
+            <div class="mesa-section mesa-amarela">
+                <div class="mesa-header">
+                    <div class="mesa-title">♦️ MESA AMARELA</div>
+                    <div>
+                        <span class="badge" style="background: #d4a121; color: #000;">Jogadores: <span id="countAmarela">0</span></span>
+                    </div>
+                </div>
+                <div class="jogadores-grid" id="mesaAmarelaGrid">
+                    <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
+                        Nenhum jogador na mesa amarela
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="tab-resumo">
+        <div class="resumo-section">
+            <h2>📋 RESUMO FINANCEIRO - ETAPA ATUAL</h2>
+            <table class="resumo-table" id="resumoFinanceiro">
+                <thead>
+                    <tr>
+                        <th>Jogador</th>
+                        <th>Mesa</th>
+                        <th>Buy-in</th>
+                        <th>Rebuys</th>
+                        <th>Addon</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="resumoBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 20px;">
+                            Nenhum dado disponível
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="total-geral" id="totalGeralResumo">
+                TOTAL GERAL: R$ 0,00
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="tab-estatisticas">
+        <div class="resumo-section">
+            <h2>📈 ESTATÍSTICAS DA ETAPA</h2>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3>Rebuys Simples</h3>
+                    <div class="stat-value" id="statRebuysSimples">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Rebuys Duplos</h3>
+                    <div class="stat-value" id="statRebuysDuplos">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Addons</h3>
+                    <div class="stat-value" id="statAddons">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Arrecadado</h3>
+                    <div class="stat-value" id="statTotalArrecadado">R$ 0</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">🏆 Ranking de Rebuys</h3>
+            <table class="resumo-table" id="rankingRebuys">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jogador</th>
+                        <th>Total Rebuys</th>
+                        <th>Valor em Rebuys</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingBody">
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px;">
+                            Nenhum rebuy registrado
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-  <!-- Modal Gerenciar Penalidades -->
-  <div class="modal" id="modalGerenciarPenalidades">
-    <div class="modal-content penalty-modal-content" style="max-width:600px;">
-      <h2 style="color: #FF4500;">⚠️ Gerenciar Penalidades</h2>
-      <p style="margin: 10px 0 5px; opacity: 0.8; font-size:0.9em;">Jogadores penalizados serão automaticamente enviados ao <strong>último lugar da lista de espera</strong> ao se inscreverem, com aviso de penalidade.</p>
-
-      <div style="margin: 20px 0;">
+<!-- Modal Adicionar Jogador -->
+<div class="modal" id="modalAdicionarJogador">
+    <div class="modal-content">
+        <h2>➕ Adicionar Jogador à Mesa</h2>
         <div class="form-group">
-          <label style="color:#FF6600;">Aplicar Penalidade a:</label>
-          <select id="penaltyPlayerSelect" style="padding:10px; width:100%; background:#1a3d1a; border:1px solid #FF4500; color:#fff; border-radius:8px;">
-            <option value="">Selecione o jogador...</option>
-          </select>
+            <label>Nome do Jogador</label>
+            <input type="text" id="novoJogadorNome" placeholder="Digite o nome">
         </div>
-        <button class="modal-btn confirm" id="btnAplicarPenalidade" style="background:#FF4500; color:#fff; width:100%; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:5px;">
-          ⚠️ APLICAR PENALIDADE
-        </button>
-      </div>
-
-      <div style="border-top: 1px solid #333; padding-top:15px; margin-top:5px;">
-        <h3 style="color:#FF6600; margin-bottom:12px;">Jogadores Penalizados Atualmente:</h3>
-        <div id="penalizedList" style="max-height:250px; overflow-y:auto;">
-          <div class="empty-state" id="emptyPenalizedMsg">Nenhum jogador penalizado no momento.</div>
+        <div class="form-group">
+            <label>Já pagou Buy-in?</label>
+            <select id="novoJogadorBuyin">
+                <option value="true">Sim - R$ 100</option>
+                <option value="false">Não</option>
+            </select>
         </div>
-      </div>
-
-      <div class="modal-buttons" style="margin-top:20px;">
-        <button class="modal-btn cancel" id="btnFecharPenalidades">Fechar</button>
-      </div>
+        <div class="modal-buttons">
+            <button class="btn btn-danger" id="btnCancelarAdicionar">Cancelar</button>
+            <button class="btn btn-primary" id="btnConfirmarAdicionar">Adicionar</button>
+        </div>
     </div>
-  </div>
-
 </div>
 
 <script type="module">
-// ==================== CONFIGURAÇÃO FIREBASE ====================
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, set, onValue, remove, push, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+import { getDatabase, ref, set, onValue, push, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
-  authDomain: "poker-de-quinta.firebaseapp.com",
-  databaseURL: "https://poker-de-quinta-default-rtdb.firebaseio.com",
-  projectId: "poker-de-quinta",
-  storageBucket: "poker-de-quinta.firebasestorage.app",
-  messagingSenderId: "776724152456",
-  appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
+    apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
+    authDomain: "poker-de-quinta.firebaseapp.com",
+    databaseURL: "https://poker-de-quinta-default-rtdb.firebaseio.com",
+    projectId: "poker-de-quinta",
+    storageBucket: "poker-de-quinta.firebasestorage.app",
+    messagingSenderId: "776724152456",
+    appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
 };
 
-const LIMITE_VAGAS = 20;
-const FOTO_PADRAO = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
-const CHAVE_PIX = '41997144470';
-const VALOR_ANTECIPADO = 100;
-const NOME_RECEBEDOR = 'Poker de Quinta';
-const CIDADE = 'Curitiba';
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// ==================== CALENDÁRIO OFICIAL ====================
-const ETAPAS = [
-    { numero: 1,  data: '2026-01-29', descricao: '1ª Etapa' },
-    { numero: 2,  data: '2026-02-26', descricao: '2ª Etapa' },
-    { numero: 3,  data: '2026-03-26', descricao: '3ª Etapa' },
-    { numero: 4,  data: '2026-04-30', descricao: '4ª Etapa' },
-    { numero: 5,  data: '2026-05-28', descricao: '5ª Etapa' },
-    { numero: 6,  data: '2026-06-25', descricao: '6ª Etapa' },
-    { numero: 7,  data: '2026-07-30', descricao: '7ª Etapa' },
-    { numero: 8,  data: '2026-08-27', descricao: '8ª Etapa' },
-    { numero: 9,  data: '2026-09-24', descricao: '9ª Etapa' },
-    { numero: 10, data: '2026-10-08', descricao: '10ª Etapa' },
-    { numero: 11, data: '2026-10-29', descricao: '11ª Etapa' },
-    { numero: 12, data: '2026-11-26', descricao: '12ª Etapa' },
-    { numero: 13, data: '2026-12-10', descricao: 'ÚLTIMA ETAPA 🏆' }
-];
+const VALOR_BUYIN = 100;
+const VALOR_REBUY_SIMPLES = 30;
+const VALOR_REBUY_DUPLO = 60;
+const VALOR_ADDON = 50;
 
-const JOGADORES_INICIAIS = [
-    "Amarildo", "Boy", "Buiu", "Caio", "Charles", "Cleversson", "Davi", "Gera", "Diego", 
-    "Dos Anjos", "Eduardo", "Fernando", "Gregory", "Gaspar", "Guilherme", "Guti", "Kastelo", 
-    "Izidio", "Jean", "Jean Rebuy", "Junior", "Leo", "Loreto", "Lucas", "Matheus", "Maykon", 
-    "Marcelo", "Neto", "Nil", "Peterson", "Rafael", "Ricardo Amarante", "Ricardo Linhares", 
-    "Ricardo Matoso", "Robson", "Sergio", "Solano", "Tigre", "Van Van", "Waltinho", "Wesley"
-];
-
-function calcularDataAbertura(dataEtapa) {
-    const data = new Date(dataEtapa + 'T19:00:00');
-    const diaDaSemana = data.getDay();
-    let diasAteSegunda;
-    
-    if (diaDaSemana === 1) {
-        diasAteSegunda = 7;
-    } else if (diaDaSemana === 0) {
-        diasAteSegunda = 6;
-    } else {
-        diasAteSegunda = diaDaSemana - 1;
-    }
-    
-    const dataAbertura = new Date(data);
-    dataAbertura.setDate(data.getDate() - diasAteSegunda);
-    dataAbertura.setHours(7, 0, 0, 0);
-    
-    return dataAbertura;
-}
-
-function calcularDataAberturaEtapa(numero, dataEtapa) {
-    if (numero === 4) {
-        return new Date('2026-04-27T07:00:00');
-    }
-    return calcularDataAbertura(dataEtapa);
-}
-
-let config = {
-    etapa: 3,
-    dataEvento: '2026-03-26',
-    dataAbertura: calcularDataAberturaEtapa(3, '2026-03-26').toISOString(),
-    inscricoesAbertas: false
+let mesaAtual = 'preta';
+let config = { etapa: 3 };
+let jogadoresConfirmados = [];
+let mesasData = {
+    preta: [],
+    amarela: []
 };
 
-let DATA_ABERTURA = new Date(config.dataAbertura).getTime();
-let DATA_EVENTO = new Date(config.dataEvento);
+// Inicialização
+document.getElementById('statusIndicator').textContent = '✅ Conectado';
+document.getElementById('statusIndicator').classList.add('connected');
 
-let db;
-let confirmados = [];
-let listaEspera = [];
-let jogadoresPenalizados = [];
-let pagamentosPendentes = [];
-let modoAdmin = false;
-let timerInterval;
-let jogadores = [];
-let jogadorSelecionadoAntecipar = '';
-
-const btnToggleInscricoes = document.getElementById('btnToggleInscricoes');
-const btnProximaEtapa = document.getElementById('btnProximaEtapa');
-const btnSelecionarEtapa = document.getElementById('btnSelecionarEtapa');
-const btnGerenciarFotos = document.getElementById('btnGerenciarFotos');
-const btnGerenciarPenalidades = document.getElementById('btnGerenciarPenalidades');
-const btnGerenciarPagamentos = document.getElementById('btnGerenciarPagamentos');
-const btnSairAdmin = document.getElementById('btnSairAdmin');
-const dataEventoEl = document.getElementById('dataEvento');
-const timerHeader = document.getElementById('timerHeader');
-const btnConfirmar = document.getElementById('btnConfirmar');
-
-function getEtapaAtual() {
-    return ETAPAS.find(e => e.numero === config.etapa) || ETAPAS[2];
-}
-
-function isJogadorPenalizado(nome) {
-    return jogadoresPenalizados.some(p => p.nome === nome);
-}
-
-async function carregarFotosJogadores() {
-    try {
-        const snapshot = await get(ref(db, 'fotosJogadores'));
-        if (snapshot.exists()) {
-            const fotosSalvas = snapshot.val();
-            jogadores = JOGADORES_INICIAIS.map(nome => ({
-                nome: nome,
-                foto: fotosSalvas[nome] || FOTO_PADRAO
-            }));
-        } else {
-            jogadores = JOGADORES_INICIAIS.map(nome => ({
-                nome: nome,
-                foto: FOTO_PADRAO
-            }));
-        }
-    } catch (e) {
-        console.error('Erro ao carregar fotos:', e);
-        jogadores = JOGADORES_INICIAIS.map(nome => ({
-            nome: nome,
-            foto: FOTO_PADRAO
-        }));
-    }
-    preencherSelectJogadores();
-    preencherSelectAntecipar();
-    preencherSelectPenalidade();
-}
-
-async function salvarFotosJogadores() {
-    try {
-        const fotosObj = {};
-        jogadores.forEach(j => {
-            fotosObj[j.nome] = j.foto;
-        });
-        await set(ref(db, 'fotosJogadores'), fotosObj);
-        alert('✅ Fotos salvas com sucesso!');
-        atualizar();
-        preencherSelectJogadores();
-        preencherSelectAntecipar();
-        document.getElementById('modalGerenciarFotos').classList.remove('active');
-    } catch (e) {
-        alert('Erro ao salvar fotos: ' + e.message);
-    }
-}
-
-function preencherSelectJogadores() {
-    const selectJogador = document.getElementById('playerName');
-    selectJogador.innerHTML = '';
-    
-    const optDefault = document.createElement('option');
-    optDefault.value = '';
-    optDefault.textContent = 'Selecione seu nome...';
-    selectJogador.appendChild(optDefault);
-    
-    jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
-        const o = document.createElement('option');
-        o.value = j.nome;
-        o.textContent = j.nome;
-        o.setAttribute('data-foto', j.foto);
-        selectJogador.appendChild(o);
-    });
-}
-
-function preencherSelectAntecipar() {
-    const selectJogador = document.getElementById('anteciparPlayerName');
-    selectJogador.innerHTML = '';
-    
-    const optDefault = document.createElement('option');
-    optDefault.value = '';
-    optDefault.textContent = 'Selecione seu nome...';
-    selectJogador.appendChild(optDefault);
-    
-    jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
-        const o = document.createElement('option');
-        o.value = j.nome;
-        o.textContent = j.nome;
-        o.setAttribute('data-foto', j.foto);
-        selectJogador.appendChild(o);
-    });
-}
-
-function preencherSelectPenalidade() {
-    const sel = document.getElementById('penaltyPlayerSelect');
-    sel.innerHTML = '<option value="">Selecione o jogador...</option>';
-    JOGADORES_INICIAIS.slice().sort((a,b) => a.localeCompare(b)).forEach(nome => {
-        const o = document.createElement('option');
-        o.value = nome;
-        o.textContent = nome;
-        sel.appendChild(o);
-    });
-}
-
-async function carregarConfig() {
-    try {
-        const snapshot = await get(ref(db, 'config'));
-        if (snapshot.exists()) {
-            config = snapshot.val();
-            if (config.etapa === 3) {
-                config.dataEvento = '2026-03-26';
-                config.dataAbertura = calcularDataAberturaEtapa(3, '2026-03-26').toISOString();
-            }
-            if (config.etapa === 4) {
-                config.dataEvento = '2026-04-30';
-                config.dataAbertura = calcularDataAberturaEtapa(4, '2026-04-30').toISOString();
-            }
-        } else {
-            await salvarConfig(config);
-        }
-        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
-        DATA_EVENTO = new Date(config.dataEvento);
-        atualizarInterfaceConfig();
-    } catch (e) {
-        console.error('Erro ao carregar config:', e);
-    }
-}
-
-async function salvarConfig(novaConfig) {
-    try {
-        await set(ref(db, 'config'), novaConfig);
-        config = novaConfig;
-        DATA_ABERTURA = new Date(config.dataAbertura).getTime();
-        DATA_EVENTO = new Date(config.dataEvento);
-        atualizarInterfaceConfig();
-    } catch (e) {
-        console.error('Erro ao salvar config:', e);
-    }
-}
-
-function atualizarInterfaceConfig() {
-    const etapaAtual = getEtapaAtual();
-    
-    let dataParaMostrar;
-    if (config.etapa === 3) {
-        dataParaMostrar = new Date('2026-03-26T12:00:00');
-    } else if (config.etapa === 4) {
-        dataParaMostrar = new Date('2026-04-30T12:00:00');
-    } else {
-        dataParaMostrar = DATA_EVENTO;
-    }
-    
-    const dataFormatada = dataParaMostrar.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric'});
-    dataEventoEl.textContent = `📅 ${etapaAtual.descricao} - ${dataFormatada}`;
-    
-    const dataAberturaObj = new Date(config.dataAbertura);
-    const dataAberturaStr = dataAberturaObj.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'}) + 
-                            ' às ' + dataAberturaObj.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-    timerHeader.textContent = `As Inscrições abrem ${dataAberturaStr}`;
-    
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(atualizarCronometro, 1000);
-    atualizarCronometro();
-}
-
-function atualizarCronometro() {
-    const agora = new Date().getTime();
-    const dist = DATA_ABERTURA - agora;
-
-    if (dist > 0) {
-        const d = Math.floor(dist / (1000 * 60 * 60 * 24));
-        const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((dist % (1000 * 60)) / 1000);
-        document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
-        
-        if ((config.inscricoesAbertas && new Date().getTime() >= DATA_ABERTURA) || modoAdmin) {
-            btnConfirmar.disabled = false;
-            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
-        } else {
-            btnConfirmar.disabled = true;
-            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
-        }
-    } else {
-        document.getElementById("countdownContainer").style.display = "none";
-        if (config.inscricoesAbertas || modoAdmin) {
-            btnConfirmar.disabled = false;
-            btnConfirmar.textContent = modoAdmin ? "➕ CONFIRMAR (MODO TESTE)" : "➕ CONFIRMAR PRESENÇA";
-        } else {
-            btnConfirmar.disabled = true;
-            btnConfirmar.textContent = "🔒 INSCRIÇÕES FECHADAS";
-        }
-    }
-}
-
-function getFotoJogador(nomeJogador) {
-    const jogador = jogadores.find(j => j.nome === nomeJogador);
-    return jogador ? jogador.foto : FOTO_PADRAO;
-}
-
-// ==================== GERAR PIX COPIA E COLA (FUNCIONAL) ====================
-function gerarPixCopiaCola() {
-    // Formato do PIX Copia e Cola conforme especificação do Banco Central
-    const payload = [
-        '000201', // Payload Format Indicator
-        '010211', // Merchant Account Information (PIX)
-        '26580014br.gov.bcb.pix', // PIX GUI
-        '01' + CHAVE_PIX.length.toString().padStart(2, '0') + CHAVE_PIX, // Chave PIX
-        '52040000', // Merchant Category Code
-        '5303986', // Currency (986 = BRL)
-        '54' + VALOR_ANTECIPADO.toFixed(2).replace('.', '').length.toString().padStart(2, '0') + VALOR_ANTECIPADO.toFixed(2).replace('.', ''), // Valor
-        '5802BR', // Country Code
-        '59' + NOME_RECEBEDOR.length.toString().padStart(2, '0') + NOME_RECEBEDOR, // Nome do recebedor
-        '60' + CIDADE.length.toString().padStart(2, '0') + CIDADE, // Cidade
-        '62070503***', // Transaction ID (gerado automaticamente)
-        '6304' // CRC16 (será calculado)
-    ].join('');
-    
-    // Calcula o CRC16
-    const crc = calcularCRC16(payload);
-    return payload + crc.toString(16).toUpperCase().padStart(4, '0');
-}
-
-function calcularCRC16(payload) {
-    let crc = 0xFFFF;
-    for (let i = 0; i < payload.length; i++) {
-        crc ^= payload.charCodeAt(i) << 8;
-        for (let j = 0; j < 8; j++) {
-            if (crc & 0x8000) {
-                crc = (crc << 1) ^ 0x1021;
-            } else {
-                crc = crc << 1;
-            }
-        }
-        crc &= 0xFFFF;
-    }
-    return crc;
-}
-
-function gerarQRCodePIX() {
-    const canvas = document.getElementById('qrcodeCanvas');
-    const pixPayload = gerarPixCopiaCola();
-    
-    QRCode.toCanvas(canvas, pixPayload, {
-        width: 200,
-        margin: 2,
-        color: {
-            dark: '#000000',
-            light: '#FFFFFF'
-        }
-    }, function(error) {
-        if (error) console.error('Erro ao gerar QR Code:', error);
-    });
-    
-    document.getElementById('pixCopiaCola').textContent = pixPayload;
-}
-
-// ==================== INICIALIZAR FIREBASE ====================
-try {
-  const app = initializeApp(firebaseConfig);
-  db = getDatabase(app);
-  document.getElementById('statusIndicator').textContent = '✅ Conectado';
-  document.getElementById('statusIndicator').classList.add('connected');
-  
-  await carregarFotosJogadores();
-  await carregarConfig();
-  
-  onValue(ref(db, 'confirmados'), (snapshot) => {
-    confirmados = [];
-    if (snapshot.exists()) snapshot.forEach(child => { confirmados.push({...child.val(), id: child.key}); });
-    atualizar();
-  });
-  
-  onValue(ref(db, 'listaEspera'), (snapshot) => {
-    listaEspera = [];
-    if (snapshot.exists()) snapshot.forEach(child => { listaEspera.push({...child.val(), id: child.key}); });
-    atualizar();
-  });
-
-  onValue(ref(db, 'penalizados'), (snapshot) => {
-    jogadoresPenalizados = [];
-    if (snapshot.exists()) snapshot.forEach(child => { jogadoresPenalizados.push({...child.val(), id: child.key}); });
-    atualizarListaPenalizados();
-  });
-  
-  onValue(ref(db, 'pagamentosPendentes'), (snapshot) => {
-    pagamentosPendentes = [];
-    if (snapshot.exists()) snapshot.forEach(child => { pagamentosPendentes.push({...child.val(), id: child.key}); });
-  });
-  
-  onValue(ref(db, 'config'), (snapshot) => {
+// Carregar configuração
+onValue(ref(db, 'config'), (snapshot) => {
     if (snapshot.exists()) {
-      config = snapshot.val();
-      if (config.etapa === 3) {
-        config.dataEvento = '2026-03-26';
-        config.dataAbertura = calcularDataAberturaEtapa(3, '2026-03-26').toISOString();
-      }
-      if (config.etapa === 4) {
-        config.dataEvento = '2026-04-30';
-        config.dataAbertura = calcularDataAberturaEtapa(4, '2026-04-30').toISOString();
-      }
-      DATA_ABERTURA = new Date(config.dataAbertura).getTime();
-      DATA_EVENTO = new Date(config.dataEvento);
-      atualizarInterfaceConfig();
-    }
-  });
-  
-} catch (e) {
-  document.getElementById('statusIndicator').textContent = '❌ Erro de conexão';
-  document.getElementById('statusIndicator').classList.add('error');
-}
-
-// ==================== MODAL ANTECIPAR INSCRIÇÃO ====================
-const selectAntecipar = document.getElementById('anteciparPlayerName');
-const anteciparPhotoPreview = document.getElementById('anteciparPhotoPreview');
-const anteciparPreviewImg = anteciparPhotoPreview.querySelector('img');
-
-selectAntecipar.addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const foto = selectedOption.getAttribute('data-foto');
-    if (foto && this.value) {
-        anteciparPreviewImg.src = foto;
-        anteciparPhotoPreview.style.display = 'block';
-        jogadorSelecionadoAntecipar = this.value;
-    } else {
-        anteciparPhotoPreview.style.display = 'none';
-        jogadorSelecionadoAntecipar = '';
+        config = snapshot.val();
     }
 });
 
-document.getElementById('btnAntecipar').onclick = () => {
-    document.getElementById('modalAntecipar').classList.add('active');
-};
-
-document.getElementById('btnCancelarAntecipar').onclick = () => {
-    document.getElementById('modalAntecipar').classList.remove('active');
-    selectAntecipar.value = '';
-    anteciparPhotoPreview.style.display = 'none';
-    jogadorSelecionadoAntecipar = '';
-};
-
-document.getElementById('btnGerarQRCode').onclick = async () => {
-    const nome = selectAntecipar.value;
-    if (!nome) return alert('Selecione seu nome!');
-    
-    const jaInscrito = [...confirmados, ...listaEspera].some(p => !p.isGuest && p.nome === nome);
-    if (jaInscrito) {
-        return alert('Você já está inscrito!');
-    }
-    
-    const jaSolicitou = pagamentosPendentes.some(p => p.nome === nome && p.etapa === config.etapa);
-    if (jaSolicitou) {
-        return alert('Você já possui uma solicitação de inscrição antecipada pendente!');
-    }
-    
-    try {
-        await push(ref(db, 'pagamentosPendentes'), {
-            nome: nome,
-            dataSolicitacao: new Date().toISOString(),
-            etapa: config.etapa,
-            valor: VALOR_ANTECIPADO,
-            status: 'pendente'
-        });
-        
-        document.getElementById('modalAntecipar').classList.remove('active');
-        gerarQRCodePIX();
-        document.getElementById('modalQRCode').classList.add('active');
-        
-    } catch (e) {
-        alert('Erro ao processar: ' + e.message);
-    }
-};
-
-document.getElementById('btnFecharQRCode').onclick = () => {
-    document.getElementById('modalQRCode').classList.remove('active');
-    selectAntecipar.value = '';
-    anteciparPhotoPreview.style.display = 'none';
-    jogadorSelecionadoAntecipar = '';
-    alert('✅ Solicitação enviada! Aguarde a confirmação do pagamento pela organização.');
-};
-
-document.getElementById('btnCopiarPixCopiaCola').onclick = () => {
-    const pixTexto = document.getElementById('pixCopiaCola').textContent;
-    navigator.clipboard.writeText(pixTexto).then(() => {
-        alert('✅ Código PIX copiado! Cole no seu app do banco.');
-    }).catch(() => {
-        alert('❌ Erro ao copiar. Por favor, copie manualmente.');
-    });
-};
-
-// ==================== MODAL CONFIRMAR PRESENÇA ====================
-const selectJogador = document.getElementById('playerName');
-const photoPreview = document.getElementById('playerPhotoPreview');
-const previewImg = photoPreview.querySelector('img');
-
-selectJogador.addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const foto = selectedOption.getAttribute('data-foto');
-    if (foto && this.value) {
-        previewImg.src = foto;
-        photoPreview.style.display = 'block';
+// Carregar dados das mesas
+onValue(ref(db, 'mesas'), (snapshot) => {
+    if (snapshot.exists()) {
+        mesasData = snapshot.val();
     } else {
-        photoPreview.style.display = 'none';
+        mesasData = { preta: [], amarela: [] };
+    }
+    atualizarInterface();
+});
+
+// Carregar jogadores confirmados
+onValue(ref(db, 'confirmados'), (snapshot) => {
+    jogadoresConfirmados = [];
+    if (snapshot.exists()) {
+        snapshot.forEach(child => {
+            jogadoresConfirmados.push({...child.val(), id: child.key});
+        });
     }
 });
 
-document.getElementById('btnEntendi').onclick = () => document.getElementById('modalBemVindo').classList.remove('active');
-window.addEventListener('load', () => document.getElementById('modalBemVindo').classList.add('active'));
+// Event Listeners
+document.getElementById('btnMesaPreta').addEventListener('click', () => {
+    mesaAtual = 'preta';
+    document.getElementById('btnMesaPreta').classList.add('active');
+    document.getElementById('btnMesaAmarela').classList.remove('active');
+});
 
-btnConfirmar.onclick = () => {
-    if (!config.inscricoesAbertas && !modoAdmin) {
-        return alert("As inscrições estão fechadas no momento!");
+document.getElementById('btnMesaAmarela').addEventListener('click', () => {
+    mesaAtual = 'amarela';
+    document.getElementById('btnMesaAmarela').classList.add('active');
+    document.getElementById('btnMesaPreta').classList.remove('active');
+});
+
+document.getElementById('btnImportarJogadores').addEventListener('click', importarJogadores);
+
+document.getElementById('btnExportarCSV').addEventListener('click', exportarCSV);
+
+document.getElementById('btnLimparMesa').addEventListener('click', () => {
+    if (confirm(`Limpar todos os jogadores da mesa ${mesaAtual}?`)) {
+        mesasData[mesaAtual] = [];
+        salvarMesas();
     }
-    document.getElementById('modal').classList.add('active');
-};
+});
 
-document.getElementById('btnCancelar').onclick = () => {
-  document.getElementById('modal').classList.remove('active');
-  selectJogador.value = '';
-  photoPreview.style.display = 'none';
-  document.getElementById('isGuest').checked = false;
-  document.getElementById('guestNameGroup').style.display = 'none';
-  document.getElementById('guestName').value = '';
-};
-
-document.getElementById('isGuest').onchange = e => {
-  document.getElementById('guestNameGroup').style.display = e.target.checked ? 'block' : 'none';
-};
-
-document.getElementById('btnConfirmarModal').onclick = async () => {
-  const nome = selectJogador.value;
-  if (!nome) return alert('Selecione seu nome!');
-  
-  const isGuestChecked = document.getElementById('isGuest').checked;
-  
-  if (!isGuestChecked) {
-    const jaInscrito = [...confirmados, ...listaEspera].some(p => !p.isGuest && p.nome === nome);
-    if (jaInscrito) {
-      return alert('Você já está inscrito!');
-    }
-  }
-  
-  const agora = new Date().toISOString();
-  const penalizado = !isGuestChecked && isJogadorPenalizado(nome);
-  
-  try {
-    if (!isGuestChecked) {
-      const snapshot = await get(ref(db, 'confirmados'));
-      const totalAtual = snapshot.exists() ? snapshot.size : 0;
-      
-      if (totalAtual < LIMITE_VAGAS && !penalizado) {
-        await push(ref(db, 'confirmados'), { 
-          nome, 
-          isGuest: false, 
-          data: agora,
-          timestamp: Date.now(),
-          foto: getFotoJogador(nome),
-          etapa: config.etapa
-        });
-        alert('✅ Presença confirmada! Você está na lista de confirmados.');
-      } else {
-        const tsInscricao = penalizado ? Date.now() + (1000 * 60 * 60 * 24 * 365) : Date.now();
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
-        await push(ref(db, 'listaEspera'), { 
-          nome, 
-          isGuest: false, 
-          data: agora,
-          timestamp: tsInscricao,
-          foto: getFotoJogador(nome),
-          etapa: config.etapa,
-          penalizado: penalizado
-        });
+        tab.classList.add('active');
+        document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
         
-        if (penalizado) {
-          document.getElementById('modal').classList.remove('active');
-          selectJogador.value = '';
-          photoPreview.style.display = 'none';
-          document.getElementById('isGuest').checked = false;
-          document.getElementById('guestNameGroup').style.display = 'none';
-          document.getElementById('guestName').value = '';
-          
-          document.getElementById('penaltyPlayerName').textContent = nome;
-          document.getElementById('modalAvisoPenalidade').classList.add('active');
-          return;
-        } else {
-          alert('⏳ Você foi adicionado à LISTA DE ESPERA.');
-        }
-      }
-    } else {
-      const gNome = document.getElementById('guestName').value.trim();
-      if (!gNome) return alert('Digite o nome do convidado!');
-      
-      await push(ref(db, 'listaEspera'), { 
-        nome: gNome, 
-        isGuest: true, 
-        guestOf: nome, 
-        data: agora,
-        timestamp: Date.now(),
-        etapa: config.etapa
-      });
-      alert('✅ Convidado adicionado à lista de espera!');
-    }
-    
-    document.getElementById('modal').classList.remove('active');
-    selectJogador.value = '';
-    photoPreview.style.display = 'none';
-    document.getElementById('isGuest').checked = false;
-    document.getElementById('guestNameGroup').style.display = 'none';
-    document.getElementById('guestName').value = '';
-    
-  } catch (e) { 
-    alert('Erro ao confirmar: ' + e.message); 
-  }
-};
-
-document.getElementById('btnFecharAvisoPenalidade').onclick = () => {
-  document.getElementById('modalAvisoPenalidade').classList.remove('active');
-};
-
-document.getElementById('btnCancelarWhatsApp').onclick = () => {
-  const msg = encodeURIComponent('Gostaria de cancelar minha inscrição no Poker de Quinta.\nNome: ');
-  window.open(`https://wa.me/5541987210685?text=${msg}`, '_blank');
-};
-
-// ==================== FUNÇÃO ATUALIZAR LISTAS ====================
-function atualizar() {
-  document.getElementById('confirmedCount').textContent = confirmados.length;
-  document.getElementById('vacancyCount').textContent = Math.max(0, LIMITE_VAGAS - confirmados.length);
-  document.getElementById('waitlistCount').textContent = listaEspera.length;
-
-  const confirmedList = document.getElementById('confirmedList');
-  const waitlistList = document.getElementById('waitlistList');
-
-  const confirmadosOrdenados = [...confirmados].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-  
-  confirmedList.innerHTML = confirmadosOrdenados.length ? '' : '<li class="empty-state">Nenhuma confirmação</li>';
-  confirmadosOrdenados.forEach((p, i) => {
-    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',false)">❌</button>` : '';
-    let badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : '<span class="player-badge member">MEMBRO</span>';
-    if (p.antecipado) {
-        badge = '<span class="player-badge antecipado">⭐ ANTECIPADO</span>';
-    }
-    const guestInfo = p.isGuest && p.guestOf ? ` <small style="opacity:0.7">(Convidado de ${p.guestOf})</small>` : '';
-    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
-    const antecipadoTag = p.antecipado ? '<span class="antecipado-indicator">⭐ INSCRIÇÃO ANTECIPADA</span>' : '';
-    
-    confirmedList.innerHTML += `<li class="player-item">
-        <div class="player-info">
-            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
-            <div class="player-number">${i+1}º</div>
-            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
-        </div>
-        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
-          ${badge}
-          ${antecipadoTag}
-          ${btnRemover}
-        </div>
-        </li>`;
-  });
-
-  const membrosEspera = listaEspera.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-  const convidadosEspera = listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-  const penalizadosEspera = listaEspera.filter(p => p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-  const listaEsperaOrdenada = [...membrosEspera, ...convidadosEspera, ...penalizadosEspera];
-
-  waitlistList.innerHTML = listaEsperaOrdenada.length ? '' : '<li class="empty-state">Lista vazia</li>';
-  listaEsperaOrdenada.forEach((p, i) => {
-    const btnRemover = modoAdmin ? `<button class="remove-btn" onclick="removerJogador('${p.id}',true)">❌</button>` : '';
-    const btnPromover = modoAdmin && confirmados.length < LIMITE_VAGAS ? 
-      `<button class="remove-btn" style="background:#4CAF50" onclick="promoverJogadorManual('${p.id}')">↗️ PROMOVER</button>` : '';
-    const guestInfo = p.isGuest && p.guestOf ? ` (Convidado de ${p.guestOf})` : '';
-    const badge = p.isGuest ? '<span class="player-badge guest">CONVIDADO</span>' : 
-                  p.penalizado ? '<span class="player-badge penalized">MEMBRO</span>' :
-                  '<span class="player-badge wait">MEMBRO</span>';
-    const prioridade = !p.isGuest && !p.penalizado && i < membrosEspera.length ? '<span class="priority-indicator">PRIORIDADE</span>' : '';
-    const penalizadoTag = p.penalizado ? '<span class="penalty-indicator">⚠️ PENALIZADO</span>' : '';
-    const foto = !p.isGuest ? (p.foto || getFotoJogador(p.nome)) : FOTO_PADRAO;
-    
-    waitlistList.innerHTML += `<li class="player-item">
-        <div class="player-info">
-            <img class="player-avatar" src="${foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${p.nome}">
-            <div class="player-number">${i+1}º</div>
-            <div class="player-details"><strong>${p.nome}${guestInfo}</strong><small>🕒 ${new Date(p.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small></div>
-        </div>
-        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
-          ${badge}
-          ${prioridade}
-          ${penalizadoTag}
-          ${btnPromover}
-          ${btnRemover}
-        </div>
-        </li>`;
-  });
-}
-
-// ==================== REMOVER / PROMOVER JOGADORES ====================
-window.removerJogador = async (id, isWait) => {
-  if(!confirm('Tem certeza que deseja remover este jogador?')) return;
-  try {
-    const path = isWait ? 'listaEspera' : 'confirmados';
-    await remove(ref(db, `${path}/${id}`));
-    if (!isWait) {
-      await promoverDaListaDeEspera();
-    }
-    alert('Jogador removido com sucesso!');
-  } catch (e) {
-    alert('Erro ao remover: ' + e.message);
-  }
-};
-
-async function promoverDaListaDeEspera() {
-  try {
-    const snapshotConfirmados = await get(ref(db, 'confirmados'));
-    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
-    
-    if (totalConfirmados < LIMITE_VAGAS) {
-      const snapshotEspera = await get(ref(db, 'listaEspera'));
-      
-      if (snapshotEspera.exists()) {
-        let candidatos = [];
-        snapshotEspera.forEach(child => {
-          candidatos.push({...child.val(), id: child.key});
-        });
-        
-        const membros = candidatos.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-        
-        if (membros.length > 0) {
-          const promovido = membros[0];
-          
-          await push(ref(db, 'confirmados'), {
-            nome: promovido.nome,
-            isGuest: false,
-            data: promovido.data,
-            timestamp: promovido.timestamp,
-            foto: promovido.foto || getFotoJogador(promovido.nome),
-            promovido: true,
-            dataPromocao: new Date().toISOString(),
-            etapa: config.etapa
-          });
-          
-          await remove(ref(db, `listaEspera/${promovido.id}`));
-        }
-      }
-    }
-  } catch (e) {
-    console.error('Erro ao promover da lista de espera:', e);
-  }
-}
-
-window.promoverJogadorManual = async (id) => {
-  try {
-    const snapshotConfirmados = await get(ref(db, 'confirmados'));
-    const totalConfirmados = snapshotConfirmados.exists() ? snapshotConfirmados.size : 0;
-    
-    if (totalConfirmados >= LIMITE_VAGAS) {
-      return alert('❌ Não há vagas disponíveis!');
-    }
-    
-    const snapshot = await get(ref(db, `listaEspera/${id}`));
-    if (!snapshot.exists()) return alert('Jogador não encontrado!');
-    
-    const jogador = snapshot.val();
-    if (!confirm(`Promover ${jogador.nome} para confirmados?`)) return;
-    
-    await push(ref(db, 'confirmados'), {
-      nome: jogador.nome,
-      isGuest: jogador.isGuest,
-      guestOf: jogador.guestOf || null,
-      data: jogador.data,
-      timestamp: jogador.timestamp,
-      foto: jogador.foto || (!jogador.isGuest ? getFotoJogador(jogador.nome) : null),
-      promovido: true,
-      promocaoManual: true,
-      dataPromocao: new Date().toISOString(),
-      etapa: config.etapa
+        if (tab.dataset.tab === 'resumo') atualizarResumo();
+        if (tab.dataset.tab === 'estatisticas') atualizarEstatisticas();
     });
-    
-    await remove(ref(db, `listaEspera/${id}`));
-    alert(`✅ ${jogador.nome} foi promovido!`);
-    
-  } catch (e) {
-    alert('Erro ao promover: ' + e.message);
-  }
-};
+});
 
-// ==================== MODO ORGANIZAÇÃO ====================
-document.getElementById('btnModoAdmin').onclick = () => document.getElementById('modalAdmin').classList.add('active');
-document.getElementById('btnFecharAdmin').onclick = () => document.getElementById('modalAdmin').classList.remove('active');
-
-document.getElementById('btnAcessarAdmin').onclick = () => {
-  if (document.getElementById('senhaAdmin').value === "poker2026") {
-    modoAdmin = true;
-    document.getElementById('modalAdmin').classList.remove('active');
-    
-    btnToggleInscricoes.style.display = 'block';
-    btnProximaEtapa.style.display = 'block';
-    btnSelecionarEtapa.style.display = 'block';
-    btnGerenciarFotos.style.display = 'block';
-    btnGerenciarPenalidades.style.display = 'block';
-    btnGerenciarPagamentos.style.display = 'block';
-    btnSairAdmin.style.display = 'block';
-    document.getElementById('btnModoAdmin').style.background = '#4CAF50';
-    document.getElementById('btnModoAdmin').style.opacity = '1';
-    
-    atualizarBotaoInscricoes();
-    alert("✅ Modo Organização Ativado!");
-    atualizar();
-  } else {
-    alert('❌ Senha incorreta!');
-  }
-};
-
-btnSairAdmin.onclick = () => {
-  modoAdmin = false;
-  btnToggleInscricoes.style.display = 'none';
-  btnProximaEtapa.style.display = 'none';
-  btnSelecionarEtapa.style.display = 'none';
-  btnGerenciarFotos.style.display = 'none';
-  btnGerenciarPenalidades.style.display = 'none';
-  btnGerenciarPagamentos.style.display = 'none';
-  btnSairAdmin.style.display = 'none';
-  document.getElementById('btnModoAdmin').style.background = 'rgba(13,27,13,0.3)';
-  document.getElementById('btnModoAdmin').style.opacity = '0.15';
-  alert("👋 Modo Organização desativado.");
-  atualizar();
-};
-
-btnToggleInscricoes.onclick = async () => {
-  const novaConfig = {...config, inscricoesAbertas: !config.inscricoesAbertas};
-  await salvarConfig(novaConfig);
-  atualizarBotaoInscricoes();
-};
-
-function atualizarBotaoInscricoes() {
-  if (config.inscricoesAbertas) {
-    btnToggleInscricoes.textContent = '🔒 Fechar';
-    btnToggleInscricoes.style.background = '#c72c48';
-  } else {
-    btnToggleInscricoes.textContent = '🔓 Abrir';
-    btnToggleInscricoes.style.background = '#4CAF50';
-  }
-}
-
-// ==================== GERENCIAR PAGAMENTOS (ORGANIZAÇÃO) ====================
-btnGerenciarPagamentos.onclick = () => {
-    atualizarListaPagamentos();
-    document.getElementById('modalGerenciarPagamentos').classList.add('active');
-};
-
-document.getElementById('btnFecharPagamentos').onclick = () => {
-    document.getElementById('modalGerenciarPagamentos').classList.remove('active');
-};
-
-function atualizarListaPagamentos() {
-    const lista = document.getElementById('pagamentosPendentesList');
-    const pendentes = pagamentosPendentes.filter(p => p.status === 'pendente' && p.etapa === config.etapa);
-    
-    if (pendentes.length === 0) {
-        lista.innerHTML = '<div class="empty-state">Nenhum pagamento pendente</div>';
+function importarJogadores() {
+    if (jogadoresConfirmados.length === 0) {
+        alert('Nenhum jogador confirmado na etapa atual!');
         return;
     }
     
-    lista.innerHTML = '';
-    pendentes.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'pagamento-item';
-        div.innerHTML = `
-            <div>
-                <strong>${p.nome}</strong><br>
-                <small>Solicitado em: ${new Date(p.dataSolicitacao).toLocaleString('pt-BR')}</small><br>
-                <small style="color: #FFD700;">Valor: R$ ${p.valor},00</small>
-            </div>
-            <div class="pagamento-actions">
-                <button class="confirm-payment-btn" onclick="confirmarPagamento('${p.id}', '${p.nome}')">✅ Confirmar</button>
-                <button class="deny-payment-btn" onclick="negarPagamento('${p.id}', '${p.nome}')">❌ Negar</button>
-            </div>
-        `;
-        lista.appendChild(div);
+    const jogadoresAtuais = mesasData[mesaAtual] || [];
+    const nomesExistentes = jogadoresAtuais.map(j => j.nome);
+    
+    let adicionados = 0;
+    jogadoresConfirmados.forEach(jogador => {
+        if (!jogador.isGuest && !nomesExistentes.includes(jogador.nome)) {
+            mesasData[mesaAtual].push({
+                nome: jogador.nome,
+                buyinPago: !jogador.antecipado, // Antecipados já pagaram
+                rebuys: 0,
+                addon: false,
+                foto: jogador.foto || '',
+                antecipado: jogador.antecipado || false,
+                timestamp: Date.now()
+            });
+            adicionados++;
+        }
+    });
+    
+    if (adicionados > 0) {
+        salvarMesas();
+        alert(`✅ ${adicionados} jogadores importados para a mesa ${mesaAtual}!`);
+    } else {
+        alert('Todos os jogadores já estão na mesa!');
+    }
+}
+
+function adicionarRebuy(jogadorId, tipo) {
+    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorId);
+    if (jogador) {
+        jogador.rebuys = (jogador.rebuys || 0) + (tipo === 'simples' ? 1 : 2);
+        salvarMesas();
+    }
+}
+
+function adicionarAddon(jogadorId) {
+    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorId);
+    if (jogador) {
+        jogador.addon = true;
+        salvarMesas();
+    }
+}
+
+function removerJogador(jogadorId) {
+    if (confirm(`Remover ${jogadorId} da mesa ${mesaAtual}?`)) {
+        mesasData[mesaAtual] = mesasData[mesaAtual].filter(j => j.nome !== jogadorId);
+        salvarMesas();
+    }
+}
+
+function calcularTotalJogador(jogador) {
+    let total = 0;
+    if (!jogador.antecipado && !jogador.buyinPago) total += VALOR_BUYIN;
+    total += (jogador.rebuys || 0) * VALOR_REBUY_SIMPLES;
+    if (jogador.addon) total += VALOR_ADDON;
+    return total;
+}
+
+function salvarMesas() {
+    set(ref(db, 'mesas'), mesasData);
+}
+
+function atualizarInterface() {
+    const mesaPretaGrid = document.getElementById('mesaPretaGrid');
+    const mesaAmarelaGrid = document.getElementById('mesaAmarelaGrid');
+    
+    // Mesa Preta
+    const jogadoresPreta = mesasData.preta || [];
+    document.getElementById('countPreta').textContent = jogadoresPreta.length;
+    
+    if (jogadoresPreta.length === 0) {
+        mesaPretaGrid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa preta</div>';
+    } else {
+        mesaPretaGrid.innerHTML = jogadoresPreta.map(jogador => criarJogadorCard(jogador, 'preta')).join('');
+    }
+    
+    // Mesa Amarela
+    const jogadoresAmarela = mesasData.amarela || [];
+    document.getElementById('countAmarela').textContent = jogadoresAmarela.length;
+    
+    if (jogadoresAmarela.length === 0) {
+        mesaAmarelaGrid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa amarela</div>';
+    } else {
+        mesaAmarelaGrid.innerHTML = jogadoresAmarela.map(jogador => criarJogadorCard(jogador, 'amarela')).join('');
+    }
+    
+    // Atualizar estatísticas
+    const todosJogadores = [...jogadoresPreta, ...jogadoresAmarela];
+    const totalJogadores = todosJogadores.length;
+    const totalRebuys = todosJogadores.reduce((sum, j) => sum + (j.rebuys || 0), 0);
+    const totalAddons = todosJogadores.filter(j => j.addon).length;
+    const valorTotal = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
+    
+    document.getElementById('totalJogadores').textContent = totalJogadores;
+    document.getElementById('totalRebuys').textContent = totalRebuys;
+    document.getElementById('totalAddons').textContent = totalAddons;
+    document.getElementById('valorTotal').textContent = `R$ ${valorTotal}`;
+    
+    // Adicionar event listeners
+    document.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = btn.dataset.action;
+            const jogador = btn.dataset.jogador;
+            const mesa = btn.dataset.mesa;
+            
+            mesaAtual = mesa;
+            
+            if (action === 'rebuy') adicionarRebuy(jogador, 'simples');
+            else if (action === 'rebuyDuplo') adicionarRebuy(jogador, 'duplo');
+            else if (action === 'addon') adicionarAddon(jogador);
+            else if (action === 'remover') removerJogador(jogador);
+        });
     });
 }
 
-window.confirmarPagamento = async (id, nome) => {
-    if (!confirm(`Confirmar pagamento de ${nome} e adicionar à lista de confirmados?`)) return;
+function criarJogadorCard(jogador, mesa) {
+    const total = calcularTotalJogador(jogador);
+    const avatarUrl = jogador.foto || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
     
-    try {
-        // Adiciona como confirmado antecipado
-        await push(ref(db, 'confirmados'), {
-            nome: nome,
-            isGuest: false,
-            data: new Date().toISOString(),
-            timestamp: Date.now(),
-            foto: getFotoJogador(nome),
-            etapa: config.etapa,
-            antecipado: true,
-            valorPago: VALOR_ANTECIPADO
-        });
-        
-        // Remove da lista de pagamentos pendentes
-        await remove(ref(db, `pagamentosPendentes/${id}`));
-        
-        alert(`✅ Pagamento confirmado! ${nome} foi adicionado à lista de confirmados.`);
-        atualizarListaPagamentos();
-        
-    } catch (e) {
-        alert('Erro ao confirmar pagamento: ' + e.message);
-    }
-};
-
-window.negarPagamento = async (id, nome) => {
-    if (!confirm(`Negar pagamento de ${nome}? A solicitação será removida.`)) return;
-    
-    try {
-        // Remove da lista de pagamentos pendentes
-        await remove(ref(db, `pagamentosPendentes/${id}`));
-        
-        alert(`❌ Pagamento de ${nome} foi negado e removido.`);
-        atualizarListaPagamentos();
-        
-    } catch (e) {
-        alert('Erro ao negar pagamento: ' + e.message);
-    }
-};
-
-// ==================== GERENCIAR FOTOS ====================
-btnGerenciarFotos.onclick = () => {
-  const fotosList = document.getElementById('fotosList');
-  fotosList.innerHTML = '';
-  
-  jogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach((jogador, index) => {
-    const div = document.createElement('div');
-    div.className = 'foto-item';
-    div.innerHTML = `
-        <img class="foto-preview" src="${jogador.foto}" onerror="this.src='${FOTO_PADRAO}'" alt="${jogador.nome}">
-        <div class="foto-info">${jogador.nome}</div>
-        <input type="text" class="foto-input" id="foto-${index}" value="${jogador.foto}" placeholder="URL da foto do ${jogador.nome}">
-        <div class="foto-actions">
-            <button class="foto-btn" onclick="document.getElementById('foto-${index}').value='${FOTO_PADRAO}'">Padrão</button>
+    return `
+        <div class="jogador-card">
+            <div class="jogador-info">
+                <img class="jogador-avatar" src="${avatarUrl}" onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" alt="${jogador.nome}">
+                <div class="jogador-detalhes">
+                    <div class="jogador-nome">${jogador.nome}</div>
+                    <div class="jogador-status">
+                        ${jogador.antecipado ? '<span class="badge badge-antecipado">⭐ ANTECIPADO</span>' : ''}
+                        ${!jogador.buyinPago && !jogador.antecipado ? '<span class="badge" style="background: #c72c48;">💰 Buy-in Pendente</span>' : '<span class="badge" style="background: #4CAF50;">✅ Buy-in Pago</span>'}
+                        ${jogador.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${jogador.rebuys} Rebuy${jogador.rebuys > 1 ? 's' : ''}</span>` : ''}
+                        ${jogador.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
+                    </div>
+                    <small style="opacity: 0.8;">Total: R$ ${total}</small>
+                </div>
+            </div>
+            <div class="jogador-actions">
+                <button class="action-btn btn-rebuy" data-action="rebuy" data-jogador="${jogador.nome}" data-mesa="${mesa}">+1 Rebuy (R$30)</button>
+                <button class="action-btn btn-rebuy-duplo" data-action="rebuyDuplo" data-jogador="${jogador.nome}" data-mesa="${mesa}">+2 Rebuy (R$60)</button>
+                ${!jogador.addon ? `<button class="action-btn btn-addon" data-action="addon" data-jogador="${jogador.nome}" data-mesa="${mesa}">Addon (R$50)</button>` : ''}
+                <button class="action-btn btn-remover" data-action="remover" data-jogador="${jogador.nome}" data-mesa="${mesa}">❌</button>
+            </div>
         </div>
     `;
-    fotosList.appendChild(div);
-  });
-  
-  document.getElementById('modalGerenciarFotos').classList.add('active');
-};
+}
 
-document.getElementById('btnFecharFotos').onclick = () => {
-  document.getElementById('modalGerenciarFotos').classList.remove('active');
-};
-
-document.getElementById('btnSalvarFotos').onclick = () => {
-  jogadores.forEach((jogador, index) => {
-    const input = document.getElementById(`foto-${index}`);
-    if (input) {
-      jogador.foto = input.value || FOTO_PADRAO;
+function atualizarResumo() {
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+    const tbody = document.getElementById('resumoBody');
+    
+    if (todosJogadores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Nenhum dado disponível</td></tr>';
+        document.getElementById('totalGeralResumo').textContent = 'TOTAL GERAL: R$ 0,00';
+        return;
     }
-  });
-  salvarFotosJogadores();
-};
-
-// ==================== SELECIONAR ETAPA ====================
-btnSelecionarEtapa.onclick = () => {
-  const selector = document.getElementById('etapaSelector');
-  selector.innerHTML = '';
-  
-  ETAPAS.forEach(etapa => {
-    const btn = document.createElement('button');
-    btn.className = `etapa-btn ${etapa.numero === config.etapa ? 'ativa' : ''}`;
-    btn.textContent = `${etapa.numero}ª`;
-    btn.title = etapa.descricao;
-    btn.onclick = () => selecionarEtapa(etapa.numero);
-    selector.appendChild(btn);
-  });
-  
-  document.getElementById('modalSelecionarEtapa').classList.add('active');
-};
-
-document.getElementById('btnCancelarSelecao').onclick = () => {
-  document.getElementById('modalSelecionarEtapa').classList.remove('active');
-};
-
-async function selecionarEtapa(numero) {
-  const etapa = ETAPAS.find(e => e.numero === numero);
-  if (!etapa) return;
-  
-  if (!confirm(`Deseja ir para a ${etapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) return;
-  
-  try {
-    await set(ref(db, 'confirmados'), null);
-    await set(ref(db, 'listaEspera'), null);
     
-    const dataAbertura = calcularDataAberturaEtapa(numero, etapa.data);
+    let totalGeral = 0;
     
-    await salvarConfig({
-      etapa: etapa.numero,
-      dataEvento: etapa.data,
-      dataAbertura: dataAbertura.toISOString(),
-      inscricoesAbertas: false
-    });
+    tbody.innerHTML = todosJogadores.map(jogador => {
+        const mesa = mesasData.preta?.includes(jogador) ? 'Preta' : 'Amarela';
+        const buyin = (!jogador.antecipado && !jogador.buyinPago) ? VALOR_BUYIN : 0;
+        const rebuysValor = (jogador.rebuys || 0) * VALOR_REBUY_SIMPLES;
+        const addonValor = jogador.addon ? VALOR_ADDON : 0;
+        const total = buyin + rebuysValor + addonValor;
+        totalGeral += total;
+        
+        return `
+            <tr>
+                <td>${jogador.nome}</td>
+                <td>${mesa}</td>
+                <td>R$ ${buyin}</td>
+                <td>${jogador.rebuys || 0} (R$ ${rebuysValor})</td>
+                <td>${jogador.addon ? 'Sim (R$ 50)' : 'Não'}</td>
+                <td><strong>R$ ${total}</strong></td>
+            </tr>
+        `;
+    }).join('');
     
-    document.getElementById('modalSelecionarEtapa').classList.remove('active');
-    alert(`✅ Configurado para ${etapa.descricao}!`);
-    
-  } catch (e) {
-    alert('Erro ao mudar de etapa: ' + e.message);
-  }
+    document.getElementById('totalGeralResumo').textContent = `TOTAL GERAL: R$ ${totalGeral},00`;
 }
 
-btnProximaEtapa.onclick = () => {
-  const proximaEtapa = ETAPAS.find(e => e.numero === config.etapa + 1) || ETAPAS[0];
-  if (!confirm(`Avançar para ${proximaEtapa.descricao}?\n\nIsso irá apagar TODOS os jogadores das listas atuais!`)) return;
-  selecionarEtapa(proximaEtapa.numero);
-};
-
-// ==================== SISTEMA DE PENALIDADES ====================
-btnGerenciarPenalidades.onclick = () => {
-  preencherSelectPenalidade();
-  atualizarListaPenalizados();
-  document.getElementById('modalGerenciarPenalidades').classList.add('active');
-};
-
-document.getElementById('btnFecharPenalidades').onclick = () => {
-  document.getElementById('modalGerenciarPenalidades').classList.remove('active');
-};
-
-document.getElementById('btnAplicarPenalidade').onclick = async () => {
-  const nome = document.getElementById('penaltyPlayerSelect').value;
-  if (!nome) return alert('Selecione um jogador!');
-  
-  if (isJogadorPenalizado(nome)) {
-    return alert(`⚠️ ${nome} já está na lista de penalizados!`);
-  }
-  
-  if (!confirm(`Aplicar penalidade a ${nome}?\n\nEle será colocado automaticamente no último lugar da lista de espera ao se inscrever e receberá um aviso de penalidade.`)) return;
-  
-  try {
-    await push(ref(db, 'penalizados'), {
-      nome: nome,
-      etapaFalta: config.etapa,
-      dataAplicacao: new Date().toISOString()
-    });
-    alert(`⚠️ Penalidade aplicada a ${nome}!`);
-    document.getElementById('penaltyPlayerSelect').value = '';
-  } catch (e) {
-    alert('Erro ao aplicar penalidade: ' + e.message);
-  }
-};
-
-function atualizarListaPenalizados() {
-  const lista = document.getElementById('penalizedList');
-  const emptyMsg = document.getElementById('emptyPenalizedMsg');
-  
-  if (!lista) return;
-  
-  Array.from(lista.children).forEach(child => {
-    if (child.id !== 'emptyPenalizedMsg') child.remove();
-  });
-  
-  if (jogadoresPenalizados.length === 0) {
-    if (emptyMsg) emptyMsg.style.display = 'block';
-    return;
-  }
-  
-  if (emptyMsg) emptyMsg.style.display = 'none';
-  
-  jogadoresPenalizados.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'penalized-player-item';
-    div.innerHTML = `
-      <div>
-        <div class="player-name">⚠️ ${p.nome}</div>
-        <div class="penalty-etapa">Penalizado na ${p.etapaFalta}ª etapa · ${new Date(p.dataAplicacao).toLocaleDateString('pt-BR')}</div>
-      </div>
-      <button class="remove-penalty-btn" onclick="removerPenalidade('${p.id}', '${p.nome}')">Remover</button>
-    `;
-    lista.appendChild(div);
-  });
+function atualizarEstatisticas() {
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+    
+    const rebuysSimples = todosJogadores.filter(j => (j.rebuys || 0) === 1).length;
+    const rebuysDuplos = todosJogadores.filter(j => (j.rebuys || 0) >= 2).length;
+    const totalRebuys = todosJogadores.reduce((sum, j) => sum + (j.rebuys || 0), 0);
+    const totalAddons = todosJogadores.filter(j => j.addon).length;
+    const valorTotal = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
+    
+    document.getElementById('statRebuysSimples').textContent = rebuysSimples;
+    document.getElementById('statRebuysDuplos').textContent = rebuysDuplos;
+    document.getElementById('statAddons').textContent = totalAddons;
+    document.getElementById('statTotalArrecadado').textContent = `R$ ${valorTotal}`;
+    
+    // Ranking de rebuys
+    const ranking = todosJogadores
+        .filter(j => (j.rebuys || 0) > 0)
+        .sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0))
+        .slice(0, 10);
+    
+    const rankingBody = document.getElementById('rankingBody');
+    
+    if (ranking.length === 0) {
+        rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Nenhum rebuy registrado</td></tr>';
+    } else {
+        rankingBody.innerHTML = ranking.map((j, i) => `
+            <tr>
+                <td>${i + 1}º</td>
+                <td>${j.nome}</td>
+                <td>${j.rebuys}</td>
+                <td>R$ ${j.rebuys * VALOR_REBUY_SIMPLES}</td>
+            </tr>
+        `).join('');
+    }
 }
 
-window.removerPenalidade = async (id, nome) => {
-  if (!confirm(`Remover a penalidade de ${nome}?`)) return;
-  try {
-    await remove(ref(db, `penalizados/${id}`));
-    alert(`✅ Penalidade de ${nome} removida!`);
-  } catch (e) {
-    alert('Erro ao remover penalidade: ' + e.message);
-  }
-};
+function exportarCSV() {
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+    
+    if (todosJogadores.length === 0) {
+        alert('Nenhum jogador para exportar!');
+        return;
+    }
+    
+    let csv = 'Nome,Mesa,Buy-in,Antecipado,Rebuys,Addon,Total\n';
+    
+    todosJogadores.forEach(j => {
+        const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
+        const buyin = (!j.antecipado && !j.buyinPago) ? VALOR_BUYIN : 0;
+        const total = calcularTotalJogador(j);
+        
+        csv += `"${j.nome}",${mesa},${buyin},${j.antecipado ? 'Sim' : 'Não'},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
+    });
+    
+    const totalGeral = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
+    csv += `\n"TOTAL GERAL",,,,,,${totalGeral}\n`;
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `caixa-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+}
 
-// ==================== EXPORTAR CSV ====================
-document.getElementById('btnExportar').onclick = () => {
-  let csv = 'Posição,Nome,Status,Data/Hora,Antecipado\n';
-  confirmados.forEach((p, i) => {
-    csv += `${i+1},${p.nome},${p.antecipado ? 'CONFIRMADO-ANTECIPADO' : 'CONFIRMADO'},${new Date(p.data).toLocaleString('pt-BR')},${p.antecipado ? 'SIM' : 'NÃO'}\n`;
-  });
-  
-  const listaEsperaOrdenada = [
-    ...listaEspera.filter(p => !p.isGuest && !p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)),
-    ...listaEspera.filter(p => p.isGuest).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)),
-    ...listaEspera.filter(p => p.penalizado).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
-  ];
-  
-  listaEsperaOrdenada.forEach((p, i) => {
-    const tipo = p.isGuest ? 'CONVIDADO' : p.penalizado ? 'ESPERA-PENALIZADO' : 'ESPERA';
-    const nome = p.isGuest && p.guestOf ? `${p.nome} (Convidado de ${p.guestOf})` : p.nome;
-    csv += `${i+1},${nome},${tipo},${new Date(p.data).toLocaleString('pt-BR')},NÃO\n`;
-  });
-  
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `lista-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
-  link.click();
-};
+// Expor funções globalmente
+window.adicionarRebuy = adicionarRebuy;
+window.adicionarAddon = adicionarAddon;
+window.removerJogador = removerJogador;
 </script>
 
 </body>
