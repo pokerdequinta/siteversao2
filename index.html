@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Caderno do Dealer - Poker de Quinta</title>
     
     <style>
@@ -21,50 +21,103 @@
             min-height: 100vh;
         }
         
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Painel Esquerdo - Anotações */
+        .left-panel {
+            width: 60%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 15px;
+            border-right: 2px solid #d4a121;
+        }
+        
+        /* Painel Direito - Cronômetro */
+        .right-panel {
+            width: 40%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background: #0a150a;
+        }
+        
         .logo-top {
             text-align: center;
-            padding: 20px;
-            background: #0d1b0d;
+            padding: 10px;
             border-bottom: 2px solid #d4a121;
+            margin-bottom: 15px;
         }
         
         .logo-top img {
-            max-width: 150px;
+            max-width: 120px;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: auto;
-            padding: 20px;
-        }
-        
-        h1, h2 {
+        h1, h2, h3 {
             font-family: 'Anton';
             color: #d4a121;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
         
-        h1 { font-size: 2em; }
-        h2 { margin-bottom: 15px; }
-        h3 { color: #d4a121; margin-bottom: 10px; }
+        h1 { font-size: 1.5em; }
+        h2 { font-size: 1.3em; margin-bottom: 10px; }
+        h3 { font-size: 1.1em; margin-bottom: 8px; }
+        
+        /* Navegação por abas */
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            background: #102810;
+            padding: 5px;
+            border-radius: 10px;
+            border: 1px solid #d4a121;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: #d4a121;
+            color: #000;
+        }
+        
+        .view-container {
+            display: none;
+        }
+        
+        .view-container.active {
+            display: block;
+        }
         
         .mesa-selector {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
         }
         
         .mesa-btn {
-            padding: 15px 30px;
+            padding: 12px;
             font-family: 'Anton';
-            font-size: 1.2em;
+            font-size: 1.1em;
             border: 2px solid #d4a121;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
             flex: 1;
-            max-width: 200px;
         }
         
         .mesa-btn.preta {
@@ -78,149 +131,37 @@
         }
         
         .mesa-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
         }
         
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .import-section {
+            background: #102810;
+            border: 1px dashed #d4a121;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
         }
         
         .btn {
-            padding: 12px 20px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1em;
+            font-size: 0.9em;
         }
         
         .btn-primary { background: #d4a121; color: #000; }
         .btn-secondary { background: #2d5016; color: #fff; }
         .btn-danger { background: #c72c48; color: #fff; }
-        .btn-info { background: #1E90FF; color: #fff; }
         .btn-success { background: #4CAF50; color: #fff; }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .import-section {
-            background: #102810;
-            border: 2px dashed #d4a121;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .file-input-wrapper {
-            display: inline-block;
-            cursor: pointer;
-        }
-        
-        .preview-mesas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .mesa-preview {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-        }
-        
-        .mesa-preview h4 {
-            color: #d4a121;
-            margin-bottom: 10px;
-        }
-        
-        .posicoes-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .posicao-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #d4a121;
-            border-radius: 8px;
-            padding: 8px;
-            text-align: center;
-            font-size: 0.8em;
-        }
-        
-        .posicao-item.ocupada {
-            background: rgba(212, 161, 33, 0.2);
-            border-color: #FFD700;
-        }
-        
-        .posicao-numero {
-            font-weight: bold;
-            color: #d4a121;
-        }
-        
-        .stats-cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .stat-card {
-            background: #102810;
-            border: 2px solid #d4a121;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-family: 'Anton';
-            font-size: 2em;
-            color: #d4a121;
-        }
-        
-        .mesas-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .mesa-section {
-            background: #102810;
-            border: 2px solid #d4a121;
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .mesa-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #d4a121;
-        }
-        
-        .mesa-title {
-            font-family: 'Anton';
-            font-size: 1.5em;
-        }
+        .btn-warning { background: #FF6600; color: #fff; }
         
         .jogadores-grid {
             display: grid;
-            gap: 10px;
-            max-height: 500px;
+            gap: 8px;
+            max-height: calc(100vh - 350px);
             overflow-y: auto;
         }
         
@@ -228,156 +169,278 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid #d4a121;
             border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .jogador-info {
+            padding: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex: 1;
         }
         
-        .jogador-avatar {
-            width: 40px;
-            height: 40px;
+        .jogador-posicao-numero {
+            font-family: 'Anton';
+            font-size: 1.2em;
+            color: #d4a121;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .jogador-foto {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #d4a121;
         }
         
-        .jogador-detalhes { flex: 1; }
-        .jogador-nome { font-weight: bold; font-size: 1.1em; }
-        .jogador-posicao { font-size: 0.8em; opacity: 0.8; }
+        .jogador-info {
+            flex: 1;
+        }
         
-        .jogador-status {
+        .jogador-nome {
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .jogador-valores {
             display: flex;
             gap: 5px;
-            margin-top: 5px;
+            margin-top: 3px;
             flex-wrap: wrap;
         }
         
         .badge {
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 3px 8px;
+            border-radius: 15px;
             font-size: 0.7em;
             font-weight: bold;
         }
         
+        .badge-buyin { background: #c72c48; color: #fff; }
         .badge-rebuy { background: #FF6600; color: #fff; }
         .badge-addon { background: #4CAF50; color: #fff; }
         
         .jogador-actions {
             display: flex;
-            gap: 5px;
+            gap: 3px;
         }
         
         .action-btn {
-            padding: 8px 12px;
+            padding: 6px 8px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.85em;
+            font-size: 0.75em;
         }
         
         .btn-rebuy { background: #FF6600; color: #fff; }
         .btn-rebuy-duplo { background: #FF4500; color: #fff; }
         .btn-addon { background: #4CAF50; color: #fff; }
-        .btn-remover { background: #c72c48; color: #fff; }
+        .btn-corrigir { background: #FFA500; color: #000; }
         
-        .resumo-section {
-            background: #102810;
-            border: 2px solid #d4a121;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
+        /* Cronômetro */
+        .cronometro-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
+        .cronometro-titulo {
+            font-family: 'Anton';
+            color: #d4a121;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        
+        .cronometro-display {
+            font-family: 'Anton';
+            font-size: 8em;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            background: #1a1a1a;
+            padding: 20px 40px;
+            border-radius: 20px;
+            border: 3px solid #d4a121;
+            margin-bottom: 30px;
+        }
+        
+        .cronometro-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .cronometro-btn {
+            padding: 15px 30px;
+            font-family: 'Anton';
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .cronometro-btn.iniciar {
+            background: #4CAF50;
+            color: #fff;
+        }
+        
+        .cronometro-btn.zerar {
+            background: #c72c48;
+            color: #fff;
+        }
+        
+        /* Tabelas */
         .resumo-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 10px;
+            font-size: 0.85em;
         }
         
         .resumo-table th {
             background: #1a3d1a;
             color: #d4a121;
-            padding: 12px;
+            padding: 8px;
             text-align: left;
-            font-family: 'Anton';
         }
         
         .resumo-table td {
-            padding: 10px;
+            padding: 6px 8px;
             border-bottom: 1px solid #2d5016;
         }
         
         .total-geral {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 12px;
             background: #1a3d1a;
             border-radius: 8px;
             text-align: right;
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-weight: bold;
         }
         
-        .tabs {
-            display: flex;
-            gap: 10px;
+        .stats-mesas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-bottom: 20px;
-            border-bottom: 2px solid #d4a121;
         }
         
-        .tab {
-            padding: 10px 20px;
-            background: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 8px 8px 0 0;
+        .stats-mesa-card {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
         }
         
-        .tab.active {
-            background: #d4a121;
-            color: #000;
-        }
+        .stats-mesa-card.preta { border-color: #fff; }
+        .stats-mesa-card.amarela { border-color: #FFD700; }
         
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .stats-value {
+            font-family: 'Anton';
+            font-size: 2em;
+            color: #d4a121;
+        }
         
         .status-indicator {
             position: fixed;
-            top: 10px;
+            bottom: 10px;
             right: 10px;
             background: #2d5016;
-            padding: 8px 15px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.85em;
-            border: 1px solid #d4a121;
+            font-size: 0.75em;
             z-index: 999;
         }
         
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            color: #d4a121;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #2d5016;
+            background: #1a3d1a;
+            color: #fff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preview-mesas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
         .import-result {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 10px;
+            padding: 10px;
             background: rgba(76, 175, 80, 0.2);
             border: 1px solid #4CAF50;
-            border-radius: 8px;
+            border-radius: 6px;
             display: none;
+            font-size: 0.85em;
         }
         
         .import-result.show { display: block; }
         
-        @media (max-width: 768px) {
-            .mesas-container { grid-template-columns: 1fr; }
-            .stats-cards { grid-template-columns: repeat(2, 1fr); }
-            .preview-mesas { grid-template-columns: 1fr; }
+        .flex-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0d1b0d;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d4a121;
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -385,161 +448,138 @@
 
 <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
 
-<div class="logo-top">
-    <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
-    <h2 style="color: #d4a121; margin-top: 10px;">🎲 CADERNO DO DEALER</h2>
-</div>
-
-<div class="container">
+<div class="app-container">
     
-    <!-- Seção de Importação de Layout -->
-    <div class="import-section">
-        <h3 style="margin-bottom: 15px;">📂 IMPORTAR LAYOUT DAS MESAS (The Tournament Director)</h3>
-        <p style="margin-bottom: 15px; opacity: 0.8;">
-            Selecione o arquivo HTML exportado do Tournament Director. O sistema detectará automaticamente a mesa e posição de cada jogador.
-        </p>
-        
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <div class="file-input-wrapper">
-                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click(); return false;">📁 ESCOLHER ARQUIVO HTML</button>
-                <input type="file" id="fileInput" accept=".html,.htm" style="display: none;" />
-            </div>
-            <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR LAYOUT</button>
-            <button class="btn btn-info" id="btnLimparMesa">🔄 LIMPAR MESA ATUAL</button>
+    <!-- PAINEL ESQUERDO - ANOTAÇÕES -->
+    <div class="left-panel">
+        <div class="logo-top">
+            <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
+            <h2>🎲 CADERNO DO DEALER</h2>
         </div>
         
-        <div class="import-result" id="importResult"></div>
+        <!-- Navegação -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-view="anotacoes">📝 ANOTAÇÕES</button>
+            <button class="nav-tab" data-view="resumo">📋 RESUMO</button>
+            <button class="nav-tab" data-view="estatisticas">📈 ESTATÍSTICAS</button>
+        </div>
         
-        <div class="preview-mesas" id="previewMesas" style="display: none;">
-            <div class="mesa-preview">
-                <h4>♠️ MESA PRETA</h4>
-                <div class="posicoes-grid" id="previewPreta"></div>
-            </div>
-            <div class="mesa-preview">
-                <h4>♦️ MESA AMARELA</h4>
-                <div class="posicoes-grid" id="previewAmarela"></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="mesa-selector">
-        <button class="mesa-btn preta active" id="btnMesaPreta">♠️ MESA PRETA</button>
-        <button class="mesa-btn amarela" id="btnMesaAmarela">♦️ MESA AMARELA</button>
-    </div>
-    
-    <div class="controls">
-        <button class="btn btn-secondary" id="btnExportarCSV">📊 EXPORTAR CSV</button>
-    </div>
-    
-    <div class="stats-cards">
-        <div class="stat-card">
-            <h3>Total Jogadores</h3>
-            <div class="stat-value" id="totalJogadores">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Total Rebuys</h3>
-            <div class="stat-value" id="totalRebuys">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Total Addons</h3>
-            <div class="stat-value" id="totalAddons">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Valor Total</h3>
-            <div class="stat-value" id="valorTotal">R$ 0</div>
-        </div>
-    </div>
-    
-    <div class="tabs">
-        <button class="tab active" data-tab="mesas">🎯 MESAS</button>
-        <button class="tab" data-tab="resumo">📋 RESUMO FINANCEIRO</button>
-        <button class="tab" data-tab="estatisticas">📈 ESTATÍSTICAS</button>
-    </div>
-    
-    <div class="tab-content active" id="tab-mesas">
-        <div class="mesas-container">
-            <!-- Mesa Preta -->
-            <div class="mesa-section mesa-preta">
-                <div class="mesa-header">
-                    <div class="mesa-title">♠️ MESA PRETA</div>
-                    <div>
-                        <span class="badge" style="background: #1a1a1a;">Jogadores: <span id="countPreta">0</span></span>
-                    </div>
+        <!-- View: Anotações -->
+        <div class="view-container active" id="view-anotacoes">
+            <div class="import-section">
+                <div class="flex-row">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click(); return false;">📁 IMPORTAR HTML</button>
+                    <input type="file" id="fileInput" accept=".html,.htm" style="display: none;" />
+                    <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR</button>
+                    <button class="btn btn-warning" id="btnLimparMesa">🔄 LIMPAR</button>
                 </div>
-                <div class="jogadores-grid" id="mesaPretaGrid">
-                    <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
-                        Nenhum jogador na mesa preta
-                    </div>
-                </div>
+                <div class="import-result" id="importResult"></div>
             </div>
             
-            <!-- Mesa Amarela -->
-            <div class="mesa-section mesa-amarela">
-                <div class="mesa-header">
-                    <div class="mesa-title">♦️ MESA AMARELA</div>
-                    <div>
-                        <span class="badge" style="background: #d4a121; color: #000;">Jogadores: <span id="countAmarela">0</span></span>
-                    </div>
-                </div>
-                <div class="jogadores-grid" id="mesaAmarelaGrid">
-                    <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
-                        Nenhum jogador na mesa amarela
-                    </div>
+            <div class="mesa-selector">
+                <button class="mesa-btn preta active" id="btnMesaPreta">♠️ MESA PRETA</button>
+                <button class="mesa-btn amarela" id="btnMesaAmarela">♦️ MESA AMARELA</button>
+            </div>
+            
+            <div class="jogadores-grid" id="jogadoresGrid">
+                <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
+                    Importe o arquivo HTML para começar
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="tab-content" id="tab-resumo">
-        <div class="resumo-section">
-            <h2>📋 RESUMO FINANCEIRO - ETAPA ATUAL</h2>
-            <table class="resumo-table" id="resumoFinanceiro">
-                <thead>
-                    <tr>
-                        <th>Jogador</th>
-                        <th>Mesa</th>
-                        <th>Posição</th>
-                        <th>Buy-in</th>
-                        <th>Rebuys</th>
-                        <th>Addon</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="resumoBody"></tbody>
-            </table>
+        
+        <!-- View: Resumo Financeiro -->
+        <div class="view-container" id="view-resumo">
+            <h3>📋 RESUMO FINANCEIRO</h3>
+            <div style="max-height: calc(100vh - 200px); overflow-y: auto;">
+                <table class="resumo-table" id="resumoFinanceiro">
+                    <thead>
+                        <tr><th>Jogador</th><th>Mesa</th><th>Pos.</th><th>Buy-in</th><th>Rebuys</th><th>Addon</th><th>Total</th></tr>
+                    </thead>
+                    <tbody id="resumoBody"></tbody>
+                </table>
+            </div>
             <div class="total-geral" id="totalGeralResumo">TOTAL GERAL: R$ 0,00</div>
+            <button class="btn btn-secondary" id="btnExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV</button>
         </div>
-    </div>
-    
-    <div class="tab-content" id="tab-estatisticas">
-        <div class="resumo-section">
-            <h2>📈 ESTATÍSTICAS DA ETAPA</h2>
-            <div class="stats-cards">
-                <div class="stat-card">
-                    <h3>Rebuys Simples</h3>
-                    <div class="stat-value" id="statRebuysSimples">0</div>
+        
+        <!-- View: Estatísticas -->
+        <div class="view-container" id="view-estatisticas">
+            <h3>📈 ESTATÍSTICAS DA ETAPA</h3>
+            
+            <div class="stats-mesas">
+                <div class="stats-mesa-card preta">
+                    <h4>♠️ MESA PRETA</h4>
+                    <div>Jogadores: <span id="statPretaJogadores">0</span></div>
+                    <div>Rebuys: <span class="stats-value" id="statPretaRebuys">0</span></div>
+                    <div>Addons: <span class="stats-value" id="statPretaAddons">0</span></div>
+                    <div>Total: <span id="statPretaTotal">R$ 0</span></div>
                 </div>
-                <div class="stat-card">
-                    <h3>Rebuys Duplos</h3>
-                    <div class="stat-value" id="statRebuysDuplos">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Addons</h3>
-                    <div class="stat-value" id="statAddons">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Total Arrecadado</h3>
-                    <div class="stat-value" id="statTotalArrecadado">R$ 0</div>
+                <div class="stats-mesa-card amarela">
+                    <h4>♦️ MESA AMARELA</h4>
+                    <div>Jogadores: <span id="statAmarelaJogadores">0</span></div>
+                    <div>Rebuys: <span class="stats-value" id="statAmarelaRebuys">0</span></div>
+                    <div>Addons: <span class="stats-value" id="statAmarelaAddons">0</span></div>
+                    <div>Total: <span id="statAmarelaTotal">R$ 0</span></div>
                 </div>
             </div>
             
-            <h3 style="margin-top: 30px;">🏆 Ranking de Rebuys</h3>
-            <table class="resumo-table" id="rankingRebuys">
+            <div class="stats-mesas" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="stats-mesa-card">
+                    <h4>🔄 REBUYS SIMPLES</h4>
+                    <div class="stats-value" id="statRebuysSimples">0</div>
+                </div>
+                <div class="stats-mesa-card">
+                    <h4>🔄🔄 REBUYS DUPLOS</h4>
+                    <div class="stats-value" id="statRebuysDuplos">0</div>
+                </div>
+                <div class="stats-mesa-card">
+                    <h4>💎 TOTAL ADDONS</h4>
+                    <div class="stats-value" id="statAddons">0</div>
+                </div>
+            </div>
+            
+            <h4>🏆 RANKING DE REBUYS</h4>
+            <table class="resumo-table">
                 <thead>
-                    <tr><th>#</th><th>Jogador</th><th>Mesa</th><th>Posição</th><th>Total Rebuys</th><th>Valor</th></tr>
+                    <tr><th>#</th><th>Jogador</th><th>Mesa</th><th>Rebuys</th></tr>
                 </thead>
                 <tbody id="rankingBody"></tbody>
             </table>
+        </div>
+    </div>
+    
+    <!-- PAINEL DIREITO - CRONÔMETRO -->
+    <div class="right-panel">
+        <div class="cronometro-container">
+            <div class="cronometro-titulo">⏱️ CRONÔMETRO</div>
+            <div class="cronometro-display" id="cronometroDisplay">00:30</div>
+            <div class="cronometro-controls">
+                <button class="cronometro-btn iniciar" id="btnIniciarCronometro">▶ INICIAR</button>
+                <button class="cronometro-btn zerar" id="btnZerarCronometro">↺ ZERAR</button>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.7; font-size: 0.9em;">Toque para iniciar/pausar</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Corrigir -->
+<div class="modal" id="modalCorrigir">
+    <div class="modal-content">
+        <h3>🔧 Corrigir valores</h3>
+        <p id="corrigirJogadorNome"></p>
+        <div class="form-group">
+            <label>Quantidade de Rebuys</label>
+            <input type="number" id="corrigirRebuys" min="0" value="0">
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="corrigirAddon"> Addon (R$ 50)
+            </label>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-danger" id="btnCancelarCorrigir">Cancelar</button>
+            <button class="btn btn-success" id="btnSalvarCorrigir">Salvar</button>
         </div>
     </div>
 </div>
@@ -564,26 +604,65 @@ const db = getDatabase(app);
 const VALOR_BUYIN = 100;
 const VALOR_REBUY = 30;
 const VALOR_ADDON = 50;
+const TEMPO_INICIAL = 30; // segundos
 
 let mesaAtual = 'preta';
 let config = { etapa: 3 };
 let mesasData = { preta: [], amarela: [] };
 let layoutImportado = { preta: [], amarela: [] };
 let arquivoSelecionado = null;
+let jogadorCorrigindo = null;
+
+// Cronômetro
+let cronometroTempo = TEMPO_INICIAL;
+let cronometroAtivo = false;
+let cronometroInterval = null;
+
+// Fotos dos jogadores (será carregado do Firebase)
+let fotosJogadores = {};
 
 // Inicialização
 document.getElementById('statusIndicator').textContent = '✅ Conectado';
 document.getElementById('statusIndicator').classList.add('connected');
 
-// Carregar configuração e dados
+// Carregar dados
 onValue(ref(db, 'config'), (snapshot) => { if (snapshot.exists()) config = snapshot.val(); });
+onValue(ref(db, 'fotosJogadores'), (snapshot) => { if (snapshot.exists()) fotosJogadores = snapshot.val(); });
 onValue(ref(db, 'mesas'), (snapshot) => {
     if (snapshot.exists()) mesasData = snapshot.val();
     else mesasData = { preta: [], amarela: [] };
     atualizarInterface();
 });
 
-// Event Listeners
+// Event Listeners - Navegação
+document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`view-${tab.dataset.view}`).classList.add('active');
+        
+        if (tab.dataset.view === 'resumo') atualizarResumo();
+        if (tab.dataset.view === 'estatisticas') atualizarEstatisticas();
+    });
+});
+
+// Mesas
+document.getElementById('btnMesaPreta').addEventListener('click', () => {
+    mesaAtual = 'preta';
+    document.getElementById('btnMesaPreta').classList.add('active');
+    document.getElementById('btnMesaAmarela').classList.remove('active');
+    atualizarGridJogadores();
+});
+
+document.getElementById('btnMesaAmarela').addEventListener('click', () => {
+    mesaAtual = 'amarela';
+    document.getElementById('btnMesaAmarela').classList.add('active');
+    document.getElementById('btnMesaPreta').classList.remove('active');
+    atualizarGridJogadores();
+});
+
+// Importação
 const fileInput = document.getElementById('fileInput');
 const btnProcessarLayout = document.getElementById('btnProcessarLayout');
 
@@ -593,23 +672,11 @@ fileInput.addEventListener('change', (e) => {
         arquivoSelecionado = file;
         btnProcessarLayout.style.display = 'inline-block';
         document.getElementById('importResult').classList.add('show');
-        document.getElementById('importResult').innerHTML = `📄 Arquivo: <strong>${file.name}</strong><br>Clique em PROCESSAR LAYOUT.`;
+        document.getElementById('importResult').innerHTML = `📄 ${file.name}`;
     }
 });
 
 btnProcessarLayout.addEventListener('click', processarLayout);
-
-document.getElementById('btnMesaPreta').addEventListener('click', () => {
-    mesaAtual = 'preta';
-    document.getElementById('btnMesaPreta').classList.add('active');
-    document.getElementById('btnMesaAmarela').classList.remove('active');
-});
-
-document.getElementById('btnMesaAmarela').addEventListener('click', () => {
-    mesaAtual = 'amarela';
-    document.getElementById('btnMesaAmarela').classList.add('active');
-    document.getElementById('btnMesaPreta').classList.remove('active');
-});
 
 document.getElementById('btnLimparMesa').addEventListener('click', () => {
     if (confirm(`Limpar todos os jogadores da mesa ${mesaAtual}?`)) {
@@ -620,17 +687,61 @@ document.getElementById('btnLimparMesa').addEventListener('click', () => {
 
 document.getElementById('btnExportarCSV').addEventListener('click', exportarCSV);
 
-// Tabs
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-        if (tab.dataset.tab === 'resumo') atualizarResumo();
-        if (tab.dataset.tab === 'estatisticas') atualizarEstatisticas();
-    });
+// Cronômetro
+document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
+document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
+document.getElementById('cronometroDisplay').addEventListener('click', toggleCronometro);
+
+// Modal Corrigir
+document.getElementById('btnCancelarCorrigir').addEventListener('click', () => {
+    document.getElementById('modalCorrigir').classList.remove('active');
 });
+document.getElementById('btnSalvarCorrigir').addEventListener('click', salvarCorrecao);
+
+function toggleCronometro() {
+    if (cronometroAtivo) {
+        pausarCronometro();
+    } else {
+        iniciarCronometro();
+    }
+}
+
+function iniciarCronometro() {
+    if (!cronometroAtivo) {
+        cronometroAtivo = true;
+        document.getElementById('btnIniciarCronometro').textContent = '⏸ PAUSAR';
+        cronometroInterval = setInterval(() => {
+            if (cronometroTempo > 0) {
+                cronometroTempo--;
+                atualizarCronometroDisplay();
+            } else {
+                pausarCronometro();
+            }
+        }, 1000);
+    }
+}
+
+function pausarCronometro() {
+    cronometroAtivo = false;
+    document.getElementById('btnIniciarCronometro').textContent = '▶ INICIAR';
+    if (cronometroInterval) {
+        clearInterval(cronometroInterval);
+        cronometroInterval = null;
+    }
+}
+
+function zerarCronometro() {
+    pausarCronometro();
+    cronometroTempo = TEMPO_INICIAL;
+    atualizarCronometroDisplay();
+}
+
+function atualizarCronometroDisplay() {
+    const minutos = Math.floor(cronometroTempo / 60);
+    const segundos = cronometroTempo % 60;
+    document.getElementById('cronometroDisplay').textContent = 
+        `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+}
 
 function processarLayout() {
     if (!arquivoSelecionado) { alert('Selecione um arquivo!'); return; }
@@ -646,93 +757,63 @@ function analisarLayoutHTML(html) {
     
     layoutImportado = { preta: [], amarela: [] };
     
-    // Procurar todas as linhas da tabela
     const rows = doc.querySelectorAll('tr');
     
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         if (cells.length >= 3) {
-            // A terceira célula contém "MESA X Seat Y"
             const seatCell = cells[2]?.textContent?.trim() || '';
             
-            // Detectar mesa e posição
-            let mesa = null;
-            let posicao = null;
-            
-            // Padrão: "MESA PRETA Seat X" ou "MESA AMARELA Seat X"
             const matchPreta = seatCell.match(/MESA\s*PRETA\s*Seat\s*(\d+)/i);
             const matchAmarela = seatCell.match(/MESA\s*AMARELA\s*Seat\s*(\d+)/i);
             
-            if (matchPreta) {
-                mesa = 'preta';
-                posicao = parseInt(matchPreta[1]);
-            } else if (matchAmarela) {
-                mesa = 'amarela';
-                posicao = parseInt(matchAmarela[1]);
-            }
+            let mesa = null, posicao = null;
+            if (matchPreta) { mesa = 'preta'; posicao = parseInt(matchPreta[1]); }
+            else if (matchAmarela) { mesa = 'amarela'; posicao = parseInt(matchAmarela[1]); }
             
             if (mesa && posicao) {
-                // Extrair nome do jogador (segunda célula, removendo os pontos)
                 const nameCell = cells[1]?.textContent?.trim() || '';
-                // Remover os pontos que o Tournament Director coloca
                 const nome = nameCell.replace(/\.+/g, '').trim();
-                
-                if (nome) {
-                    layoutImportado[mesa].push({ posicao, nome });
-                }
+                if (nome) layoutImportado[mesa].push({ posicao, nome });
             }
         }
     });
     
-    // Ordenar por posição
     layoutImportado.preta.sort((a, b) => a.posicao - b.posicao);
     layoutImportado.amarela.sort((a, b) => a.posicao - b.posicao);
     
-    mostrarPreviewLayout();
     aplicarLayoutImportado();
 }
 
-function mostrarPreviewLayout() {
-    const previewPreta = document.getElementById('previewPreta');
-    const previewAmarela = document.getElementById('previewAmarela');
-    
-    previewPreta.innerHTML = layoutImportado.preta.length > 0 
-        ? layoutImportado.preta.map(p => `<div class="posicao-item ocupada"><div class="posicao-numero">Seat ${p.posicao}</div>${p.nome}</div>`).join('')
-        : '<div class="posicao-item">Nenhum jogador</div>';
-    
-    previewAmarela.innerHTML = layoutImportado.amarela.length > 0 
-        ? layoutImportado.amarela.map(p => `<div class="posicao-item ocupada"><div class="posicao-numero">Seat ${p.posicao}</div>${p.nome}</div>`).join('')
-        : '<div class="posicao-item">Nenhum jogador</div>';
-    
-    document.getElementById('previewMesas').style.display = 'grid';
-    
-    document.getElementById('importResult').innerHTML = `
-        ✅ Layout importado!<br>
-        <strong>Mesa Preta:</strong> ${layoutImportado.preta.length} jogadores<br>
-        <strong>Mesa Amarela:</strong> ${layoutImportado.amarela.length} jogadores
-    `;
-}
-
 function aplicarLayoutImportado() {
-    // Substituir completamente as mesas pelo layout importado
-    mesasData.preta = layoutImportado.preta.map(p => ({
-        nome: p.nome,
-        posicao: p.posicao,
-        rebuys: 0,
-        addon: false,
-        timestamp: Date.now()
-    }));
+    // Manter rebuys e addons existentes se o jogador já estava na mesa
+    const pretAntiga = mesasData.preta || [];
+    const amarAntiga = mesasData.amarela || [];
     
-    mesasData.amarela = layoutImportado.amarela.map(p => ({
-        nome: p.nome,
-        posicao: p.posicao,
-        rebuys: 0,
-        addon: false,
-        timestamp: Date.now()
-    }));
+    mesasData.preta = layoutImportado.preta.map(p => {
+        const existente = pretAntiga.find(j => j.nome === p.nome);
+        return {
+            nome: p.nome,
+            posicao: p.posicao,
+            rebuys: existente?.rebuys || 0,
+            addon: existente?.addon || false,
+            timestamp: Date.now()
+        };
+    });
+    
+    mesasData.amarela = layoutImportado.amarela.map(p => {
+        const existente = amarAntiga.find(j => j.nome === p.nome);
+        return {
+            nome: p.nome,
+            posicao: p.posicao,
+            rebuys: existente?.rebuys || 0,
+            addon: existente?.addon || false,
+            timestamp: Date.now()
+        };
+    });
     
     salvarMesas();
-    alert(`✅ Layout aplicado!\nMesa Preta: ${mesasData.preta.length} jogadores\nMesa Amarela: ${mesasData.amarela.length} jogadores`);
+    document.getElementById('importResult').innerHTML = `✅ Preta: ${mesasData.preta.length} | Amarela: ${mesasData.amarela.length}`;
 }
 
 function adicionarRebuy(jogadorNome, tipo) {
@@ -751,15 +832,32 @@ function adicionarAddon(jogadorNome) {
     }
 }
 
-function removerJogador(jogadorNome) {
-    if (confirm(`Remover ${jogadorNome} da mesa ${mesaAtual}?`)) {
-        mesasData[mesaAtual] = mesasData[mesaAtual].filter(j => j.nome !== jogadorNome);
-        salvarMesas();
+function abrirCorrecao(jogadorNome) {
+    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+    if (jogador) {
+        jogadorCorrigindo = jogadorNome;
+        document.getElementById('corrigirJogadorNome').textContent = jogadorNome;
+        document.getElementById('corrigirRebuys').value = jogador.rebuys || 0;
+        document.getElementById('corrigirAddon').checked = jogador.addon || false;
+        document.getElementById('modalCorrigir').classList.add('active');
     }
 }
 
+function salvarCorrecao() {
+    if (jogadorCorrigindo) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorCorrigindo);
+        if (jogador) {
+            jogador.rebuys = parseInt(document.getElementById('corrigirRebuys').value) || 0;
+            jogador.addon = document.getElementById('corrigirAddon').checked;
+            salvarMesas();
+        }
+    }
+    document.getElementById('modalCorrigir').classList.remove('active');
+    jogadorCorrigindo = null;
+}
+
 function calcularTotalJogador(jogador) {
-    let total = VALOR_BUYIN; // Todo jogador deve R$ 100 de buy-in
+    let total = VALOR_BUYIN;
     total += (jogador.rebuys || 0) * VALOR_REBUY;
     if (jogador.addon) total += VALOR_ADDON;
     return total;
@@ -769,78 +867,51 @@ function salvarMesas() {
     set(ref(db, 'mesas'), mesasData);
 }
 
-function atualizarInterface() {
-    const mesaPretaGrid = document.getElementById('mesaPretaGrid');
-    const mesaAmarelaGrid = document.getElementById('mesaAmarelaGrid');
-    
-    const jogadoresPreta = mesasData.preta || [];
-    const jogadoresAmarela = mesasData.amarela || [];
-    
-    document.getElementById('countPreta').textContent = jogadoresPreta.length;
-    document.getElementById('countAmarela').textContent = jogadoresAmarela.length;
-    
-    mesaPretaGrid.innerHTML = jogadoresPreta.length === 0 
-        ? '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa preta</div>'
-        : jogadoresPreta.map(j => criarJogadorCard(j, 'preta')).join('');
-    
-    mesaAmarelaGrid.innerHTML = jogadoresAmarela.length === 0 
-        ? '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa amarela</div>'
-        : jogadoresAmarela.map(j => criarJogadorCard(j, 'amarela')).join('');
-    
-    // Estatísticas
-    const todosJogadores = [...jogadoresPreta, ...jogadoresAmarela];
-    const totalRebuys = todosJogadores.reduce((sum, j) => sum + (j.rebuys || 0), 0);
-    const totalAddons = todosJogadores.filter(j => j.addon).length;
-    const valorTotal = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
-    
-    document.getElementById('totalJogadores').textContent = todosJogadores.length;
-    document.getElementById('totalRebuys').textContent = totalRebuys;
-    document.getElementById('totalAddons').textContent = totalAddons;
-    document.getElementById('valorTotal').textContent = `R$ ${valorTotal}`;
-    
-    // Event listeners
-    document.querySelectorAll('[data-action]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const action = btn.dataset.action;
-            const jogador = btn.dataset.jogador;
-            const mesa = btn.dataset.mesa;
-            mesaAtual = mesa;
-            
-            if (action === 'rebuy') adicionarRebuy(jogador, 'simples');
-            else if (action === 'rebuyDuplo') adicionarRebuy(jogador, 'duplo');
-            else if (action === 'addon') adicionarAddon(jogador);
-            else if (action === 'remover') removerJogador(jogador);
-        });
-    });
+function getFotoJogador(nome) {
+    return fotosJogadores[nome] || `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=d4a121&color=000&size=45`;
 }
 
-function criarJogadorCard(jogador, mesa) {
-    const total = calcularTotalJogador(jogador);
-    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(jogador.nome)}&background=d4a121&color=000&size=40`;
+function atualizarInterface() {
+    atualizarGridJogadores();
+    if (document.getElementById('view-resumo').classList.contains('active')) atualizarResumo();
+    if (document.getElementById('view-estatisticas').classList.contains('active')) atualizarEstatisticas();
+}
+
+function atualizarGridJogadores() {
+    const grid = document.getElementById('jogadoresGrid');
+    const jogadores = mesasData[mesaAtual] || [];
     
-    return `
-        <div class="jogador-card">
-            <div class="jogador-info">
-                <img class="jogador-avatar" src="${avatarUrl}" alt="${jogador.nome}">
-                <div class="jogador-detalhes">
-                    <div class="jogador-nome">${jogador.nome}</div>
-                    <div class="jogador-posicao">📍 Seat ${jogador.posicao || '?'}</div>
-                    <div class="jogador-status">
-                        <span class="badge" style="background: #c72c48;">💰 Buy-in R$100</span>
-                        ${jogador.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${jogador.rebuys} Rebuy${jogador.rebuys > 1 ? 's' : ''}</span>` : ''}
-                        ${jogador.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
+    if (jogadores.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Importe o arquivo HTML para começar</div>';
+        return;
+    }
+    
+    grid.innerHTML = jogadores.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
+        const total = calcularTotalJogador(j);
+        const foto = getFotoJogador(j.nome);
+        
+        return `
+            <div class="jogador-card">
+                <div class="jogador-posicao-numero">${j.posicao || '?'}</div>
+                <img class="jogador-foto" src="${foto}" alt="${j.nome}">
+                <div class="jogador-info">
+                    <div class="jogador-nome">${j.nome}</div>
+                    <div class="jogador-valores">
+                        <span class="badge badge-buyin">💰 R$${VALOR_BUYIN}</span>
+                        ${j.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${j.rebuys}</span>` : ''}
+                        ${j.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
+                        <span style="margin-left: auto; font-weight: bold;">R$ ${total}</span>
                     </div>
-                    <small style="opacity: 0.8;">Total: R$ ${total}</small>
+                </div>
+                <div class="jogador-actions">
+                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">+1</button>
+                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">+2</button>
+                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">Addon</button>` : ''}
+                    <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
                 </div>
             </div>
-            <div class="jogador-actions">
-                <button class="action-btn btn-rebuy" data-action="rebuy" data-jogador="${jogador.nome}" data-mesa="${mesa}">+1</button>
-                <button class="action-btn btn-rebuy-duplo" data-action="rebuyDuplo" data-jogador="${jogador.nome}" data-mesa="${mesa}">+2</button>
-                ${!jogador.addon ? `<button class="action-btn btn-addon" data-action="addon" data-jogador="${jogador.nome}" data-mesa="${mesa}">Addon</button>` : ''}
-                <button class="action-btn btn-remover" data-action="remover" data-jogador="${jogador.nome}" data-mesa="${mesa}">❌</button>
-            </div>
-        </div>
-    `;
+        `;
+    }).join('');
 }
 
 function atualizarResumo() {
@@ -848,19 +919,17 @@ function atualizarResumo() {
     const tbody = document.getElementById('resumoBody');
     
     if (todosJogadores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado disponível</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></tr>';
         document.getElementById('totalGeralResumo').textContent = 'TOTAL GERAL: R$ 0,00';
         return;
     }
     
     let totalGeral = 0;
     
-    tbody.innerHTML = todosJogadores.sort((a, b) => {
-        const mesaA = mesasData.preta?.includes(a) ? 'Preta' : 'Amarela';
-        const mesaB = mesasData.preta?.includes(b) ? 'Preta' : 'Amarela';
-        if (mesaA !== mesaB) return mesaA === 'Preta' ? -1 : 1;
-        return (a.posicao || 999) - (b.posicao || 999);
-    }).map(jogador => {
+    // Ordenar por nome (alfabético)
+    const ordenados = [...todosJogadores].sort((a, b) => a.nome.localeCompare(b.nome));
+    
+    tbody.innerHTML = ordenados.map(jogador => {
         const mesa = mesasData.preta?.includes(jogador) ? 'Preta' : 'Amarela';
         const rebuysValor = (jogador.rebuys || 0) * VALOR_REBUY;
         const addonValor = jogador.addon ? VALOR_ADDON : 0;
@@ -871,10 +940,10 @@ function atualizarResumo() {
             <tr>
                 <td>${jogador.nome}</td>
                 <td>${mesa}</td>
-                <td>Seat ${jogador.posicao || '-'}</td>
+                <td>${jogador.posicao || '-'}</td>
                 <td>R$ ${VALOR_BUYIN}</td>
-                <td>${jogador.rebuys || 0} (R$ ${rebuysValor})</td>
-                <td>${jogador.addon ? 'Sim (R$ 50)' : 'Não'}</td>
+                <td>${jogador.rebuys || 0}</td>
+                <td>${jogador.addon ? 'Sim' : '-'}</td>
                 <td><strong>R$ ${total}</strong></td>
             </tr>
         `;
@@ -884,67 +953,66 @@ function atualizarResumo() {
 }
 
 function atualizarEstatisticas() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+    const preta = mesasData.preta || [];
+    const amarela = mesasData.amarela || [];
+    const todos = [...preta, ...amarela];
     
-    const rebuysSimples = todosJogadores.filter(j => (j.rebuys || 0) === 1).length;
-    const rebuysDuplos = todosJogadores.filter(j => (j.rebuys || 0) >= 2).length;
-    const totalRebuys = todosJogadores.reduce((sum, j) => sum + (j.rebuys || 0), 0);
-    const totalAddons = todosJogadores.filter(j => j.addon).length;
-    const valorTotal = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
+    // Estatísticas por mesa
+    const pretRebuys = preta.reduce((s, j) => s + (j.rebuys || 0), 0);
+    const pretAddons = preta.filter(j => j.addon).length;
+    const pretTotal = preta.reduce((s, j) => s + calcularTotalJogador(j), 0);
+    
+    const amarRebuys = amarela.reduce((s, j) => s + (j.rebuys || 0), 0);
+    const amarAddons = amarela.filter(j => j.addon).length;
+    const amarTotal = amarela.reduce((s, j) => s + calcularTotalJogador(j), 0);
+    
+    document.getElementById('statPretaJogadores').textContent = preta.length;
+    document.getElementById('statPretaRebuys').textContent = pretRebuys;
+    document.getElementById('statPretaAddons').textContent = pretAddons;
+    document.getElementById('statPretaTotal').textContent = `R$ ${pretTotal}`;
+    
+    document.getElementById('statAmarelaJogadores').textContent = amarela.length;
+    document.getElementById('statAmarelaRebuys').textContent = amarRebuys;
+    document.getElementById('statAmarelaAddons').textContent = amarAddons;
+    document.getElementById('statAmarelaTotal').textContent = `R$ ${amarTotal}`;
+    
+    // Gerais
+    const rebuysSimples = todos.filter(j => (j.rebuys || 0) === 1).length;
+    const rebuysDuplos = todos.filter(j => (j.rebuys || 0) >= 2).length;
+    const totalAddons = todos.filter(j => j.addon).length;
     
     document.getElementById('statRebuysSimples').textContent = rebuysSimples;
     document.getElementById('statRebuysDuplos').textContent = rebuysDuplos;
     document.getElementById('statAddons').textContent = totalAddons;
-    document.getElementById('statTotalArrecadado').textContent = `R$ ${valorTotal}`;
     
-    const ranking = todosJogadores
-        .filter(j => (j.rebuys || 0) > 0)
-        .sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0))
-        .slice(0, 10);
-    
+    // Ranking
+    const ranking = todos.filter(j => (j.rebuys || 0) > 0).sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0)).slice(0, 5);
     const rankingBody = document.getElementById('rankingBody');
     
     if (ranking.length === 0) {
-        rankingBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Nenhum rebuy registrado</td></tr>';
+        rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum rebuy</td></tr>';
     } else {
         rankingBody.innerHTML = ranking.map((j, i) => {
             const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
-            return `
-                <tr>
-                    <td>${i + 1}º</td>
-                    <td>${j.nome}</td>
-                    <td>${mesa}</td>
-                    <td>Seat ${j.posicao || '-'}</td>
-                    <td>${j.rebuys}</td>
-                    <td>R$ ${j.rebuys * VALOR_REBUY}</td>
-                </tr>
-            `;
+            return `<tr><td>${i+1}º</td><td>${j.nome}</td><td>${mesa}</td><td>${j.rebuys}</td></tr>`;
         }).join('');
     }
 }
 
 function exportarCSV() {
     const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
-    
-    if (todosJogadores.length === 0) {
-        alert('Nenhum jogador para exportar!');
-        return;
-    }
+    if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
     let csv = 'Nome,Mesa,Posição,Buy-in,Rebuys,Addon,Total\n';
+    let totalGeral = 0;
     
-    todosJogadores.sort((a, b) => {
-        const mesaA = mesasData.preta?.includes(a) ? 'Preta' : 'Amarela';
-        const mesaB = mesasData.preta?.includes(b) ? 'Preta' : 'Amarela';
-        if (mesaA !== mesaB) return mesaA === 'Preta' ? -1 : 1;
-        return (a.posicao || 999) - (b.posicao || 999);
-    }).forEach(j => {
+    todosJogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
         const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
         const total = calcularTotalJogador(j);
-        csv += `"${j.nome}",${mesa},Seat ${j.posicao || ''},${VALOR_BUYIN},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
+        totalGeral += total;
+        csv += `"${j.nome}",${mesa},${j.posicao || ''},${VALOR_BUYIN},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
     });
     
-    const totalGeral = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
     csv += `\n"TOTAL GERAL",,,,,,${totalGeral}\n`;
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -953,6 +1021,11 @@ function exportarCSV() {
     link.download = `caixa-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
 }
+
+// Expor funções globalmente
+window.adicionarRebuy = adicionarRebuy;
+window.adicionarAddon = adicionarAddon;
+window.abrirCorrecao = abrirCorrecao;
 </script>
 </body>
 </html>
