@@ -99,6 +99,16 @@
             box-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
         }
         
+        .mesa-btn.preta.active {
+            background: #333;
+            border-color: #fff;
+        }
+        
+        .mesa-btn.amarela.active {
+            background: #FFD700;
+            border-color: #000;
+        }
+        
         .controls {
             display: flex;
             gap: 15px;
@@ -157,6 +167,7 @@
         .file-input-wrapper {
             position: relative;
             display: inline-block;
+            cursor: pointer;
         }
         
         .file-input-wrapper input[type="file"] {
@@ -165,6 +176,8 @@
             width: 100%;
             height: 100%;
             cursor: pointer;
+            top: 0;
+            left: 0;
         }
         
         .preview-mesas {
@@ -230,6 +243,12 @@
             text-align: center;
         }
         
+        .stat-card h3 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
         .stat-value {
             font-family: 'Anton';
             font-size: 2em;
@@ -262,6 +281,14 @@
         .mesa-title {
             font-family: 'Anton';
             font-size: 1.5em;
+        }
+        
+        .mesa-preta .mesa-title {
+            color: #fff;
+        }
+        
+        .mesa-amarela .mesa-title {
+            color: #FFD700;
         }
         
         .jogadores-grid {
@@ -407,6 +434,10 @@
             border-bottom: 1px solid #2d5016;
         }
         
+        .resumo-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
         .total-geral {
             margin-top: 20px;
             padding: 15px;
@@ -448,6 +479,56 @@
             display: block;
         }
         
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            color: #d4a121;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #2d5016;
+            background: #1a3d1a;
+            color: #fff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
         .status-indicator {
             position: fixed;
             top: 10px;
@@ -487,6 +568,10 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
+            .controls {
+                flex-direction: column;
+            }
+            
             .preview-mesas {
                 grid-template-columns: 1fr;
             }
@@ -517,8 +602,8 @@
         
         <div style="display: flex; gap: 15px; align-items: center;">
             <div class="file-input-wrapper">
-                <button class="btn btn-primary">📁 ESCOLHER ARQUIVO HTML</button>
-                <input type="file" id="fileInput" accept=".html,.htm" />
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click(); return false;">📁 ESCOLHER ARQUIVO HTML</button>
+                <input type="file" id="fileInput" accept=".html,.htm" style="display: none;" />
             </div>
             <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR LAYOUT</button>
         </div>
@@ -750,9 +835,29 @@ onValue(ref(db, 'confirmados'), (snapshot) => {
     }
 });
 
-// Event Listeners
-document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-document.getElementById('btnProcessarLayout').addEventListener('click', processarLayout);
+// Event Listeners - CORRIGIDO!
+const fileInput = document.getElementById('fileInput');
+const btnProcessarLayout = document.getElementById('btnProcessarLayout');
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        arquivoSelecionado = file;
+        btnProcessarLayout.style.display = 'inline-block';
+        
+        const resultDiv = document.getElementById('importResult');
+        resultDiv.classList.add('show');
+        resultDiv.innerHTML = `📄 Arquivo selecionado: <strong>${file.name}</strong><br>Clique em "PROCESSAR LAYOUT" para analisar as posições.`;
+    }
+});
+
+btnProcessarLayout.addEventListener('click', function() {
+    if (!arquivoSelecionado) {
+        alert('Selecione um arquivo primeiro!');
+        return;
+    }
+    processarLayout();
+});
 
 document.getElementById('btnMesaPreta').addEventListener('click', () => {
     mesaAtual = 'preta';
@@ -790,25 +895,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     });
 });
 
-function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file) {
-        arquivoSelecionado = file;
-        document.getElementById('btnProcessarLayout').style.display = 'inline-block';
-        
-        // Mostrar preview do nome do arquivo
-        const resultDiv = document.getElementById('importResult');
-        resultDiv.classList.add('show');
-        resultDiv.innerHTML = `📄 Arquivo selecionado: <strong>${file.name}</strong><br>Clique em "PROCESSAR LAYOUT" para analisar as posições.`;
-    }
-}
-
 function processarLayout() {
-    if (!arquivoSelecionado) {
-        alert('Selecione um arquivo primeiro!');
-        return;
-    }
-    
     const reader = new FileReader();
     reader.onload = (e) => {
         const htmlContent = e.target.result;
@@ -828,12 +915,9 @@ function analisarLayoutHTML(html) {
     };
     
     // Procurar por elementos que indicam mesas e posições
-    // Padrões comuns: "Mesa Preta", "Mesa Amarela", "Posição 1", "Seat 1", etc.
-    
     const bodyText = doc.body.textContent;
     
     // Tentar encontrar padrões de posições
-    // Exemplo: "Mesa Preta - Posição 1: João"
     const regexPreta = /mesa\s*preta[^]*(?:posi[çc][aã]o|seat|lugar)\s*(\d+)[^:]*:?\s*([^\n\r]+)/gi;
     const regexAmarela = /mesa\s*amarela[^]*(?:posi[çc][aã]o|seat|lugar)\s*(\d+)[^:]*:?\s*([^\n\r]+)/gi;
     
