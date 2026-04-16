@@ -67,6 +67,40 @@
         h2 { font-size: 1.3em; margin-bottom: 10px; }
         h3 { font-size: 1.1em; margin-bottom: 8px; }
         
+        /* Indicador de Mesa Atual */
+        .mesa-indicator {
+            background: #102810;
+            border: 3px solid #d4a121;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .mesa-indicator.preta {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .mesa-indicator.amarela {
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .mesa-indicator-text {
+            font-family: 'Anton';
+            font-size: 1.8em;
+            text-transform: uppercase;
+        }
+        
+        .mesa-indicator.preta .mesa-indicator-text {
+            color: #fff;
+        }
+        
+        .mesa-indicator.amarela .mesa-indicator-text {
+            color: #FFD700;
+        }
+        
         /* Navegação por abas */
         .nav-tabs {
             display: flex;
@@ -161,7 +195,7 @@
         .jogadores-grid {
             display: grid;
             gap: 8px;
-            max-height: calc(100vh - 350px);
+            max-height: calc(100vh - 400px);
             overflow-y: auto;
         }
         
@@ -263,6 +297,20 @@
             border-radius: 20px;
             border: 3px solid #d4a121;
             margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cronometro-display.finished {
+            color: #FF0000;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+            border-color: #FF0000;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .cronometro-controls {
@@ -403,13 +451,6 @@
             margin-top: 20px;
         }
         
-        .preview-mesas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
         .import-result {
             margin-top: 10px;
             padding: 10px;
@@ -442,11 +483,36 @@
             background: #d4a121;
             border-radius: 3px;
         }
+        
+        .alerta-troca-mesa {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d4a121;
+            color: #000;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-family: 'Anton';
+            font-size: 2em;
+            z-index: 2000;
+            animation: fadeOut 1.5s forwards;
+        }
+        
+        @keyframes fadeOut {
+            0%, 70% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
     </style>
 </head>
 <body>
 
 <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
+
+<!-- Áudio para o alarme -->
+<audio id="alarmeAudio" preload="auto">
+    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+</audio>
 
 <div class="app-container">
     
@@ -455,6 +521,12 @@
         <div class="logo-top">
             <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
             <h2>🎲 CADERNO DO DEALER</h2>
+        </div>
+        
+        <!-- Indicador de Mesa Atual -->
+        <div class="mesa-indicator preta" id="mesaIndicator">
+            <div class="mesa-indicator-text">♠️ MESA PRETA ♠️</div>
+            <div style="font-size: 0.9em; opacity: 0.8;">Você está atuando nesta mesa</div>
         </div>
         
         <!-- Navegação -->
@@ -491,7 +563,7 @@
         <!-- View: Resumo Financeiro -->
         <div class="view-container" id="view-resumo">
             <h3>📋 RESUMO FINANCEIRO</h3>
-            <div style="max-height: calc(100vh - 200px); overflow-y: auto;">
+            <div style="max-height: calc(100vh - 250px); overflow-y: auto;">
                 <table class="resumo-table" id="resumoFinanceiro">
                     <thead>
                         <tr><th>Jogador</th><th>Mesa</th><th>Pos.</th><th>Buy-in</th><th>Rebuys</th><th>Addon</th><th>Total</th></tr>
@@ -500,7 +572,7 @@
                 </table>
             </div>
             <div class="total-geral" id="totalGeralResumo">TOTAL GERAL: R$ 0,00</div>
-            <button class="btn btn-secondary" id="btnExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV</button>
+            <button class="btn btn-secondary" id="btnExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV (Nome, Total)</button>
         </div>
         
         <!-- View: Estatísticas -->
@@ -524,18 +596,14 @@
                 </div>
             </div>
             
-            <div class="stats-mesas" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="stats-mesas" style="grid-template-columns: 1fr 1fr;">
                 <div class="stats-mesa-card">
-                    <h4>🔄 REBUYS SIMPLES</h4>
-                    <div class="stats-value" id="statRebuysSimples">0</div>
-                </div>
-                <div class="stats-mesa-card">
-                    <h4>🔄🔄 REBUYS DUPLOS</h4>
-                    <div class="stats-value" id="statRebuysDuplos">0</div>
+                    <h4>🔄 TOTAL REBUYS</h4>
+                    <div class="stats-value" id="statTotalRebuys">0</div>
                 </div>
                 <div class="stats-mesa-card">
                     <h4>💎 TOTAL ADDONS</h4>
-                    <div class="stats-value" id="statAddons">0</div>
+                    <div class="stats-value" id="statTotalAddons">0</div>
                 </div>
             </div>
             
@@ -558,7 +626,7 @@
                 <button class="cronometro-btn iniciar" id="btnIniciarCronometro">▶ INICIAR</button>
                 <button class="cronometro-btn zerar" id="btnZerarCronometro">↺ ZERAR</button>
             </div>
-            <p style="margin-top: 20px; opacity: 0.7; font-size: 0.9em;">Toque para iniciar/pausar</p>
+            <p style="margin-top: 20px; opacity: 0.7; font-size: 0.9em;">Toque no cronômetro para iniciar/pausar</p>
         </div>
     </div>
 </div>
@@ -617,8 +685,9 @@ let jogadorCorrigindo = null;
 let cronometroTempo = TEMPO_INICIAL;
 let cronometroAtivo = false;
 let cronometroInterval = null;
+let alarmeTocando = false;
 
-// Fotos dos jogadores (será carregado do Firebase)
+// Fotos dos jogadores
 let fotosJogadores = {};
 
 // Inicialização
@@ -649,18 +718,41 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 
 // Mesas
 document.getElementById('btnMesaPreta').addEventListener('click', () => {
-    mesaAtual = 'preta';
-    document.getElementById('btnMesaPreta').classList.add('active');
-    document.getElementById('btnMesaAmarela').classList.remove('active');
-    atualizarGridJogadores();
+    if (mesaAtual !== 'preta') {
+        mostrarAlertaTrocaMesa('♠️ MESA PRETA');
+        mesaAtual = 'preta';
+        document.getElementById('btnMesaPreta').classList.add('active');
+        document.getElementById('btnMesaAmarela').classList.remove('active');
+        atualizarIndicadorMesa();
+        atualizarGridJogadores();
+    }
 });
 
 document.getElementById('btnMesaAmarela').addEventListener('click', () => {
-    mesaAtual = 'amarela';
-    document.getElementById('btnMesaAmarela').classList.add('active');
-    document.getElementById('btnMesaPreta').classList.remove('active');
-    atualizarGridJogadores();
+    if (mesaAtual !== 'amarela') {
+        mostrarAlertaTrocaMesa('♦️ MESA AMARELA');
+        mesaAtual = 'amarela';
+        document.getElementById('btnMesaAmarela').classList.add('active');
+        document.getElementById('btnMesaPreta').classList.remove('active');
+        atualizarIndicadorMesa();
+        atualizarGridJogadores();
+    }
 });
+
+function mostrarAlertaTrocaMesa(mesa) {
+    const alerta = document.createElement('div');
+    alerta.className = 'alerta-troca-mesa';
+    alerta.textContent = `ATUANDO NA ${mesa}`;
+    document.body.appendChild(alerta);
+    setTimeout(() => alerta.remove(), 1500);
+}
+
+function atualizarIndicadorMesa() {
+    const indicator = document.getElementById('mesaIndicator');
+    indicator.className = `mesa-indicator ${mesaAtual}`;
+    const texto = mesaAtual === 'preta' ? '♠️ MESA PRETA ♠️' : '♦️ MESA AMARELA ♦️';
+    indicator.querySelector('.mesa-indicator-text').textContent = texto;
+}
 
 // Importação
 const fileInput = document.getElementById('fileInput');
@@ -707,15 +799,20 @@ function toggleCronometro() {
 }
 
 function iniciarCronometro() {
-    if (!cronometroAtivo) {
+    if (!cronometroAtivo && cronometroTempo > 0) {
         cronometroAtivo = true;
+        alarmeTocando = false;
         document.getElementById('btnIniciarCronometro').textContent = '⏸ PAUSAR';
+        document.getElementById('cronometroDisplay').classList.remove('finished');
         cronometroInterval = setInterval(() => {
             if (cronometroTempo > 0) {
                 cronometroTempo--;
                 atualizarCronometroDisplay();
-            } else {
-                pausarCronometro();
+                
+                if (cronometroTempo === 0) {
+                    tocarAlarme();
+                    pausarCronometro();
+                }
             }
         }, 1000);
     }
@@ -733,14 +830,34 @@ function pausarCronometro() {
 function zerarCronometro() {
     pausarCronometro();
     cronometroTempo = TEMPO_INICIAL;
+    alarmeTocando = false;
     atualizarCronometroDisplay();
+    document.getElementById('cronometroDisplay').classList.remove('finished');
 }
 
 function atualizarCronometroDisplay() {
     const minutos = Math.floor(cronometroTempo / 60);
     const segundos = cronometroTempo % 60;
-    document.getElementById('cronometroDisplay').textContent = 
-        `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    const display = document.getElementById('cronometroDisplay');
+    display.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    
+    if (cronometroTempo === 0) {
+        display.classList.add('finished');
+    }
+}
+
+function tocarAlarme() {
+    if (!alarmeTocando) {
+        alarmeTocando = true;
+        const audio = document.getElementById('alarmeAudio');
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log('Erro ao tocar áudio:', e));
+        
+        // Vibração (se suportado)
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200, 100, 200]);
+        }
+    }
 }
 
 function processarLayout() {
@@ -786,7 +903,6 @@ function analisarLayoutHTML(html) {
 }
 
 function aplicarLayoutImportado() {
-    // Manter rebuys e addons existentes se o jogador já estava na mesa
     const pretAntiga = mesasData.preta || [];
     const amarAntiga = mesasData.amarela || [];
     
@@ -817,18 +933,25 @@ function aplicarLayoutImportado() {
 }
 
 function adicionarRebuy(jogadorNome, tipo) {
-    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-    if (jogador) {
-        jogador.rebuys = (jogador.rebuys || 0) + (tipo === 'simples' ? 1 : 2);
-        salvarMesas();
+    const quantidade = tipo === 'simples' ? 1 : 2;
+    const valorAdicional = quantidade * VALOR_REBUY;
+    
+    if (confirm(`Confirmar ${quantidade} rebuy${quantidade > 1 ? 's' : ''} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional}`)) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+        if (jogador) {
+            jogador.rebuys = (jogador.rebuys || 0) + quantidade;
+            salvarMesas();
+        }
     }
 }
 
 function adicionarAddon(jogadorNome) {
-    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-    if (jogador) {
-        jogador.addon = true;
-        salvarMesas();
+    if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON}`)) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+        if (jogador) {
+            jogador.addon = true;
+            salvarMesas();
+        }
     }
 }
 
@@ -887,7 +1010,6 @@ function atualizarGridJogadores() {
     }
     
     grid.innerHTML = jogadores.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
-        const total = calcularTotalJogador(j);
         const foto = getFotoJogador(j.nome);
         
         return `
@@ -900,7 +1022,6 @@ function atualizarGridJogadores() {
                         <span class="badge badge-buyin">💰 R$${VALOR_BUYIN}</span>
                         ${j.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${j.rebuys}</span>` : ''}
                         ${j.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
-                        <span style="margin-left: auto; font-weight: bold;">R$ ${total}</span>
                     </div>
                 </div>
                 <div class="jogador-actions">
@@ -926,7 +1047,6 @@ function atualizarResumo() {
     
     let totalGeral = 0;
     
-    // Ordenar por nome (alfabético)
     const ordenados = [...todosJogadores].sort((a, b) => a.nome.localeCompare(b.nome));
     
     tbody.innerHTML = ordenados.map(jogador => {
@@ -943,7 +1063,7 @@ function atualizarResumo() {
                 <td>${jogador.posicao || '-'}</td>
                 <td>R$ ${VALOR_BUYIN}</td>
                 <td>${jogador.rebuys || 0}</td>
-                <td>${jogador.addon ? 'Sim' : '-'}</td>
+                <td>${jogador.addon ? '1' : '0'}</td>
                 <td><strong>R$ ${total}</strong></td>
             </tr>
         `;
@@ -976,14 +1096,12 @@ function atualizarEstatisticas() {
     document.getElementById('statAmarelaAddons').textContent = amarAddons;
     document.getElementById('statAmarelaTotal').textContent = `R$ ${amarTotal}`;
     
-    // Gerais
-    const rebuysSimples = todos.filter(j => (j.rebuys || 0) === 1).length;
-    const rebuysDuplos = todos.filter(j => (j.rebuys || 0) >= 2).length;
+    // Totais gerais
+    const totalRebuys = todos.reduce((s, j) => s + (j.rebuys || 0), 0);
     const totalAddons = todos.filter(j => j.addon).length;
     
-    document.getElementById('statRebuysSimples').textContent = rebuysSimples;
-    document.getElementById('statRebuysDuplos').textContent = rebuysDuplos;
-    document.getElementById('statAddons').textContent = totalAddons;
+    document.getElementById('statTotalRebuys').textContent = totalRebuys;
+    document.getElementById('statTotalAddons').textContent = totalAddons;
     
     // Ranking
     const ranking = todos.filter(j => (j.rebuys || 0) > 0).sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0)).slice(0, 5);
@@ -1003,22 +1121,17 @@ function exportarCSV() {
     const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
-    let csv = 'Nome,Mesa,Posição,Buy-in,Rebuys,Addon,Total\n';
-    let totalGeral = 0;
+    let csv = 'Nome,Total\n';
     
     todosJogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
-        const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
         const total = calcularTotalJogador(j);
-        totalGeral += total;
-        csv += `"${j.nome}",${mesa},${j.posicao || ''},${VALOR_BUYIN},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
+        csv += `"${j.nome}",${total}\n`;
     });
-    
-    csv += `\n"TOTAL GERAL",,,,,,${totalGeral}\n`;
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `caixa-poker-etapa${config.etapa}-${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `valores-poker-etapa${config.etapa}.csv`;
     link.click();
 }
 
