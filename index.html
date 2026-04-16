@@ -99,16 +99,6 @@
             box-shadow: 0 0 20px rgba(212, 161, 33, 0.5);
         }
         
-        .mesa-btn.preta.active {
-            background: #333;
-            border-color: #fff;
-        }
-        
-        .mesa-btn.amarela.active {
-            background: #FFD700;
-            border-color: #000;
-        }
-        
         .controls {
             display: flex;
             gap: 15px;
@@ -146,9 +136,83 @@
             color: #fff;
         }
         
+        .btn-success {
+            background: #4CAF50;
+            color: #fff;
+        }
+        
         .btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+        }
+        
+        .import-section {
+            background: #102810;
+            border: 2px dashed #d4a121;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .preview-mesas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .mesa-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .mesa-preview h4 {
+            color: #d4a121;
+            margin-bottom: 10px;
+        }
+        
+        .posicoes-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        
+        .posicao-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #d4a121;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .posicao-item.ocupada {
+            background: rgba(212, 161, 33, 0.2);
+            border-color: #FFD700;
+        }
+        
+        .posicao-numero {
+            font-weight: bold;
+            color: #d4a121;
+            margin-bottom: 5px;
+        }
+        
+        .posicao-jogador {
+            font-size: 0.85em;
         }
         
         .stats-cards {
@@ -164,12 +228,6 @@
             border-radius: 12px;
             padding: 15px;
             text-align: center;
-        }
-        
-        .stat-card h3 {
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            color: #fff;
         }
         
         .stat-value {
@@ -204,14 +262,6 @@
         .mesa-title {
             font-family: 'Anton';
             font-size: 1.5em;
-        }
-        
-        .mesa-preta .mesa-title {
-            color: #fff;
-        }
-        
-        .mesa-amarela .mesa-title {
-            color: #FFD700;
         }
         
         .jogadores-grid {
@@ -258,6 +308,12 @@
         .jogador-nome {
             font-weight: bold;
             font-size: 1.1em;
+        }
+        
+        .jogador-posicao {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-top: 3px;
         }
         
         .jogador-status {
@@ -351,10 +407,6 @@
             border-bottom: 1px solid #2d5016;
         }
         
-        .resumo-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
         .total-geral {
             margin-top: 20px;
             padding: 15px;
@@ -396,56 +448,6 @@
             display: block;
         }
         
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: #102810;
-            border: 2px solid #d4a121;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            color: #d4a121;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #2d5016;
-            background: #1a3d1a;
-            color: #fff;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
         .status-indicator {
             position: fixed;
             top: 10px;
@@ -463,6 +465,19 @@
             border-color: #4CAF50;
         }
         
+        .import-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .import-result.show {
+            display: block;
+        }
+        
         @media (max-width: 768px) {
             .mesas-container {
                 grid-template-columns: 1fr;
@@ -472,8 +487,12 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .controls {
-                flex-direction: column;
+            .preview-mesas {
+                grid-template-columns: 1fr;
+            }
+            
+            .posicoes-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
@@ -488,6 +507,35 @@
 </div>
 
 <div class="container">
+    
+    <!-- Seção de Importação de Layout -->
+    <div class="import-section">
+        <h3 style="margin-bottom: 15px;">📂 IMPORTAR LAYOUT DAS MESAS</h3>
+        <p style="margin-bottom: 15px; opacity: 0.8;">
+            Selecione um arquivo HTML exportado com o layout das mesas. O sistema detectará automaticamente a posição de cada jogador.
+        </p>
+        
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div class="file-input-wrapper">
+                <button class="btn btn-primary">📁 ESCOLHER ARQUIVO HTML</button>
+                <input type="file" id="fileInput" accept=".html,.htm" />
+            </div>
+            <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR LAYOUT</button>
+        </div>
+        
+        <div class="import-result" id="importResult"></div>
+        
+        <div class="preview-mesas" id="previewMesas" style="display: none;">
+            <div class="mesa-preview">
+                <h4>♠️ MESA PRETA</h4>
+                <div class="posicoes-grid" id="previewPreta"></div>
+            </div>
+            <div class="mesa-preview">
+                <h4>♦️ MESA AMARELA</h4>
+                <div class="posicoes-grid" id="previewAmarela"></div>
+            </div>
+        </div>
+    </div>
     
     <div class="mesa-selector">
         <button class="mesa-btn preta active" id="btnMesaPreta">♠️ MESA PRETA</button>
@@ -567,6 +615,7 @@
                     <tr>
                         <th>Jogador</th>
                         <th>Mesa</th>
+                        <th>Posição</th>
                         <th>Buy-in</th>
                         <th>Rebuys</th>
                         <th>Addon</th>
@@ -575,7 +624,7 @@
                 </thead>
                 <tbody id="resumoBody">
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">
+                        <td colspan="7" style="text-align: center; padding: 20px;">
                             Nenhum dado disponível
                         </td>
                     </tr>
@@ -615,40 +664,20 @@
                     <tr>
                         <th>#</th>
                         <th>Jogador</th>
+                        <th>Mesa</th>
+                        <th>Posição</th>
                         <th>Total Rebuys</th>
                         <th>Valor em Rebuys</th>
                     </tr>
                 </thead>
                 <tbody id="rankingBody">
                     <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px;">
+                        <td colspan="6" style="text-align: center; padding: 20px;">
                             Nenhum rebuy registrado
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Adicionar Jogador -->
-<div class="modal" id="modalAdicionarJogador">
-    <div class="modal-content">
-        <h2>➕ Adicionar Jogador à Mesa</h2>
-        <div class="form-group">
-            <label>Nome do Jogador</label>
-            <input type="text" id="novoJogadorNome" placeholder="Digite o nome">
-        </div>
-        <div class="form-group">
-            <label>Já pagou Buy-in?</label>
-            <select id="novoJogadorBuyin">
-                <option value="true">Sim - R$ 100</option>
-                <option value="false">Não</option>
-            </select>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn btn-danger" id="btnCancelarAdicionar">Cancelar</button>
-            <button class="btn btn-primary" id="btnConfirmarAdicionar">Adicionar</button>
         </div>
     </div>
 </div>
@@ -683,6 +712,13 @@ let mesasData = {
     amarela: []
 };
 
+let layoutImportado = {
+    preta: [],
+    amarela: []
+};
+
+let arquivoSelecionado = null;
+
 // Inicialização
 document.getElementById('statusIndicator').textContent = '✅ Conectado';
 document.getElementById('statusIndicator').classList.add('connected');
@@ -715,6 +751,9 @@ onValue(ref(db, 'confirmados'), (snapshot) => {
 });
 
 // Event Listeners
+document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+document.getElementById('btnProcessarLayout').addEventListener('click', processarLayout);
+
 document.getElementById('btnMesaPreta').addEventListener('click', () => {
     mesaAtual = 'preta';
     document.getElementById('btnMesaPreta').classList.add('active');
@@ -728,7 +767,6 @@ document.getElementById('btnMesaAmarela').addEventListener('click', () => {
 });
 
 document.getElementById('btnImportarJogadores').addEventListener('click', importarJogadores);
-
 document.getElementById('btnExportarCSV').addEventListener('click', exportarCSV);
 
 document.getElementById('btnLimparMesa').addEventListener('click', () => {
@@ -752,6 +790,221 @@ document.querySelectorAll('.tab').forEach(tab => {
     });
 });
 
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        arquivoSelecionado = file;
+        document.getElementById('btnProcessarLayout').style.display = 'inline-block';
+        
+        // Mostrar preview do nome do arquivo
+        const resultDiv = document.getElementById('importResult');
+        resultDiv.classList.add('show');
+        resultDiv.innerHTML = `📄 Arquivo selecionado: <strong>${file.name}</strong><br>Clique em "PROCESSAR LAYOUT" para analisar as posições.`;
+    }
+}
+
+function processarLayout() {
+    if (!arquivoSelecionado) {
+        alert('Selecione um arquivo primeiro!');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const htmlContent = e.target.result;
+        analisarLayoutHTML(htmlContent);
+    };
+    reader.readAsText(arquivoSelecionado);
+}
+
+function analisarLayoutHTML(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Resetar layout importado
+    layoutImportado = {
+        preta: [],
+        amarela: []
+    };
+    
+    // Procurar por elementos que indicam mesas e posições
+    // Padrões comuns: "Mesa Preta", "Mesa Amarela", "Posição 1", "Seat 1", etc.
+    
+    const bodyText = doc.body.textContent;
+    
+    // Tentar encontrar padrões de posições
+    // Exemplo: "Mesa Preta - Posição 1: João"
+    const regexPreta = /mesa\s*preta[^]*(?:posi[çc][aã]o|seat|lugar)\s*(\d+)[^:]*:?\s*([^\n\r]+)/gi;
+    const regexAmarela = /mesa\s*amarela[^]*(?:posi[çc][aã]o|seat|lugar)\s*(\d+)[^:]*:?\s*([^\n\r]+)/gi;
+    
+    // Procurar por tabelas ou divs com estrutura de mesa
+    const mesas = doc.querySelectorAll('[class*="mesa"], [id*="mesa"], table');
+    
+    mesas.forEach(mesa => {
+        const mesaText = mesa.textContent.toLowerCase();
+        const isPreta = mesaText.includes('preta') || mesa.classList.contains('preta') || mesa.id.includes('preta');
+        const isAmarela = mesaText.includes('amarela') || mesa.classList.contains('amarela') || mesa.id.includes('amarela');
+        
+        if (isPreta || isAmarela) {
+            const tipoMesa = isPreta ? 'preta' : 'amarela';
+            
+            // Procurar por células ou divs de posição
+            const posicoes = mesa.querySelectorAll('[class*="posicao"], [class*="seat"], [class*="lugar"], td, .jogador');
+            
+            posicoes.forEach((pos, index) => {
+                const texto = pos.textContent.trim();
+                if (texto && texto.length > 2) {
+                    // Tentar extrair nome do jogador
+                    const nomeMatch = texto.match(/([A-ZÀ-Ú][a-zà-ú]+(?:\s+[A-ZÀ-Ú][a-zà-ú]+)*)/);
+                    if (nomeMatch) {
+                        const nome = nomeMatch[1].trim();
+                        const posicaoNum = index + 1;
+                        
+                        if (!layoutImportado[tipoMesa].find(p => p.posicao === posicaoNum)) {
+                            layoutImportado[tipoMesa].push({
+                                posicao: posicaoNum,
+                                nome: nome
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    });
+    
+    // Se não encontrou com os seletores, tentar regex
+    if (layoutImportado.preta.length === 0 && layoutImportado.amarela.length === 0) {
+        let match;
+        
+        while ((match = regexPreta.exec(bodyText)) !== null) {
+            const posicao = parseInt(match[1]);
+            const nome = match[2].trim();
+            if (!layoutImportado.preta.find(p => p.posicao === posicao)) {
+                layoutImportado.preta.push({ posicao, nome });
+            }
+        }
+        
+        while ((match = regexAmarela.exec(bodyText)) !== null) {
+            const posicao = parseInt(match[1]);
+            const nome = match[2].trim();
+            if (!layoutImportado.amarela.find(p => p.posicao === posicao)) {
+                layoutImportado.amarela.push({ posicao, nome });
+            }
+        }
+    }
+    
+    // Ordenar por posição
+    layoutImportado.preta.sort((a, b) => a.posicao - b.posicao);
+    layoutImportado.amarela.sort((a, b) => a.posicao - b.posicao);
+    
+    // Mostrar preview
+    mostrarPreviewLayout();
+    
+    // Aplicar layout às mesas
+    aplicarLayoutImportado();
+}
+
+function mostrarPreviewLayout() {
+    const previewPreta = document.getElementById('previewPreta');
+    const previewAmarela = document.getElementById('previewAmarela');
+    
+    // Mesa Preta
+    if (layoutImportado.preta.length > 0) {
+        previewPreta.innerHTML = layoutImportado.preta.map(p => `
+            <div class="posicao-item ocupada">
+                <div class="posicao-numero">Posição ${p.posicao}</div>
+                <div class="posicao-jogador">${p.nome}</div>
+            </div>
+        `).join('');
+    } else {
+        previewPreta.innerHTML = '<div class="posicao-item">Nenhuma posição detectada</div>';
+    }
+    
+    // Mesa Amarela
+    if (layoutImportado.amarela.length > 0) {
+        previewAmarela.innerHTML = layoutImportado.amarela.map(p => `
+            <div class="posicao-item ocupada">
+                <div class="posicao-numero">Posição ${p.posicao}</div>
+                <div class="posicao-jogador">${p.nome}</div>
+            </div>
+        `).join('');
+    } else {
+        previewAmarela.innerHTML = '<div class="posicao-item">Nenhuma posição detectada</div>';
+    }
+    
+    document.getElementById('previewMesas').style.display = 'grid';
+    
+    const resultDiv = document.getElementById('importResult');
+    resultDiv.classList.add('show');
+    resultDiv.innerHTML = `
+        ✅ Layout importado com sucesso!<br>
+        <strong>Mesa Preta:</strong> ${layoutImportado.preta.length} jogadores detectados<br>
+        <strong>Mesa Amarela:</strong> ${layoutImportado.amarela.length} jogadores detectados
+    `;
+}
+
+function aplicarLayoutImportado() {
+    // Mapear jogadores confirmados para obter dados completos
+    const jogadoresMap = {};
+    jogadoresConfirmados.forEach(j => {
+        jogadoresMap[j.nome.toLowerCase()] = j;
+    });
+    
+    // Aplicar à Mesa Preta
+    layoutImportado.preta.forEach(pos => {
+        const nomeNormalizado = pos.nome.toLowerCase();
+        const jogadorExistente = mesasData.preta.find(j => j.nome.toLowerCase() === nomeNormalizado);
+        
+        if (!jogadorExistente) {
+            const jogadorInfo = jogadoresMap[nomeNormalizado] || {};
+            
+            mesasData.preta.push({
+                nome: pos.nome,
+                posicao: pos.posicao,
+                buyinPago: !jogadorInfo.antecipado,
+                rebuys: 0,
+                addon: false,
+                foto: jogadorInfo.foto || '',
+                antecipado: jogadorInfo.antecipado || false,
+                timestamp: Date.now()
+            });
+        } else {
+            jogadorExistente.posicao = pos.posicao;
+        }
+    });
+    
+    // Aplicar à Mesa Amarela
+    layoutImportado.amarela.forEach(pos => {
+        const nomeNormalizado = pos.nome.toLowerCase();
+        const jogadorExistente = mesasData.amarela.find(j => j.nome.toLowerCase() === nomeNormalizado);
+        
+        if (!jogadorExistente) {
+            const jogadorInfo = jogadoresMap[nomeNormalizado] || {};
+            
+            mesasData.amarela.push({
+                nome: pos.nome,
+                posicao: pos.posicao,
+                buyinPago: !jogadorInfo.antecipado,
+                rebuys: 0,
+                addon: false,
+                foto: jogadorInfo.foto || '',
+                antecipado: jogadorInfo.antecipado || false,
+                timestamp: Date.now()
+            });
+        } else {
+            jogadorExistente.posicao = pos.posicao;
+        }
+    });
+    
+    // Ordenar por posição
+    mesasData.preta.sort((a, b) => (a.posicao || 999) - (b.posicao || 999));
+    mesasData.amarela.sort((a, b) => (a.posicao || 999) - (b.posicao || 999));
+    
+    salvarMesas();
+    
+    alert(`✅ Layout aplicado!\nMesa Preta: ${layoutImportado.preta.length} jogadores\nMesa Amarela: ${layoutImportado.amarela.length} jogadores`);
+}
+
 function importarJogadores() {
     if (jogadoresConfirmados.length === 0) {
         alert('Nenhum jogador confirmado na etapa atual!');
@@ -759,14 +1012,17 @@ function importarJogadores() {
     }
     
     const jogadoresAtuais = mesasData[mesaAtual] || [];
-    const nomesExistentes = jogadoresAtuais.map(j => j.nome);
+    const nomesExistentes = jogadoresAtuais.map(j => j.nome.toLowerCase());
     
     let adicionados = 0;
+    let proximaPosicao = jogadoresAtuais.length + 1;
+    
     jogadoresConfirmados.forEach(jogador => {
-        if (!jogador.isGuest && !nomesExistentes.includes(jogador.nome)) {
+        if (!jogador.isGuest && !nomesExistentes.includes(jogador.nome.toLowerCase())) {
             mesasData[mesaAtual].push({
                 nome: jogador.nome,
-                buyinPago: !jogador.antecipado, // Antecipados já pagaram
+                posicao: proximaPosicao++,
+                buyinPago: !jogador.antecipado,
                 rebuys: 0,
                 addon: false,
                 foto: jogador.foto || '',
@@ -804,6 +1060,10 @@ function adicionarAddon(jogadorId) {
 function removerJogador(jogadorId) {
     if (confirm(`Remover ${jogadorId} da mesa ${mesaAtual}?`)) {
         mesasData[mesaAtual] = mesasData[mesaAtual].filter(j => j.nome !== jogadorId);
+        // Reordenar posições
+        mesasData[mesaAtual].forEach((j, index) => {
+            j.posicao = index + 1;
+        });
         salvarMesas();
     }
 }
@@ -876,6 +1136,7 @@ function atualizarInterface() {
 function criarJogadorCard(jogador, mesa) {
     const total = calcularTotalJogador(jogador);
     const avatarUrl = jogador.foto || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+    const posicaoInfo = jogador.posicao ? `Posição ${jogador.posicao}` : 'Posição não definida';
     
     return `
         <div class="jogador-card">
@@ -883,6 +1144,7 @@ function criarJogadorCard(jogador, mesa) {
                 <img class="jogador-avatar" src="${avatarUrl}" onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'" alt="${jogador.nome}">
                 <div class="jogador-detalhes">
                     <div class="jogador-nome">${jogador.nome}</div>
+                    <div class="jogador-posicao">📍 ${posicaoInfo}</div>
                     <div class="jogador-status">
                         ${jogador.antecipado ? '<span class="badge badge-antecipado">⭐ ANTECIPADO</span>' : ''}
                         ${!jogador.buyinPago && !jogador.antecipado ? '<span class="badge" style="background: #c72c48;">💰 Buy-in Pendente</span>' : '<span class="badge" style="background: #4CAF50;">✅ Buy-in Pago</span>'}
@@ -893,9 +1155,9 @@ function criarJogadorCard(jogador, mesa) {
                 </div>
             </div>
             <div class="jogador-actions">
-                <button class="action-btn btn-rebuy" data-action="rebuy" data-jogador="${jogador.nome}" data-mesa="${mesa}">+1 Rebuy (R$30)</button>
-                <button class="action-btn btn-rebuy-duplo" data-action="rebuyDuplo" data-jogador="${jogador.nome}" data-mesa="${mesa}">+2 Rebuy (R$60)</button>
-                ${!jogador.addon ? `<button class="action-btn btn-addon" data-action="addon" data-jogador="${jogador.nome}" data-mesa="${mesa}">Addon (R$50)</button>` : ''}
+                <button class="action-btn btn-rebuy" data-action="rebuy" data-jogador="${jogador.nome}" data-mesa="${mesa}">+1 Rebuy</button>
+                <button class="action-btn btn-rebuy-duplo" data-action="rebuyDuplo" data-jogador="${jogador.nome}" data-mesa="${mesa}">+2 Rebuy</button>
+                ${!jogador.addon ? `<button class="action-btn btn-addon" data-action="addon" data-jogador="${jogador.nome}" data-mesa="${mesa}">Addon</button>` : ''}
                 <button class="action-btn btn-remover" data-action="remover" data-jogador="${jogador.nome}" data-mesa="${mesa}">❌</button>
             </div>
         </div>
@@ -907,7 +1169,7 @@ function atualizarResumo() {
     const tbody = document.getElementById('resumoBody');
     
     if (todosJogadores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Nenhum dado disponível</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado disponível</td></tr>';
         document.getElementById('totalGeralResumo').textContent = 'TOTAL GERAL: R$ 0,00';
         return;
     }
@@ -916,6 +1178,7 @@ function atualizarResumo() {
     
     tbody.innerHTML = todosJogadores.map(jogador => {
         const mesa = mesasData.preta?.includes(jogador) ? 'Preta' : 'Amarela';
+        const posicao = jogador.posicao || '-';
         const buyin = (!jogador.antecipado && !jogador.buyinPago) ? VALOR_BUYIN : 0;
         const rebuysValor = (jogador.rebuys || 0) * VALOR_REBUY_SIMPLES;
         const addonValor = jogador.addon ? VALOR_ADDON : 0;
@@ -926,6 +1189,7 @@ function atualizarResumo() {
             <tr>
                 <td>${jogador.nome}</td>
                 <td>${mesa}</td>
+                <td>${posicao}</td>
                 <td>R$ ${buyin}</td>
                 <td>${jogador.rebuys || 0} (R$ ${rebuysValor})</td>
                 <td>${jogador.addon ? 'Sim (R$ 50)' : 'Não'}</td>
@@ -960,16 +1224,22 @@ function atualizarEstatisticas() {
     const rankingBody = document.getElementById('rankingBody');
     
     if (ranking.length === 0) {
-        rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Nenhum rebuy registrado</td></tr>';
+        rankingBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Nenhum rebuy registrado</td></tr>';
     } else {
-        rankingBody.innerHTML = ranking.map((j, i) => `
-            <tr>
-                <td>${i + 1}º</td>
-                <td>${j.nome}</td>
-                <td>${j.rebuys}</td>
-                <td>R$ ${j.rebuys * VALOR_REBUY_SIMPLES}</td>
-            </tr>
-        `).join('');
+        rankingBody.innerHTML = ranking.map((j, i) => {
+            const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
+            const posicao = j.posicao || '-';
+            return `
+                <tr>
+                    <td>${i + 1}º</td>
+                    <td>${j.nome}</td>
+                    <td>${mesa}</td>
+                    <td>${posicao}</td>
+                    <td>${j.rebuys}</td>
+                    <td>R$ ${j.rebuys * VALOR_REBUY_SIMPLES}</td>
+                </tr>
+            `;
+        }).join('');
     }
 }
 
@@ -981,18 +1251,19 @@ function exportarCSV() {
         return;
     }
     
-    let csv = 'Nome,Mesa,Buy-in,Antecipado,Rebuys,Addon,Total\n';
+    let csv = 'Nome,Mesa,Posição,Buy-in,Antecipado,Rebuys,Addon,Total\n';
     
     todosJogadores.forEach(j => {
         const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
+        const posicao = j.posicao || '';
         const buyin = (!j.antecipado && !j.buyinPago) ? VALOR_BUYIN : 0;
         const total = calcularTotalJogador(j);
         
-        csv += `"${j.nome}",${mesa},${buyin},${j.antecipado ? 'Sim' : 'Não'},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
+        csv += `"${j.nome}",${mesa},${posicao},${buyin},${j.antecipado ? 'Sim' : 'Não'},${j.rebuys || 0},${j.addon ? 'Sim' : 'Não'},${total}\n`;
     });
     
     const totalGeral = todosJogadores.reduce((sum, j) => sum + calcularTotalJogador(j), 0);
-    csv += `\n"TOTAL GERAL",,,,,,${totalGeral}\n`;
+    csv += `\n"TOTAL GERAL",,,,,,,${totalGeral}\n`;
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
