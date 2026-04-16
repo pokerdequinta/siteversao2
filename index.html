@@ -179,6 +179,15 @@
             max-width: 120px;
         }
         
+        .logo-top h2 {
+            font-family: 'Anton';
+            color: #d4a121;
+            font-size: 1.3em;
+            margin: 0;
+            text-align: center;
+            flex: 1;
+        }
+        
         .btn-voltar-mesa {
             padding: 8px 15px;
             background: #c72c48;
@@ -303,15 +312,18 @@
         .jogador-actions {
             display: flex;
             gap: 3px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
         
         .action-btn {
-            padding: 6px 8px;
+            padding: 6px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.75em;
+            font-size: 0.7em;
+            white-space: nowrap;
         }
         
         .btn-rebuy { background: #FF6600; color: #fff; }
@@ -328,11 +340,33 @@
             align-items: center;
         }
         
+        .timebank-card {
+            background: #102810;
+            border: 2px solid #d4a121;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .timebank-title {
+            font-family: 'Anton';
+            color: #d4a121;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        
+        .timebank-subtitle {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+        
         .cronometro-titulo {
             font-family: 'Anton';
             color: #d4a121;
             font-size: 1.5em;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         .cronometro-display {
@@ -615,7 +649,7 @@
             </div>
         </div>
         
-        <!-- Abas para Resumo e Estatísticas (visíveis apenas no modo organização) -->
+        <!-- Abas para Resumo e Estatísticas -->
         <div style="margin-top: 30px;">
             <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #d4a121;">
                 <button class="nav-tab-admin active" data-admin-tab="resumo" style="padding: 10px 20px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📋 RESUMO FINANCEIRO</button>
@@ -685,6 +719,7 @@
     <div class="left-panel">
         <div class="logo-top">
             <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
+            <h2>CONTROLE DE REBUY</h2>
             <button class="btn-voltar-mesa" id="btnVoltarParaSelecao">↩️ TROCAR DE MESA</button>
         </div>
         
@@ -693,8 +728,6 @@
             <div class="mesa-indicator-text">♠️ MESA PRETA ♠️</div>
             <div style="font-size: 0.9em; opacity: 0.8;">Você está atuando nesta mesa</div>
         </div>
-        
-        <button class="btn btn-warning" id="btnLimparMesa" style="margin-bottom: 15px; width: 100%;">🔄 LIMPAR MESA ATUAL</button>
         
         <div class="jogadores-grid" id="jogadoresGrid">
             <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
@@ -705,8 +738,12 @@
     
     <!-- PAINEL DIREITO - CRONÔMETRO -->
     <div class="right-panel">
+        <div class="timebank-card">
+            <div class="timebank-title">⏱️ TIMEBANK</div>
+            <div class="timebank-subtitle">Tempo para decisão</div>
+        </div>
+        
         <div class="cronometro-container">
-            <div class="cronometro-titulo">⏱️ CRONÔMETRO</div>
             <div class="cronometro-display" id="cronometroDisplay">00:30</div>
             <div class="cronometro-controls">
                 <button class="cronometro-btn iniciar" id="btnIniciarCronometro">▶ INICIAR</button>
@@ -983,14 +1020,6 @@ function aplicarLayoutImportado() {
     atualizarAdminEstatisticas();
 }
 
-// ==================== DEALER ====================
-document.getElementById('btnLimparMesa').addEventListener('click', () => {
-    if (confirm(`Limpar todos os jogadores da mesa ${mesaAtual}?`)) {
-        mesasData[mesaAtual] = [];
-        salvarMesas();
-    }
-});
-
 // ==================== CRONÔMETRO ====================
 document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
 document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
@@ -1108,8 +1137,9 @@ function atualizarIndicadorMesa() {
 function adicionarRebuy(jogadorNome, tipo) {
     const quantidade = tipo === 'simples' ? 1 : 2;
     const valorAdicional = quantidade * VALOR_REBUY;
+    const tipoTexto = tipo === 'simples' ? 'SIMPLES' : 'DUPLO';
     
-    if (confirm(`Confirmar ${quantidade} rebuy${quantidade > 1 ? 's' : ''} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional}`)) {
+    if (confirm(`Confirmar REBUY ${tipoTexto} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional},00`)) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
         if (jogador) {
             jogador.rebuys = (jogador.rebuys || 0) + quantidade;
@@ -1119,7 +1149,7 @@ function adicionarRebuy(jogadorNome, tipo) {
 }
 
 function adicionarAddon(jogadorNome) {
-    if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON}`)) {
+    if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON},00`)) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
         if (jogador) {
             jogador.addon = true;
@@ -1195,9 +1225,9 @@ function atualizarGridJogadores() {
                     </div>
                 </div>
                 <div class="jogador-actions">
-                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">+1</button>
-                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">+2</button>
-                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">Addon</button>` : ''}
+                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">REBUY SIMPLES</button>
+                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">REBUY DUPLO</button>
+                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">ADDON</button>` : ''}
                     <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
                 </div>
             </div>
