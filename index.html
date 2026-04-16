@@ -88,14 +88,6 @@
             box-shadow: 0 0 30px rgba(212, 161, 33, 0.5);
         }
         
-        .selecao-btn.preta:hover {
-            border-color: #fff;
-        }
-        
-        .selecao-btn.amarela:hover {
-            border-color: #000;
-        }
-        
         .admin-link {
             margin-top: 30px;
             color: #d4a121;
@@ -175,7 +167,9 @@
         }
         
         .logo-top {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 10px;
             border-bottom: 2px solid #d4a121;
             margin-bottom: 15px;
@@ -183,6 +177,17 @@
         
         .logo-top img {
             max-width: 120px;
+        }
+        
+        .btn-voltar-mesa {
+            padding: 8px 15px;
+            background: #c72c48;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9em;
         }
         
         h1, h2, h3 {
@@ -221,51 +226,6 @@
             text-transform: uppercase;
         }
         
-        .mesa-indicator.preta .mesa-indicator-text {
-            color: #fff;
-        }
-        
-        .mesa-indicator.amarela .mesa-indicator-text {
-            color: #FFD700;
-        }
-        
-        /* Navegação por abas */
-        .nav-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
-            background: #102810;
-            padding: 5px;
-            border-radius: 10px;
-            border: 1px solid #d4a121;
-        }
-        
-        .nav-tab {
-            flex: 1;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 8px;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-        
-        .nav-tab.active {
-            background: #d4a121;
-            color: #000;
-        }
-        
-        .view-container {
-            display: none;
-        }
-        
-        .view-container.active {
-            display: block;
-        }
-        
         .btn {
             padding: 10px 15px;
             border: none;
@@ -284,7 +244,7 @@
         .jogadores-grid {
             display: grid;
             gap: 8px;
-            max-height: calc(100vh - 350px);
+            max-height: calc(100vh - 250px);
             overflow-y: auto;
         }
         
@@ -655,20 +615,77 @@
             </div>
         </div>
         
+        <!-- Abas para Resumo e Estatísticas (visíveis apenas no modo organização) -->
         <div style="margin-top: 30px;">
-            <button class="btn btn-secondary" id="btnAdminExportarCSV">📊 EXPORTAR CSV COMPLETO</button>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #d4a121;">
+                <button class="nav-tab-admin active" data-admin-tab="resumo" style="padding: 10px 20px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📋 RESUMO FINANCEIRO</button>
+                <button class="nav-tab-admin" data-admin-tab="estatisticas" style="padding: 10px 20px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📈 ESTATÍSTICAS</button>
+            </div>
+            
+            <div id="admin-resumo" class="admin-tab-content">
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table class="resumo-table" id="adminResumoFinanceiro">
+                        <thead>
+                            <tr><th>Jogador</th><th>Mesa</th><th>Pos.</th><th>Buy-in</th><th>Rebuys</th><th>Addon</th><th>Total</th></tr>
+                        </thead>
+                        <tbody id="adminResumoBody"></tbody>
+                    </table>
+                </div>
+                <div class="total-geral" id="adminTotalGeral">TOTAL GERAL: R$ 0,00</div>
+                <button class="btn btn-secondary" id="btnAdminExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV (Nome, Total)</button>
+            </div>
+            
+            <div id="admin-estatisticas" class="admin-tab-content hidden">
+                <div class="stats-mesas">
+                    <div class="stats-mesa-card preta">
+                        <h4>♠️ MESA PRETA</h4>
+                        <div>Jogadores: <span id="adminStatPretaJogadores">0</span></div>
+                        <div>Rebuys: <span class="stats-value" id="adminStatPretaRebuys">0</span></div>
+                        <div>Addons: <span class="stats-value" id="adminStatPretaAddons">0</span></div>
+                        <div>Total: <span id="adminStatPretaTotal">R$ 0</span></div>
+                    </div>
+                    <div class="stats-mesa-card amarela">
+                        <h4>♦️ MESA AMARELA</h4>
+                        <div>Jogadores: <span id="adminStatAmarelaJogadores">0</span></div>
+                        <div>Rebuys: <span class="stats-value" id="adminStatAmarelaRebuys">0</span></div>
+                        <div>Addons: <span class="stats-value" id="adminStatAmarelaAddons">0</span></div>
+                        <div>Total: <span id="adminStatAmarelaTotal">R$ 0</span></div>
+                    </div>
+                </div>
+                
+                <div class="stats-mesas" style="grid-template-columns: 1fr 1fr;">
+                    <div class="stats-mesa-card">
+                        <h4>🔄 TOTAL REBUYS</h4>
+                        <div class="stats-value" id="adminStatTotalRebuys">0</div>
+                    </div>
+                    <div class="stats-mesa-card">
+                        <h4>💎 TOTAL ADDONS</h4>
+                        <div class="stats-value" id="adminStatTotalAddons">0</div>
+                    </div>
+                </div>
+                
+                <h4>🏆 RANKING DE REBUYS</h4>
+                <table class="resumo-table">
+                    <thead>
+                        <tr><th>#</th><th>Jogador</th><th>Mesa</th><th>Rebuys</th></tr>
+                    </thead>
+                    <tbody id="adminRankingBody"></tbody>
+                </table>
+                
+                <button class="btn btn-secondary" id="btnAdminExportarCompleto" style="margin-top: 20px; width: 100%;">📊 EXPORTAR CSV COMPLETO</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- APP PRINCIPAL -->
+<!-- APP PRINCIPAL (DEALER) -->
 <div class="app-container hidden" id="appContainer">
     
     <!-- PAINEL ESQUERDO - ANOTAÇÕES -->
     <div class="left-panel">
         <div class="logo-top">
             <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
-            <h2>🎲 CADERNO DO DEALER</h2>
+            <button class="btn-voltar-mesa" id="btnVoltarParaSelecao">↩️ TROCAR DE MESA</button>
         </div>
         
         <!-- Indicador de Mesa Atual -->
@@ -677,80 +694,12 @@
             <div style="font-size: 0.9em; opacity: 0.8;">Você está atuando nesta mesa</div>
         </div>
         
-        <!-- Navegação -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" data-view="anotacoes">📝 ANOTAÇÕES</button>
-            <button class="nav-tab" data-view="resumo">📋 RESUMO</button>
-            <button class="nav-tab" data-view="estatisticas">📈 ESTATÍSTICAS</button>
-        </div>
+        <button class="btn btn-warning" id="btnLimparMesa" style="margin-bottom: 15px; width: 100%;">🔄 LIMPAR MESA ATUAL</button>
         
-        <!-- View: Anotações -->
-        <div class="view-container active" id="view-anotacoes">
-            <button class="btn btn-warning" id="btnLimparMesa" style="margin-bottom: 15px;">🔄 LIMPAR MESA ATUAL</button>
-            
-            <div class="jogadores-grid" id="jogadoresGrid">
-                <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
-                    Nenhum jogador na mesa. Importe pelo modo Organização.
-                </div>
+        <div class="jogadores-grid" id="jogadoresGrid">
+            <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
+                Nenhum jogador na mesa. Importe pelo modo Organização.
             </div>
-        </div>
-        
-        <!-- View: Resumo Financeiro -->
-        <div class="view-container" id="view-resumo">
-            <h3>📋 RESUMO FINANCEIRO</h3>
-            <div style="max-height: calc(100vh - 250px); overflow-y: auto;">
-                <table class="resumo-table" id="resumoFinanceiro">
-                    <thead>
-                        <tr><th>Jogador</th><th>Mesa</th><th>Pos.</th><th>Buy-in</th><th>Rebuys</th><th>Addon</th><th>Total</th></tr>
-                    </thead>
-                    <tbody id="resumoBody"></tbody>
-                </table>
-            </div>
-            <div class="total-geral" id="totalGeralResumo">TOTAL GERAL: R$ 0,00</div>
-            <button class="btn btn-secondary" id="btnExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV (Nome, Total)</button>
-        </div>
-        
-        <!-- View: Estatísticas -->
-        <div class="view-container" id="view-estatisticas">
-            <h3>📈 ESTATÍSTICAS DA ETAPA</h3>
-            
-            <div class="stats-mesas">
-                <div class="stats-mesa-card preta">
-                    <h4>♠️ MESA PRETA</h4>
-                    <div>Jogadores: <span id="statPretaJogadores">0</span></div>
-                    <div>Rebuys: <span class="stats-value" id="statPretaRebuys">0</span></div>
-                    <div>Addons: <span class="stats-value" id="statPretaAddons">0</span></div>
-                    <div>Total: <span id="statPretaTotal">R$ 0</span></div>
-                </div>
-                <div class="stats-mesa-card amarela">
-                    <h4>♦️ MESA AMARELA</h4>
-                    <div>Jogadores: <span id="statAmarelaJogadores">0</span></div>
-                    <div>Rebuys: <span class="stats-value" id="statAmarelaRebuys">0</span></div>
-                    <div>Addons: <span class="stats-value" id="statAmarelaAddons">0</span></div>
-                    <div>Total: <span id="statAmarelaTotal">R$ 0</span></div>
-                </div>
-            </div>
-            
-            <div class="stats-mesas" style="grid-template-columns: 1fr 1fr;">
-                <div class="stats-mesa-card">
-                    <h4>🔄 TOTAL REBUYS</h4>
-                    <div class="stats-value" id="statTotalRebuys">0</div>
-                </div>
-                <div class="stats-mesa-card">
-                    <h4>💎 TOTAL ADDONS</h4>
-                    <div class="stats-value" id="statTotalAddons">0</div>
-                </div>
-            </div>
-            
-            <h4>🏆 RANKING DE REBUYS</h4>
-            <table class="resumo-table">
-                <thead>
-                    <tr><th>#</th><th>Jogador</th><th>Mesa</th><th>Rebuys</th></tr>
-                </thead>
-                <tbody id="rankingBody"></tbody>
-            </table>
-            
-            <button class="btn btn-secondary" id="btnVoltarSelecao" style="margin-top: 20px; width: 100%;">↩️ TROCAR DE MESA</button>
         </div>
     </div>
     
@@ -839,8 +788,8 @@ onValue(ref(db, 'mesas'), (snapshot) => {
     if (snapshot.exists()) mesasData = snapshot.val();
     else mesasData = { preta: [], amarela: [] };
     atualizarInterface();
-    atualizarResumo();
-    atualizarEstatisticas();
+    atualizarAdminResumo();
+    atualizarAdminEstatisticas();
 });
 
 // ==================== SELEÇÃO DE MESA ====================
@@ -861,12 +810,21 @@ function iniciarApp() {
     atualizarGridJogadores();
 }
 
+// Botão voltar para seleção de mesa
+document.getElementById('btnVoltarParaSelecao').addEventListener('click', () => {
+    pausarCronometro();
+    document.getElementById('appContainer').classList.add('hidden');
+    document.getElementById('telaSelecao').classList.remove('hidden');
+});
+
 // ==================== MODO ADMIN ====================
 document.getElementById('btnAbrirAdmin').addEventListener('click', () => {
     const senha = prompt('Digite a senha de organização:');
     if (senha === 'poker2026') {
         document.getElementById('telaSelecao').classList.add('hidden');
         document.getElementById('telaAdmin').classList.remove('hidden');
+        atualizarAdminResumo();
+        atualizarAdminEstatisticas();
     } else if (senha !== null) {
         alert('Senha incorreta!');
     }
@@ -877,11 +835,31 @@ document.getElementById('btnVoltarAdmin').addEventListener('click', () => {
     document.getElementById('telaSelecao').classList.remove('hidden');
 });
 
-document.getElementById('btnVoltarSelecao').addEventListener('click', () => {
-    pausarCronometro();
-    document.getElementById('appContainer').classList.add('hidden');
-    document.getElementById('telaSelecao').classList.remove('hidden');
+// Abas do Admin
+document.querySelectorAll('.nav-tab-admin').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab-admin').forEach(t => {
+            t.classList.remove('active');
+            t.style.background = 'transparent';
+            t.style.color = '#fff';
+        });
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+        
+        tab.classList.add('active');
+        tab.style.background = '#d4a121';
+        tab.style.color = '#000';
+        
+        const tabId = tab.dataset.adminTab;
+        document.getElementById(`admin-${tabId}`).classList.remove('hidden');
+        
+        if (tabId === 'resumo') atualizarAdminResumo();
+        if (tabId === 'estatisticas') atualizarAdminEstatisticas();
+    });
 });
+
+// Inicializar primeira aba do admin
+document.querySelector('.nav-tab-admin').style.background = '#d4a121';
+document.querySelector('.nav-tab-admin').style.color = '#000';
 
 // ==================== ADMIN - IMPORTAÇÃO ====================
 const fileInput = document.getElementById('fileInput');
@@ -904,10 +882,13 @@ document.getElementById('btnLimparTudo').addEventListener('click', () => {
         mesasData = { preta: [], amarela: [] };
         salvarMesas();
         alert('✅ Mesas limpas!');
+        atualizarAdminResumo();
+        atualizarAdminEstatisticas();
     }
 });
 
-document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSVCompleto);
+document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSV);
+document.getElementById('btnAdminExportarCompleto').addEventListener('click', exportarCSVCompleto);
 
 function processarLayout() {
     if (!arquivoSelecionado) { alert('Selecione um arquivo!'); return; }
@@ -965,7 +946,6 @@ function mostrarPreviewAdmin() {
     
     document.getElementById('previewMesas').style.display = 'grid';
     
-    // Botão para confirmar
     const btnConfirmar = document.createElement('button');
     btnConfirmar.className = 'btn btn-success';
     btnConfirmar.textContent = '✅ CONFIRMAR E APLICAR LAYOUT';
@@ -999,6 +979,8 @@ function aplicarLayoutImportado() {
     
     salvarMesas();
     alert(`✅ Layout aplicado!\nMesa Preta: ${mesasData.preta.length} jogadores\nMesa Amarela: ${mesasData.amarela.length} jogadores`);
+    atualizarAdminResumo();
+    atualizarAdminEstatisticas();
 }
 
 // ==================== DEALER ====================
@@ -1009,27 +991,11 @@ document.getElementById('btnLimparMesa').addEventListener('click', () => {
     }
 });
 
-document.getElementById('btnExportarCSV').addEventListener('click', exportarCSV);
-
-// Navegação
-document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`view-${tab.dataset.view}`).classList.add('active');
-        
-        if (tab.dataset.view === 'resumo') atualizarResumo();
-        if (tab.dataset.view === 'estatisticas') atualizarEstatisticas();
-    });
-});
-
 // ==================== CRONÔMETRO ====================
 document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
 document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
 document.getElementById('cronometroDisplay').addEventListener('click', toggleCronometro);
 
-// Inicializar áudio
 function initAudio() {
     if (!audioContext) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1101,7 +1067,6 @@ function tocarAlarme() {
     if (!alarmeTocando) {
         alarmeTocando = true;
         
-        // Tocar beep usando Web Audio API
         if (audioContext) {
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
@@ -1120,7 +1085,6 @@ function tocarAlarme() {
             }, 500);
         }
         
-        // Vibração
         if (navigator.vibrate) {
             navigator.vibrate([200, 100, 200, 100, 200]);
         }
@@ -1241,13 +1205,13 @@ function atualizarGridJogadores() {
     }).join('');
 }
 
-function atualizarResumo() {
+function atualizarAdminResumo() {
     const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
-    const tbody = document.getElementById('resumoBody');
+    const tbody = document.getElementById('adminResumoBody');
     
     if (todosJogadores.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></tr>';
-        document.getElementById('totalGeralResumo').textContent = 'TOTAL GERAL: R$ 0,00';
+        document.getElementById('adminTotalGeral').textContent = 'TOTAL GERAL: R$ 0,00';
         return;
     }
     
@@ -1272,10 +1236,10 @@ function atualizarResumo() {
         `;
     }).join('');
     
-    document.getElementById('totalGeralResumo').textContent = `TOTAL GERAL: R$ ${totalGeral},00`;
+    document.getElementById('adminTotalGeral').textContent = `TOTAL GERAL: R$ ${totalGeral},00`;
 }
 
-function atualizarEstatisticas() {
+function atualizarAdminEstatisticas() {
     const preta = mesasData.preta || [];
     const amarela = mesasData.amarela || [];
     const todos = [...preta, ...amarela];
@@ -1288,24 +1252,24 @@ function atualizarEstatisticas() {
     const amarAddons = amarela.filter(j => j.addon).length;
     const amarTotal = amarela.reduce((s, j) => s + calcularTotalJogador(j), 0);
     
-    document.getElementById('statPretaJogadores').textContent = preta.length;
-    document.getElementById('statPretaRebuys').textContent = pretRebuys;
-    document.getElementById('statPretaAddons').textContent = pretAddons;
-    document.getElementById('statPretaTotal').textContent = `R$ ${pretTotal}`;
+    document.getElementById('adminStatPretaJogadores').textContent = preta.length;
+    document.getElementById('adminStatPretaRebuys').textContent = pretRebuys;
+    document.getElementById('adminStatPretaAddons').textContent = pretAddons;
+    document.getElementById('adminStatPretaTotal').textContent = `R$ ${pretTotal}`;
     
-    document.getElementById('statAmarelaJogadores').textContent = amarela.length;
-    document.getElementById('statAmarelaRebuys').textContent = amarRebuys;
-    document.getElementById('statAmarelaAddons').textContent = amarAddons;
-    document.getElementById('statAmarelaTotal').textContent = `R$ ${amarTotal}`;
+    document.getElementById('adminStatAmarelaJogadores').textContent = amarela.length;
+    document.getElementById('adminStatAmarelaRebuys').textContent = amarRebuys;
+    document.getElementById('adminStatAmarelaAddons').textContent = amarAddons;
+    document.getElementById('adminStatAmarelaTotal').textContent = `R$ ${amarTotal}`;
     
     const totalRebuys = todos.reduce((s, j) => s + (j.rebuys || 0), 0);
     const totalAddons = todos.filter(j => j.addon).length;
     
-    document.getElementById('statTotalRebuys').textContent = totalRebuys;
-    document.getElementById('statTotalAddons').textContent = totalAddons;
+    document.getElementById('adminStatTotalRebuys').textContent = totalRebuys;
+    document.getElementById('adminStatTotalAddons').textContent = totalAddons;
     
     const ranking = todos.filter(j => (j.rebuys || 0) > 0).sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0)).slice(0, 5);
-    const rankingBody = document.getElementById('rankingBody');
+    const rankingBody = document.getElementById('adminRankingBody');
     
     if (ranking.length === 0) {
         rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum rebuy</td></tr>';
