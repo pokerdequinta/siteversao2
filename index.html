@@ -666,7 +666,7 @@
                     </table>
                 </div>
                 <div class="total-geral" id="adminTotalGeral">TOTAL GERAL: R$ 0,00</div>
-                <button class="btn btn-secondary" id="btnAdminExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV (Nome, Total)</button>
+                <button class="btn btn-secondary" id="btnAdminExportarCSV" style="margin-top: 15px; width: 100%;">📊 EXPORTAR CSV (Nome, Rebuys, Addons)</button>
             </div>
             
             <div id="admin-estatisticas" class="admin-tab-content hidden">
@@ -924,7 +924,7 @@ document.getElementById('btnLimparTudo').addEventListener('click', () => {
     }
 });
 
-document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSV);
+document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSVSimples);
 document.getElementById('btnAdminExportarCompleto').addEventListener('click', exportarCSVCompleto);
 
 function processarLayout() {
@@ -1311,19 +1311,21 @@ function atualizarAdminEstatisticas() {
     }
 }
 
-function exportarCSV() {
+// NOVA FUNÇÃO - Exporta apenas Nome, Rebuys e Addons
+function exportarCSVSimples() {
     const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
-    let csv = 'Nome,Total\n';
+    let csv = 'Nome,Rebuys,Addons\n';
     todosJogadores.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(j => {
-        csv += `"${j.nome}",${calcularTotalJogador(j)}\n`;
+        const addonValue = j.addon ? 1 : 0;
+        csv += `"${j.nome}",${j.rebuys || 0},${addonValue}\n`;
     });
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `valores-poker-etapa${config.etapa}.csv`;
+    link.download = `rebuy-addon-etapa${config.etapa}.csv`;
     link.click();
 }
 
