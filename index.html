@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Caderno do Dealer - Poker de Quinta</title>
     
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
@@ -25,7 +24,6 @@
             min-height: 100vh;
         }
         
-        /* Tela de Seleção de Mesa */
         .tela-selecao {
             display: flex;
             flex-direction: column;
@@ -105,7 +103,6 @@
             opacity: 1;
         }
         
-        /* App Principal */
         .app-container {
             display: flex;
             height: 100vh;
@@ -116,7 +113,6 @@
             display: none;
         }
         
-        /* Tela Admin */
         .tela-admin {
             min-height: 100vh;
             padding: 20px;
@@ -151,7 +147,6 @@
             cursor: pointer;
         }
         
-        /* Painel Esquerdo - Anotações */
         .left-panel {
             width: 60%;
             height: 100vh;
@@ -160,7 +155,6 @@
             border-right: 2px solid #d4a121;
         }
         
-        /* Painel Direito - Cronômetro */
         .right-panel {
             width: 40%;
             height: 100vh;
@@ -213,7 +207,6 @@
         h2 { font-size: 1.3em; margin-bottom: 10px; }
         h3 { font-size: 1.1em; margin-bottom: 8px; }
         
-        /* Indicador de Mesa Atual */
         .mesa-indicator {
             background: #102810;
             border: 3px solid #d4a121;
@@ -335,7 +328,6 @@
         .btn-addon { background: #4CAF50; color: #fff; }
         .btn-corrigir { background: #FFA500; color: #000; }
         
-        /* Cronômetro */
         .cronometro-container {
             flex: 1;
             display: flex;
@@ -364,13 +356,6 @@
         .timebank-subtitle {
             font-size: 0.8em;
             opacity: 0.8;
-        }
-        
-        .cronometro-titulo {
-            font-family: 'Anton';
-            color: #d4a121;
-            font-size: 1.5em;
-            margin-bottom: 10px;
         }
         
         .cronometro-display {
@@ -429,7 +414,6 @@
             color: #fff;
         }
         
-        /* Tabelas */
         .resumo-table {
             width: 100%;
             border-collapse: collapse;
@@ -586,7 +570,6 @@
             display: none !important;
         }
         
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -605,7 +588,6 @@
 
 <div class="status-indicator" id="statusIndicator">🔄 Conectando...</div>
 
-<!-- TELA DE SELEÇÃO DE MESA -->
 <div class="tela-selecao" id="telaSelecao">
     <div class="selecao-container">
         <div class="selecao-logo">
@@ -620,7 +602,6 @@
     </div>
 </div>
 
-<!-- TELA ADMIN -->
 <div class="tela-admin hidden" id="telaAdmin">
     <div class="admin-container">
         <div class="admin-header">
@@ -634,7 +615,7 @@
                 Selecione o arquivo HTML exportado do Tournament Director.
             </p>
             <div class="flex-row">
-                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click(); return false;">📁 ESCOLHER ARQUIVO HTML</button>
+                <button class="btn btn-primary" id="btnEscolherArquivo">📁 ESCOLHER ARQUIVO HTML</button>
                 <input type="file" id="fileInput" accept=".html,.htm" style="display: none;" />
                 <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR</button>
                 <button class="btn btn-warning" id="btnLimparTudo">🔄 LIMPAR TUDO</button>
@@ -653,10 +634,9 @@
             </div>
         </div>
         
-        <!-- Abas para Resumo e Estatísticas -->
         <div style="margin-top: 30px;">
             <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #d4a121;">
-                <button class="nav-tab-admin active" data-admin-tab="resumo" style="padding: 10px 20px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📋 RESUMO FINANCEIRO</button>
+                <button class="nav-tab-admin active" data-admin-tab="resumo" style="padding: 10px 20px; background: #d4a121; border: none; color: #000; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📋 RESUMO FINANCEIRO</button>
                 <button class="nav-tab-admin" data-admin-tab="estatisticas" style="padding: 10px 20px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;">📈 ESTATÍSTICAS</button>
             </div>
             
@@ -716,10 +696,7 @@
     </div>
 </div>
 
-<!-- APP PRINCIPAL (DEALER) -->
 <div class="app-container hidden" id="appContainer">
-    
-    <!-- PAINEL ESQUERDO - ANOTAÇÕES -->
     <div class="left-panel">
         <div class="logo-top">
             <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
@@ -727,7 +704,6 @@
             <button class="btn-voltar-mesa" id="btnVoltarParaSelecao">↩️ TROCAR DE MESA</button>
         </div>
         
-        <!-- Indicador de Mesa Atual -->
         <div class="mesa-indicator preta" id="mesaIndicator">
             <div class="mesa-indicator-text">♠️ MESA PRETA ♠️</div>
             <div style="font-size: 0.9em; opacity: 0.8;">Você está atuando nesta mesa</div>
@@ -740,7 +716,6 @@
         </div>
     </div>
     
-    <!-- PAINEL DIREITO - CRONÔMETRO -->
     <div class="right-panel">
         <div class="timebank-card">
             <div class="timebank-title">⏱️ TIMEBANK</div>
@@ -758,7 +733,6 @@
     </div>
 </div>
 
-<!-- Modal Corrigir -->
 <div class="modal" id="modalCorrigir">
     <div class="modal-content">
         <h3>🔧 Corrigir valores</h3>
@@ -807,13 +781,10 @@ let layoutImportado = { preta: [], amarela: [] };
 let arquivoSelecionado = null;
 let jogadorCorrigindo = null;
 
-// Cronômetro
 let cronometroTempo = TEMPO_INICIAL;
 let cronometroAtivo = false;
 let cronometroInterval = null;
 let alarmeTocando = false;
-
-// Áudio
 let audioContext = null;
 let fotosJogadores = {};
 
@@ -836,30 +807,27 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarAdminEstatisticas();
     });
     
-    // Inicializar eventos
     inicializarEventos();
 });
 
 function inicializarEventos() {
-    // Seleção de mesa
-    document.getElementById('btnSelecionarPreta').addEventListener('click', () => {
+    document.getElementById('btnSelecionarPreta').onclick = () => {
         mesaAtual = 'preta';
         iniciarApp();
-    });
+    };
     
-    document.getElementById('btnSelecionarAmarela').addEventListener('click', () => {
+    document.getElementById('btnSelecionarAmarela').onclick = () => {
         mesaAtual = 'amarela';
         iniciarApp();
-    });
+    };
     
-    document.getElementById('btnVoltarParaSelecao').addEventListener('click', () => {
+    document.getElementById('btnVoltarParaSelecao').onclick = () => {
         pausarCronometro();
         document.getElementById('appContainer').classList.add('hidden');
         document.getElementById('telaSelecao').classList.remove('hidden');
-    });
+    };
     
-    // Admin
-    document.getElementById('btnAbrirAdmin').addEventListener('click', () => {
+    document.getElementById('btnAbrirAdmin').onclick = () => {
         const senha = prompt('Digite a senha de organização:');
         if (senha === 'poker2026') {
             document.getElementById('telaSelecao').classList.add('hidden');
@@ -869,58 +837,50 @@ function inicializarEventos() {
         } else if (senha !== null) {
             alert('Senha incorreta!');
         }
-    });
+    };
     
-    document.getElementById('btnVoltarAdmin').addEventListener('click', () => {
+    document.getElementById('btnVoltarAdmin').onclick = () => {
         document.getElementById('telaAdmin').classList.add('hidden');
         document.getElementById('telaSelecao').classList.remove('hidden');
-    });
+    };
     
-    // Cronômetro
-    document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
-    document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
-    document.getElementById('cronometroDisplay').addEventListener('click', toggleCronometro);
+    document.getElementById('btnIniciarCronometro').onclick = toggleCronometro;
+    document.getElementById('btnZerarCronometro').onclick = zerarCronometro;
+    document.getElementById('cronometroDisplay').onclick = toggleCronometro;
     
-    // Modal
-    document.getElementById('btnCancelarCorrigir').addEventListener('click', () => {
+    document.getElementById('btnCancelarCorrigir').onclick = () => {
         document.getElementById('modalCorrigir').classList.remove('active');
-    });
-    document.getElementById('btnSalvarCorrigir').addEventListener('click', salvarCorrecao);
+    };
+    document.getElementById('btnSalvarCorrigir').onclick = salvarCorrecao;
     
     // Admin tabs
     document.querySelectorAll('.nav-tab-admin').forEach(tab => {
-        tab.addEventListener('click', () => {
+        tab.onclick = () => {
             document.querySelectorAll('.nav-tab-admin').forEach(t => {
-                t.classList.remove('active');
                 t.style.background = 'transparent';
                 t.style.color = '#fff';
             });
             document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
             
-            tab.classList.add('active');
             tab.style.background = '#d4a121';
             tab.style.color = '#000';
             
-            const tabId = tab.dataset.adminTab;
+            const tabId = tab.getAttribute('data-admin-tab');
             document.getElementById(`admin-${tabId}`).classList.remove('hidden');
             
             if (tabId === 'resumo') atualizarAdminResumo();
             if (tabId === 'estatisticas') atualizarAdminEstatisticas();
-        });
+        };
     });
     
-    // Inicializar primeira aba do admin
-    const firstTab = document.querySelector('.nav-tab-admin');
-    if (firstTab) {
-        firstTab.style.background = '#d4a121';
-        firstTab.style.color = '#000';
-    }
+    document.getElementById('btnEscolherArquivo').onclick = () => {
+        document.getElementById('fileInput').click();
+    };
     
-    // Importação
     const fileInput = document.getElementById('fileInput');
     const btnProcessarLayout = document.getElementById('btnProcessarLayout');
     
-    fileInput.addEventListener('change', (e) => {
+    fileInput.onchange = (e) => {
         const file = e.target.files[0];
         if (file) {
             arquivoSelecionado = file;
@@ -928,11 +888,11 @@ function inicializarEventos() {
             document.getElementById('importResult').classList.add('show');
             document.getElementById('importResult').innerHTML = `📄 ${file.name}`;
         }
-    });
+    };
     
-    btnProcessarLayout.addEventListener('click', processarLayout);
+    btnProcessarLayout.onclick = processarLayout;
     
-    document.getElementById('btnLimparTudo').addEventListener('click', () => {
+    document.getElementById('btnLimparTudo').onclick = () => {
         if (confirm('Limpar TODOS os dados das duas mesas?')) {
             mesasData = { preta: [], amarela: [] };
             salvarMesas();
@@ -940,10 +900,10 @@ function inicializarEventos() {
             atualizarAdminResumo();
             atualizarAdminEstatisticas();
         }
-    });
+    };
     
-    document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSVSimples);
-    document.getElementById('btnAdminExportarCompleto').addEventListener('click', exportarCSVCompleto);
+    document.getElementById('btnAdminExportarCSV').onclick = exportarCSVSimples;
+    document.getElementById('btnAdminExportarCompleto').onclick = exportarCSVCompleto;
 }
 
 function iniciarApp() {
@@ -1055,7 +1015,8 @@ function initAudio() {
     }
 }
 
-function adicionarRebuy(jogadorNome, tipo) {
+// Funções globais para serem chamadas pelo HTML
+window.adicionarRebuy = function(jogadorNome, tipo) {
     const quantidade = tipo === 'simples' ? 1 : 2;
     const valorAdicional = quantidade * VALOR_REBUY;
     const tipoTexto = tipo === 'simples' ? 'SIMPLES' : 'DUPLO';
@@ -1067,9 +1028,9 @@ function adicionarRebuy(jogadorNome, tipo) {
             salvarMesas();
         }
     }
-}
+};
 
-function adicionarAddon(jogadorNome) {
+window.adicionarAddon = function(jogadorNome) {
     if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON},00`)) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
         if (jogador) {
@@ -1077,9 +1038,9 @@ function adicionarAddon(jogadorNome) {
             salvarMesas();
         }
     }
-}
+};
 
-function abrirCorrecao(jogadorNome) {
+window.abrirCorrecao = function(jogadorNome) {
     const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
     if (jogador) {
         jogadorCorrigindo = jogadorNome;
@@ -1088,7 +1049,7 @@ function abrirCorrecao(jogadorNome) {
         document.getElementById('corrigirAddon').checked = jogador.addon || false;
         document.getElementById('modalCorrigir').classList.add('active');
     }
-}
+};
 
 function salvarCorrecao() {
     if (jogadorCorrigindo) {
@@ -1369,12 +1330,6 @@ function exportarCSVCompleto() {
     link.download = `caixa-completo-etapa${config.etapa}.csv`;
     link.click();
 }
-
-// Expor funções globalmente
-window.adicionarRebuy = adicionarRebuy;
-window.adicionarAddon = adicionarAddon;
-window.abrirCorrecao = abrirCorrecao;
 </script>
 </body>
 </html>
-```
