@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Caderno do Dealer - Poker de Quinta</title>
     
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
         
@@ -775,10 +778,8 @@
     </div>
 </div>
 
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-
+<script>
+// Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD_XXjcjJYM73wLTTzpDgzKCOZnztcJhjE",
     authDomain: "poker-de-quinta.firebaseapp.com",
@@ -789,8 +790,9 @@ const firebaseConfig = {
     appId: "1:776724152456:web:fbffde9a1c1a7628c61f3d"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 const VALOR_BUYIN = 100;
 const VALOR_REBUY = 30;
@@ -814,31 +816,134 @@ let alarmeTocando = false;
 let audioContext = null;
 let fotosJogadores = {};
 
-// Inicialização
-document.getElementById('statusIndicator').textContent = '✅ Conectado';
-document.getElementById('statusIndicator').classList.add('connected');
-
-// Carregar dados
-onValue(ref(db, 'config'), (snapshot) => { if (snapshot.exists()) config = snapshot.val(); });
-onValue(ref(db, 'fotosJogadores'), (snapshot) => { if (snapshot.exists()) fotosJogadores = snapshot.val(); });
-onValue(ref(db, 'mesas'), (snapshot) => {
-    if (snapshot.exists()) mesasData = snapshot.val();
-    else mesasData = { preta: [], amarela: [] };
-    atualizarInterface();
-    atualizarAdminResumo();
-    atualizarAdminEstatisticas();
+// Aguardar DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('statusIndicator').textContent = '✅ Conectado';
+    
+    // Carregar dados
+    db.ref('config').on('value', (snapshot) => { 
+        if (snapshot.exists()) config = snapshot.val(); 
+    });
+    db.ref('fotosJogadores').on('value', (snapshot) => { 
+        if (snapshot.exists()) fotosJogadores = snapshot.val(); 
+    });
+    db.ref('mesas').on('value', (snapshot) => {
+        if (snapshot.exists()) mesasData = snapshot.val();
+        else mesasData = { preta: [], amarela: [] };
+        atualizarInterface();
+        atualizarAdminResumo();
+        atualizarAdminEstatisticas();
+    });
+    
+    // Inicializar eventos
+    inicializarEventos();
 });
 
-// ==================== SELEÇÃO DE MESA ====================
-document.getElementById('btnSelecionarPreta').addEventListener('click', () => {
-    mesaAtual = 'preta';
-    iniciarApp();
-});
-
-document.getElementById('btnSelecionarAmarela').addEventListener('click', () => {
-    mesaAtual = 'amarela';
-    iniciarApp();
-});
+function inicializarEventos() {
+    // Seleção de mesa
+    document.getElementById('btnSelecionarPreta').addEventListener('click', () => {
+        mesaAtual = 'preta';
+        iniciarApp();
+    });
+    
+    document.getElementById('btnSelecionarAmarela').addEventListener('click', () => {
+        mesaAtual = 'amarela';
+        iniciarApp();
+    });
+    
+    document.getElementById('btnVoltarParaSelecao').addEventListener('click', () => {
+        pausarCronometro();
+        document.getElementById('appContainer').classList.add('hidden');
+        document.getElementById('telaSelecao').classList.remove('hidden');
+    });
+    
+    // Admin
+    document.getElementById('btnAbrirAdmin').addEventListener('click', () => {
+        const senha = prompt('Digite a senha de organização:');
+        if (senha === 'poker2026') {
+            document.getElementById('telaSelecao').classList.add('hidden');
+            document.getElementById('telaAdmin').classList.remove('hidden');
+            atualizarAdminResumo();
+            atualizarAdminEstatisticas();
+        } else if (senha !== null) {
+            alert('Senha incorreta!');
+        }
+    });
+    
+    document.getElementById('btnVoltarAdmin').addEventListener('click', () => {
+        document.getElementById('telaAdmin').classList.add('hidden');
+        document.getElementById('telaSelecao').classList.remove('hidden');
+    });
+    
+    // Cronômetro
+    document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
+    document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
+    document.getElementById('cronometroDisplay').addEventListener('click', toggleCronometro);
+    
+    // Modal
+    document.getElementById('btnCancelarCorrigir').addEventListener('click', () => {
+        document.getElementById('modalCorrigir').classList.remove('active');
+    });
+    document.getElementById('btnSalvarCorrigir').addEventListener('click', salvarCorrecao);
+    
+    // Admin tabs
+    document.querySelectorAll('.nav-tab-admin').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.nav-tab-admin').forEach(t => {
+                t.classList.remove('active');
+                t.style.background = 'transparent';
+                t.style.color = '#fff';
+            });
+            document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+            
+            tab.classList.add('active');
+            tab.style.background = '#d4a121';
+            tab.style.color = '#000';
+            
+            const tabId = tab.dataset.adminTab;
+            document.getElementById(`admin-${tabId}`).classList.remove('hidden');
+            
+            if (tabId === 'resumo') atualizarAdminResumo();
+            if (tabId === 'estatisticas') atualizarAdminEstatisticas();
+        });
+    });
+    
+    // Inicializar primeira aba do admin
+    const firstTab = document.querySelector('.nav-tab-admin');
+    if (firstTab) {
+        firstTab.style.background = '#d4a121';
+        firstTab.style.color = '#000';
+    }
+    
+    // Importação
+    const fileInput = document.getElementById('fileInput');
+    const btnProcessarLayout = document.getElementById('btnProcessarLayout');
+    
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            arquivoSelecionado = file;
+            btnProcessarLayout.style.display = 'inline-block';
+            document.getElementById('importResult').classList.add('show');
+            document.getElementById('importResult').innerHTML = `📄 ${file.name}`;
+        }
+    });
+    
+    btnProcessarLayout.addEventListener('click', processarLayout);
+    
+    document.getElementById('btnLimparTudo').addEventListener('click', () => {
+        if (confirm('Limpar TODOS os dados das duas mesas?')) {
+            mesasData = { preta: [], amarela: [] };
+            salvarMesas();
+            alert('✅ Mesas limpas!');
+            atualizarAdminResumo();
+            atualizarAdminEstatisticas();
+        }
+    });
+    
+    document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSVSimples);
+    document.getElementById('btnAdminExportarCompleto').addEventListener('click', exportarCSVCompleto);
+}
 
 function iniciarApp() {
     document.getElementById('telaSelecao').classList.add('hidden');
@@ -847,85 +952,284 @@ function iniciarApp() {
     atualizarGridJogadores();
 }
 
-// Botão voltar para seleção de mesa
-document.getElementById('btnVoltarParaSelecao').addEventListener('click', () => {
+function atualizarIndicadorMesa() {
+    const indicator = document.getElementById('mesaIndicator');
+    indicator.className = `mesa-indicator ${mesaAtual}`;
+    const texto = mesaAtual === 'preta' ? '♠️ MESA PRETA ♠️' : '♦️ MESA AMARELA ♦️';
+    indicator.querySelector('.mesa-indicator-text').textContent = texto;
+}
+
+function toggleCronometro() {
+    initAudio();
+    if (cronometroAtivo) {
+        pausarCronometro();
+    } else {
+        iniciarCronometro();
+    }
+}
+
+function iniciarCronometro() {
+    if (!cronometroAtivo && cronometroTempo > 0) {
+        cronometroAtivo = true;
+        alarmeTocando = false;
+        document.getElementById('btnIniciarCronometro').textContent = '⏸ PAUSAR';
+        document.getElementById('cronometroDisplay').classList.remove('finished', 'warning');
+        cronometroInterval = setInterval(() => {
+            if (cronometroTempo > 0) {
+                cronometroTempo--;
+                atualizarCronometroDisplay();
+                
+                if (cronometroTempo === 0) {
+                    tocarAlarme();
+                    pausarCronometro();
+                }
+            }
+        }, 1000);
+    }
+}
+
+function pausarCronometro() {
+    cronometroAtivo = false;
+    document.getElementById('btnIniciarCronometro').textContent = '▶ INICIAR';
+    if (cronometroInterval) {
+        clearInterval(cronometroInterval);
+        cronometroInterval = null;
+    }
+}
+
+function zerarCronometro() {
     pausarCronometro();
-    document.getElementById('appContainer').classList.add('hidden');
-    document.getElementById('telaSelecao').classList.remove('hidden');
-});
+    cronometroTempo = TEMPO_INICIAL;
+    alarmeTocando = false;
+    atualizarCronometroDisplay();
+    document.getElementById('cronometroDisplay').classList.remove('finished', 'warning');
+}
 
-// ==================== MODO ADMIN ====================
-document.getElementById('btnAbrirAdmin').addEventListener('click', () => {
-    const senha = prompt('Digite a senha de organização:');
-    if (senha === 'poker2026') {
-        document.getElementById('telaSelecao').classList.add('hidden');
-        document.getElementById('telaAdmin').classList.remove('hidden');
-        atualizarAdminResumo();
-        atualizarAdminEstatisticas();
-    } else if (senha !== null) {
-        alert('Senha incorreta!');
+function atualizarCronometroDisplay() {
+    const minutos = Math.floor(cronometroTempo / 60);
+    const segundos = cronometroTempo % 60;
+    const display = document.getElementById('cronometroDisplay');
+    display.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    
+    display.classList.remove('warning', 'finished');
+    
+    if (cronometroTempo === 0) {
+        display.classList.add('finished');
+    } else if (cronometroTempo <= 5) {
+        display.classList.add('warning');
     }
-});
+}
 
-document.getElementById('btnVoltarAdmin').addEventListener('click', () => {
-    document.getElementById('telaAdmin').classList.add('hidden');
-    document.getElementById('telaSelecao').classList.remove('hidden');
-});
-
-// Abas do Admin
-document.querySelectorAll('.nav-tab-admin').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab-admin').forEach(t => {
-            t.classList.remove('active');
-            t.style.background = 'transparent';
-            t.style.color = '#fff';
-        });
-        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+function tocarAlarme() {
+    if (!alarmeTocando) {
+        alarmeTocando = true;
         
-        tab.classList.add('active');
-        tab.style.background = '#d4a121';
-        tab.style.color = '#000';
+        if (audioContext) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'square';
+            gainNode.gain.value = 0.3;
+            
+            oscillator.start();
+            
+            setTimeout(() => {
+                oscillator.stop();
+            }, 500);
+        }
         
-        const tabId = tab.dataset.adminTab;
-        document.getElementById(`admin-${tabId}`).classList.remove('hidden');
-        
-        if (tabId === 'resumo') atualizarAdminResumo();
-        if (tabId === 'estatisticas') atualizarAdminEstatisticas();
-    });
-});
-
-// Inicializar primeira aba do admin
-document.querySelector('.nav-tab-admin').style.background = '#d4a121';
-document.querySelector('.nav-tab-admin').style.color = '#000';
-
-// ==================== ADMIN - IMPORTAÇÃO ====================
-const fileInput = document.getElementById('fileInput');
-const btnProcessarLayout = document.getElementById('btnProcessarLayout');
-
-fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        arquivoSelecionado = file;
-        btnProcessarLayout.style.display = 'inline-block';
-        document.getElementById('importResult').classList.add('show');
-        document.getElementById('importResult').innerHTML = `📄 ${file.name}`;
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200, 100, 200]);
+        }
     }
-});
+}
 
-btnProcessarLayout.addEventListener('click', processarLayout);
-
-document.getElementById('btnLimparTudo').addEventListener('click', () => {
-    if (confirm('Limpar TODOS os dados das duas mesas?')) {
-        mesasData = { preta: [], amarela: [] };
-        salvarMesas();
-        alert('✅ Mesas limpas!');
-        atualizarAdminResumo();
-        atualizarAdminEstatisticas();
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
-});
+}
 
-document.getElementById('btnAdminExportarCSV').addEventListener('click', exportarCSVSimples);
-document.getElementById('btnAdminExportarCompleto').addEventListener('click', exportarCSVCompleto);
+function adicionarRebuy(jogadorNome, tipo) {
+    const quantidade = tipo === 'simples' ? 1 : 2;
+    const valorAdicional = quantidade * VALOR_REBUY;
+    const tipoTexto = tipo === 'simples' ? 'SIMPLES' : 'DUPLO';
+    
+    if (confirm(`Confirmar REBUY ${tipoTexto} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional},00`)) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+        if (jogador) {
+            jogador.rebuys = (jogador.rebuys || 0) + quantidade;
+            salvarMesas();
+        }
+    }
+}
+
+function adicionarAddon(jogadorNome) {
+    if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON},00`)) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+        if (jogador) {
+            jogador.addon = true;
+            salvarMesas();
+        }
+    }
+}
+
+function abrirCorrecao(jogadorNome) {
+    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
+    if (jogador) {
+        jogadorCorrigindo = jogadorNome;
+        document.getElementById('corrigirJogadorNome').textContent = jogadorNome;
+        document.getElementById('corrigirRebuys').value = jogador.rebuys || 0;
+        document.getElementById('corrigirAddon').checked = jogador.addon || false;
+        document.getElementById('modalCorrigir').classList.add('active');
+    }
+}
+
+function salvarCorrecao() {
+    if (jogadorCorrigindo) {
+        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorCorrigindo);
+        if (jogador) {
+            jogador.rebuys = parseInt(document.getElementById('corrigirRebuys').value) || 0;
+            jogador.addon = document.getElementById('corrigirAddon').checked;
+            salvarMesas();
+        }
+    }
+    document.getElementById('modalCorrigir').classList.remove('active');
+    jogadorCorrigindo = null;
+}
+
+function salvarMesas() {
+    db.ref('mesas').set(mesasData);
+}
+
+function getFotoJogador(nome) {
+    return fotosJogadores[nome] || `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=d4a121&color=000&size=45`;
+}
+
+function atualizarInterface() {
+    atualizarGridJogadores();
+}
+
+function atualizarGridJogadores() {
+    const grid = document.getElementById('jogadoresGrid');
+    const jogadores = mesasData[mesaAtual] || [];
+    
+    if (jogadores.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa. Importe pelo modo Organização.</div>';
+        return;
+    }
+    
+    grid.innerHTML = jogadores.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
+        const foto = getFotoJogador(j.nome);
+        
+        return `
+            <div class="jogador-card">
+                <div class="jogador-posicao-numero">${j.posicao || '?'}</div>
+                <img class="jogador-foto" src="${foto}" alt="${j.nome}">
+                <div class="jogador-info">
+                    <div class="jogador-nome">${j.nome}</div>
+                    <div class="jogador-valores">
+                        ${j.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${j.rebuys}</span>` : ''}
+                        ${j.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
+                    </div>
+                </div>
+                <div class="jogador-actions">
+                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">REBUY SIMPLES</button>
+                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">REBUY DUPLO</button>
+                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">ADDON</button>` : ''}
+                    <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function calcularTotalJogador(jogador) {
+    let total = VALOR_BUYIN;
+    total += (jogador.rebuys || 0) * VALOR_REBUY;
+    if (jogador.addon) total += VALOR_ADDON;
+    return total;
+}
+
+function atualizarAdminResumo() {
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+    const tbody = document.getElementById('adminResumoBody');
+    
+    if (todosJogadores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></tr>';
+        document.getElementById('adminTotalGeral').textContent = 'TOTAL GERAL: R$ 0,00';
+        return;
+    }
+    
+    let totalGeral = 0;
+    const ordenados = [...todosJogadores].sort((a, b) => a.nome.localeCompare(b.nome));
+    
+    tbody.innerHTML = ordenados.map(jogador => {
+        const mesa = mesasData.preta?.includes(jogador) ? 'Preta' : 'Amarela';
+        const total = calcularTotalJogador(jogador);
+        totalGeral += total;
+        
+        return `
+            <tr>
+                <td>${jogador.nome}</td>
+                <td>${mesa}</td>
+                <td>${jogador.posicao || '-'}</td>
+                <td>R$ ${VALOR_BUYIN}</td>
+                <td>${jogador.rebuys || 0}</td>
+                <td>${jogador.addon ? '1' : '0'}</td>
+                <td><strong>R$ ${total}</strong></td>
+            </tr>
+        `;
+    }).join('');
+    
+    document.getElementById('adminTotalGeral').textContent = `TOTAL GERAL: R$ ${totalGeral},00`;
+}
+
+function atualizarAdminEstatisticas() {
+    const preta = mesasData.preta || [];
+    const amarela = mesasData.amarela || [];
+    const todos = [...preta, ...amarela];
+    
+    const pretRebuys = preta.reduce((s, j) => s + (j.rebuys || 0), 0);
+    const pretAddons = preta.filter(j => j.addon).length;
+    const pretTotal = preta.reduce((s, j) => s + calcularTotalJogador(j), 0);
+    
+    const amarRebuys = amarela.reduce((s, j) => s + (j.rebuys || 0), 0);
+    const amarAddons = amarela.filter(j => j.addon).length;
+    const amarTotal = amarela.reduce((s, j) => s + calcularTotalJogador(j), 0);
+    
+    document.getElementById('adminStatPretaJogadores').textContent = preta.length;
+    document.getElementById('adminStatPretaRebuys').textContent = pretRebuys;
+    document.getElementById('adminStatPretaAddons').textContent = pretAddons;
+    document.getElementById('adminStatPretaTotal').textContent = `R$ ${pretTotal}`;
+    
+    document.getElementById('adminStatAmarelaJogadores').textContent = amarela.length;
+    document.getElementById('adminStatAmarelaRebuys').textContent = amarRebuys;
+    document.getElementById('adminStatAmarelaAddons').textContent = amarAddons;
+    document.getElementById('adminStatAmarelaTotal').textContent = `R$ ${amarTotal}`;
+    
+    const totalRebuys = todos.reduce((s, j) => s + (j.rebuys || 0), 0);
+    const totalAddons = todos.filter(j => j.addon).length;
+    
+    document.getElementById('adminStatTotalRebuys').textContent = totalRebuys;
+    document.getElementById('adminStatTotalAddons').textContent = totalAddons;
+    
+    const ranking = todos.filter(j => (j.rebuys || 0) > 0).sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0)).slice(0, 5);
+    const rankingBody = document.getElementById('adminRankingBody');
+    
+    if (ranking.length === 0) {
+        rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum rebuy</td></tr>';
+    } else {
+        rankingBody.innerHTML = ranking.map((j, i) => {
+            const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
+            return `<tr><td>${i+1}º</td><td>${j.nome}</td><td>${mesa}</td><td>${j.rebuys}</td></tr>`;
+        }).join('');
+    }
+}
 
 function processarLayout() {
     if (!arquivoSelecionado) { alert('Selecione um arquivo!'); return; }
@@ -1020,298 +1324,6 @@ function aplicarLayoutImportado() {
     atualizarAdminEstatisticas();
 }
 
-// ==================== CRONÔMETRO ====================
-document.getElementById('btnIniciarCronometro').addEventListener('click', toggleCronometro);
-document.getElementById('btnZerarCronometro').addEventListener('click', zerarCronometro);
-document.getElementById('cronometroDisplay').addEventListener('click', toggleCronometro);
-
-function initAudio() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-}
-
-function toggleCronometro() {
-    initAudio();
-    if (cronometroAtivo) {
-        pausarCronometro();
-    } else {
-        iniciarCronometro();
-    }
-}
-
-function iniciarCronometro() {
-    if (!cronometroAtivo && cronometroTempo > 0) {
-        cronometroAtivo = true;
-        alarmeTocando = false;
-        document.getElementById('btnIniciarCronometro').textContent = '⏸ PAUSAR';
-        document.getElementById('cronometroDisplay').classList.remove('finished', 'warning');
-        cronometroInterval = setInterval(() => {
-            if (cronometroTempo > 0) {
-                cronometroTempo--;
-                atualizarCronometroDisplay();
-                
-                if (cronometroTempo === 0) {
-                    tocarAlarme();
-                    pausarCronometro();
-                }
-            }
-        }, 1000);
-    }
-}
-
-function pausarCronometro() {
-    cronometroAtivo = false;
-    document.getElementById('btnIniciarCronometro').textContent = '▶ INICIAR';
-    if (cronometroInterval) {
-        clearInterval(cronometroInterval);
-        cronometroInterval = null;
-    }
-}
-
-function zerarCronometro() {
-    pausarCronometro();
-    cronometroTempo = TEMPO_INICIAL;
-    alarmeTocando = false;
-    atualizarCronometroDisplay();
-    document.getElementById('cronometroDisplay').classList.remove('finished', 'warning');
-}
-
-function atualizarCronometroDisplay() {
-    const minutos = Math.floor(cronometroTempo / 60);
-    const segundos = cronometroTempo % 60;
-    const display = document.getElementById('cronometroDisplay');
-    display.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-    
-    display.classList.remove('warning', 'finished');
-    
-    if (cronometroTempo === 0) {
-        display.classList.add('finished');
-    } else if (cronometroTempo <= 5) {
-        display.classList.add('warning');
-    }
-}
-
-function tocarAlarme() {
-    if (!alarmeTocando) {
-        alarmeTocando = true;
-        
-        if (audioContext) {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 800;
-            oscillator.type = 'square';
-            gainNode.gain.value = 0.3;
-            
-            oscillator.start();
-            
-            setTimeout(() => {
-                oscillator.stop();
-            }, 500);
-        }
-        
-        if (navigator.vibrate) {
-            navigator.vibrate([200, 100, 200, 100, 200]);
-        }
-    }
-}
-
-// ==================== MODAL CORRIGIR ====================
-document.getElementById('btnCancelarCorrigir').addEventListener('click', () => {
-    document.getElementById('modalCorrigir').classList.remove('active');
-});
-document.getElementById('btnSalvarCorrigir').addEventListener('click', salvarCorrecao);
-
-// ==================== FUNÇÕES AUXILIARES ====================
-function atualizarIndicadorMesa() {
-    const indicator = document.getElementById('mesaIndicator');
-    indicator.className = `mesa-indicator ${mesaAtual}`;
-    const texto = mesaAtual === 'preta' ? '♠️ MESA PRETA ♠️' : '♦️ MESA AMARELA ♦️';
-    indicator.querySelector('.mesa-indicator-text').textContent = texto;
-}
-
-function adicionarRebuy(jogadorNome, tipo) {
-    const quantidade = tipo === 'simples' ? 1 : 2;
-    const valorAdicional = quantidade * VALOR_REBUY;
-    const tipoTexto = tipo === 'simples' ? 'SIMPLES' : 'DUPLO';
-    
-    if (confirm(`Confirmar REBUY ${tipoTexto} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional},00`)) {
-        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-        if (jogador) {
-            jogador.rebuys = (jogador.rebuys || 0) + quantidade;
-            salvarMesas();
-        }
-    }
-}
-
-function adicionarAddon(jogadorNome) {
-    if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON},00`)) {
-        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-        if (jogador) {
-            jogador.addon = true;
-            salvarMesas();
-        }
-    }
-}
-
-function abrirCorrecao(jogadorNome) {
-    const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-    if (jogador) {
-        jogadorCorrigindo = jogadorNome;
-        document.getElementById('corrigirJogadorNome').textContent = jogadorNome;
-        document.getElementById('corrigirRebuys').value = jogador.rebuys || 0;
-        document.getElementById('corrigirAddon').checked = jogador.addon || false;
-        document.getElementById('modalCorrigir').classList.add('active');
-    }
-}
-
-function salvarCorrecao() {
-    if (jogadorCorrigindo) {
-        const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorCorrigindo);
-        if (jogador) {
-            jogador.rebuys = parseInt(document.getElementById('corrigirRebuys').value) || 0;
-            jogador.addon = document.getElementById('corrigirAddon').checked;
-            salvarMesas();
-        }
-    }
-    document.getElementById('modalCorrigir').classList.remove('active');
-    jogadorCorrigindo = null;
-}
-
-function calcularTotalJogador(jogador) {
-    let total = VALOR_BUYIN;
-    total += (jogador.rebuys || 0) * VALOR_REBUY;
-    if (jogador.addon) total += VALOR_ADDON;
-    return total;
-}
-
-function salvarMesas() {
-    set(ref(db, 'mesas'), mesasData);
-}
-
-function getFotoJogador(nome) {
-    return fotosJogadores[nome] || `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=d4a121&color=000&size=45`;
-}
-
-function atualizarInterface() {
-    atualizarGridJogadores();
-}
-
-function atualizarGridJogadores() {
-    const grid = document.getElementById('jogadoresGrid');
-    const jogadores = mesasData[mesaAtual] || [];
-    
-    if (jogadores.length === 0) {
-        grid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa. Importe pelo modo Organização.</div>';
-        return;
-    }
-    
-    grid.innerHTML = jogadores.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
-        const foto = getFotoJogador(j.nome);
-        
-        return `
-            <div class="jogador-card">
-                <div class="jogador-posicao-numero">${j.posicao || '?'}</div>
-                <img class="jogador-foto" src="${foto}" alt="${j.nome}">
-                <div class="jogador-info">
-                    <div class="jogador-nome">${j.nome}</div>
-                    <div class="jogador-valores">
-                        ${j.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${j.rebuys}</span>` : ''}
-                        ${j.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
-                    </div>
-                </div>
-                <div class="jogador-actions">
-                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">REBUY SIMPLES</button>
-                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">REBUY DUPLO</button>
-                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">ADDON</button>` : ''}
-                    <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-function atualizarAdminResumo() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
-    const tbody = document.getElementById('adminResumoBody');
-    
-    if (todosJogadores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></tr>';
-        document.getElementById('adminTotalGeral').textContent = 'TOTAL GERAL: R$ 0,00';
-        return;
-    }
-    
-    let totalGeral = 0;
-    const ordenados = [...todosJogadores].sort((a, b) => a.nome.localeCompare(b.nome));
-    
-    tbody.innerHTML = ordenados.map(jogador => {
-        const mesa = mesasData.preta?.includes(jogador) ? 'Preta' : 'Amarela';
-        const total = calcularTotalJogador(jogador);
-        totalGeral += total;
-        
-        return `
-            <tr>
-                <td>${jogador.nome}</td>
-                <td>${mesa}</td>
-                <td>${jogador.posicao || '-'}</td>
-                <td>R$ ${VALOR_BUYIN}</td>
-                <td>${jogador.rebuys || 0}</td>
-                <td>${jogador.addon ? '1' : '0'}</td>
-                <td><strong>R$ ${total}</strong></td>
-            </tr>
-        `;
-    }).join('');
-    
-    document.getElementById('adminTotalGeral').textContent = `TOTAL GERAL: R$ ${totalGeral},00`;
-}
-
-function atualizarAdminEstatisticas() {
-    const preta = mesasData.preta || [];
-    const amarela = mesasData.amarela || [];
-    const todos = [...preta, ...amarela];
-    
-    const pretRebuys = preta.reduce((s, j) => s + (j.rebuys || 0), 0);
-    const pretAddons = preta.filter(j => j.addon).length;
-    const pretTotal = preta.reduce((s, j) => s + calcularTotalJogador(j), 0);
-    
-    const amarRebuys = amarela.reduce((s, j) => s + (j.rebuys || 0), 0);
-    const amarAddons = amarela.filter(j => j.addon).length;
-    const amarTotal = amarela.reduce((s, j) => s + calcularTotalJogador(j), 0);
-    
-    document.getElementById('adminStatPretaJogadores').textContent = preta.length;
-    document.getElementById('adminStatPretaRebuys').textContent = pretRebuys;
-    document.getElementById('adminStatPretaAddons').textContent = pretAddons;
-    document.getElementById('adminStatPretaTotal').textContent = `R$ ${pretTotal}`;
-    
-    document.getElementById('adminStatAmarelaJogadores').textContent = amarela.length;
-    document.getElementById('adminStatAmarelaRebuys').textContent = amarRebuys;
-    document.getElementById('adminStatAmarelaAddons').textContent = amarAddons;
-    document.getElementById('adminStatAmarelaTotal').textContent = `R$ ${amarTotal}`;
-    
-    const totalRebuys = todos.reduce((s, j) => s + (j.rebuys || 0), 0);
-    const totalAddons = todos.filter(j => j.addon).length;
-    
-    document.getElementById('adminStatTotalRebuys').textContent = totalRebuys;
-    document.getElementById('adminStatTotalAddons').textContent = totalAddons;
-    
-    const ranking = todos.filter(j => (j.rebuys || 0) > 0).sort((a, b) => (b.rebuys || 0) - (a.rebuys || 0)).slice(0, 5);
-    const rankingBody = document.getElementById('adminRankingBody');
-    
-    if (ranking.length === 0) {
-        rankingBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum rebuy</td></tr>';
-    } else {
-        rankingBody.innerHTML = ranking.map((j, i) => {
-            const mesa = mesasData.preta?.includes(j) ? 'Preta' : 'Amarela';
-            return `<tr><td>${i+1}º</td><td>${j.nome}</td><td>${mesa}</td><td>${j.rebuys}</td></tr>`;
-        }).join('');
-    }
-}
-
-// NOVA FUNÇÃO - Exporta apenas Nome, Rebuys e Addons
 function exportarCSVSimples() {
     const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
