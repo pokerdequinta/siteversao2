@@ -1,3 +1,6 @@
+Aqui está o código completo com as correções solicitadas:
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -637,6 +640,15 @@
             text-align: center;
         }
         
+        .btn-apagar-dados {
+            background: #c72c48;
+            margin-left: 10px;
+        }
+        
+        .btn-apagar-dados:hover {
+            background: #ff0000;
+        }
+        
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -677,6 +689,7 @@
             <h1>🔐 ADMINISTRAÇÃO</h1>
             <div>
                 <button class="btn btn-info" id="btnVerClassificacao" style="margin-right: 10px;">🏆 VER CLASSIFICAÇÃO</button>
+                <button class="btn btn-danger btn-apagar-dados" id="btnApagarDados" style="margin-right: 10px;">🗑️ APAGAR TODOS OS DADOS</button>
                 <button class="voltar-btn" id="btnVoltarAdmin">← VOLTAR</button>
             </div>
         </div>
@@ -690,7 +703,6 @@
                 <button class="btn btn-primary" id="btnEscolherArquivo">📁 ESCOLHER ARQUIVO HTML</button>
                 <input type="file" id="fileInput" accept=".html,.htm" style="display: none;" />
                 <button class="btn btn-success" id="btnProcessarLayout" style="display: none;">✅ PROCESSAR</button>
-                <button class="btn btn-warning" id="btnLimparTudo">🔄 LIMPAR TUDO</button>
             </div>
             <div class="import-result" id="importResult"></div>
             
@@ -864,16 +876,28 @@
         <h3>⚠️ ELIMINAR JOGADOR</h3>
         <p id="eliminarJogadorNome"></p>
         <div class="form-group">
-            <label>Posição Final (1º ao 20º)</label>
-            <input type="number" id="posicaoFinal" min="1" max="20" value="20">
-        </div>
-        <div class="form-group">
             <label>Quantidade de KO's que o jogador fez</label>
             <input type="number" id="quantidadeKOs" min="0" value="0">
         </div>
         <div class="modal-buttons">
             <button class="btn btn-danger" id="btnCancelarEliminar">Cancelar</button>
             <button class="btn btn-warning" id="btnConfirmarEliminar">Confirmar Eliminação</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Senha -->
+<div class="modal" id="modalSenha">
+    <div class="modal-content">
+        <h3>🔐 SENHA NECESSÁRIA</h3>
+        <p>Digite a senha para apagar todos os dados:</p>
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="senhaApagar" placeholder="Digite a senha">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-danger" id="btnCancelarSenha">Cancelar</button>
+            <button class="btn btn-success" id="btnConfirmarSenha">Confirmar</button>
         </div>
     </div>
 </div>
@@ -898,6 +922,7 @@ const VALOR_BUYIN = 100;
 const VALOR_REBUY = 30;
 const VALOR_ADDON = 50;
 const TEMPO_INICIAL = 30;
+const MAX_JOGADORES = 20;
 
 // Pontuação por posição (do 20º ao 1º)
 const PONTOS_POSICAO = {
@@ -915,6 +940,7 @@ let layoutImportado = { preta: [], amarela: [] };
 let arquivoSelecionado = null;
 let jogadorCorrigindo = null;
 let jogadorEliminando = null;
+let contadorEliminados = 0;
 
 let cronometroTempo = TEMPO_INICIAL;
 let cronometroAtivo = false;
@@ -940,6 +966,9 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarInterface();
         atualizarAdminResumo();
         atualizarAdminEstatisticas();
+        // Calcular quantos já foram eliminados
+        const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
+        contadorEliminados = todosJogadores.filter(j => j.eliminado).length;
     });
     db.ref('classificacao').on('value', (snapshot) => {
         if (snapshot.exists()) classificacaoData = snapshot.val();
@@ -967,7 +996,6 @@ function inicializarEventos() {
         document.getElementById('telaSelecao').classList.remove('hidden');
     };
     
-    // Botão Administrar no topo da tela inicial
     document.getElementById('btnAbrirAdminTopo').onclick = () => {
         document.getElementById('telaSelecao').classList.add('hidden');
         document.getElementById('telaAdmin').classList.remove('hidden');
@@ -1009,6 +1037,16 @@ function inicializarEventos() {
     };
     document.getElementById('btnConfirmarEliminar').onclick = confirmarEliminacao;
     
+    document.getElementById('btnCancelarSenha').onclick = () => {
+        document.getElementById('modalSenha').classList.remove('active');
+        document.getElementById('senhaApagar').value = '';
+    };
+    document.getElementById('btnConfirmarSenha').onclick = verificarSenhaApagar;
+    
+    document.getElementById('btnApagarDados').onclick = () => {
+        document.getElementById('modalSenha').classList.add('active');
+    };
+    
     // Admin tabs
     document.querySelectorAll('.nav-tab-admin').forEach(tab => {
         tab.onclick = () => {
@@ -1048,21 +1086,37 @@ function inicializarEventos() {
     
     btnProcessarLayout.onclick = processarLayout;
     
-    document.getElementById('btnLimparTudo').onclick = () => {
-        if (confirm('Limpar TODOS os dados das duas mesas e classificação?')) {
-            mesasData = { preta: [], amarela: [] };
-            classificacaoData = [];
-            salvarMesas();
-            salvarClassificacao();
-            alert('✅ Mesas e classificação limpas!');
-            atualizarAdminResumo();
-            atualizarAdminEstatisticas();
-            atualizarClassificacao();
-        }
-    };
-    
     document.getElementById('btnAdminExportarCSV').onclick = exportarCSVSimples;
     document.getElementById('btnAdminExportarCompleto').onclick = exportarCSVCompleto;
+}
+
+function verificarSenhaApagar() {
+    const senha = document.getElementById('senhaApagar').value;
+    if (senha === 'poker2026') {
+        apagarTodosDados();
+        document.getElementById('modalSenha').classList.remove('active');
+        document.getElementById('senhaApagar').value = '';
+    } else {
+        alert('❌ Senha incorreta!');
+        document.getElementById('senhaApagar').value = '';
+    }
+}
+
+function apagarTodosDados() {
+    if (confirm('⚠️ ATENÇÃO! Isso irá apagar TODOS os dados das mesas e classificação. Confirma?')) {
+        mesasData = { preta: [], amarela: [] };
+        classificacaoData = [];
+        contadorEliminados = 0;
+        salvarMesas();
+        salvarClassificacao();
+        alert('✅ Todos os dados foram apagados!');
+        atualizarAdminResumo();
+        atualizarAdminEstatisticas();
+        atualizarClassificacao();
+        if (!document.getElementById('appContainer').classList.contains('hidden')) {
+            atualizarGridJogadores();
+        }
+    }
 }
 
 function iniciarApp() {
@@ -1174,7 +1228,6 @@ function initAudio() {
     }
 }
 
-// Funções globais para serem chamadas pelo HTML
 window.adicionarRebuy = function(jogadorNome, tipo) {
     const quantidade = tipo === 'simples' ? 1 : 2;
     const valorAdicional = quantidade * VALOR_REBUY;
@@ -1215,7 +1268,6 @@ window.eliminarJogador = function(jogadorNome) {
     if (jogador && !jogador.eliminado) {
         jogadorEliminando = jogadorNome;
         document.getElementById('eliminarJogadorNome').textContent = jogadorNome;
-        document.getElementById('posicaoFinal').value = 20;
         document.getElementById('quantidadeKOs').value = 0;
         document.getElementById('modalEliminar').classList.add('active');
     }
@@ -1225,7 +1277,9 @@ function confirmarEliminacao() {
     if (jogadorEliminando) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorEliminando);
         if (jogador && !jogador.eliminado) {
-            const posicao = parseInt(document.getElementById('posicaoFinal').value);
+            // Calcular posição automaticamente (do último eliminado para o primeiro)
+            contadorEliminados++;
+            const posicao = MAX_JOGADORES - (contadorEliminados - 1);
             const quantidadeKOs = parseInt(document.getElementById('quantidadeKOs').value) || 0;
             const pontosKOs = quantidadeKOs; // Cada KO vale 1 ponto
             
@@ -1244,7 +1298,7 @@ function confirmarEliminacao() {
             classificacaoData.push(classificacaoItem);
             salvarClassificacao();
             
-            // Marcar como eliminado na mesa (mas manter na lista)
+            // Marcar como eliminado na mesa
             jogador.eliminado = true;
             jogador.posicaoFinal = posicao;
             jogador.kos = quantidadeKOs;
@@ -1539,6 +1593,7 @@ function aplicarLayoutImportado() {
         timestamp: Date.now()
     }));
     
+    contadorEliminados = 0;
     salvarMesas();
     alert(`✅ Layout aplicado!\nMesa Preta: ${mesasData.preta.length} jogadores\nMesa Amarela: ${mesasData.amarela.length} jogadores`);
     atualizarAdminResumo();
@@ -1629,3 +1684,4 @@ window.eliminarJogador = eliminarJogador;
 </script>
 </body>
 </html>
+```
