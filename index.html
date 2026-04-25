@@ -32,10 +32,32 @@
             min-height: 100vh;
             padding: 20px;
             background: #0d1b0d;
+            position: relative;
         }
         
         .tela-selecao.hidden {
             display: none;
+        }
+        
+        .btn-admin-topo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: #d4a121;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .btn-admin-topo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 161, 33, 0.5);
         }
         
         .selecao-container {
@@ -88,19 +110,6 @@
         .selecao-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0 30px rgba(212, 161, 33, 0.5);
-        }
-        
-        .admin-link {
-            margin-top: 30px;
-            color: #d4a121;
-            text-decoration: none;
-            font-size: 1.2em;
-            opacity: 0.7;
-            cursor: pointer;
-        }
-        
-        .admin-link:hover {
-            opacity: 1;
         }
         
         .app-container {
@@ -276,8 +285,8 @@
         }
         
         .jogador-card.eliminado {
-            opacity: 0.5;
-            background: rgba(199, 44, 72, 0.2);
+            opacity: 0.7;
+            background: rgba(199, 44, 72, 0.15);
             border-color: #c72c48;
         }
         
@@ -648,6 +657,7 @@
 
 <!-- TELA DE SELEÇÃO DE MESA -->
 <div class="tela-selecao" id="telaSelecao">
+    <button class="btn-admin-topo" id="btnAbrirAdminTopo">🔐 ADMINISTRAR</button>
     <div class="selecao-container">
         <div class="selecao-logo">
             <img src="logo pdq.png" alt="Poker de Quinta" onerror="this.style.display='none'">
@@ -657,7 +667,6 @@
             <button class="selecao-btn preta" id="btnSelecionarPreta">♠️ MESA PRETA</button>
             <button class="selecao-btn amarela" id="btnSelecionarAmarela">♦️ MESA AMARELA</button>
         </div>
-        <div class="admin-link" id="btnAbrirAdmin">🔐 Modo Organização</div>
     </div>
 </div>
 
@@ -665,7 +674,7 @@
 <div class="tela-admin hidden" id="telaAdmin">
     <div class="admin-container">
         <div class="admin-header">
-            <h1>🔐 MODO ORGANIZAÇÃO</h1>
+            <h1>🔐 ADMINISTRAÇÃO</h1>
             <div>
                 <button class="btn btn-info" id="btnVerClassificacao" style="margin-right: 10px;">🏆 VER CLASSIFICAÇÃO</button>
                 <button class="voltar-btn" id="btnVoltarAdmin">← VOLTAR</button>
@@ -780,7 +789,7 @@
                         <th>Mesa</th>
                         <th>Pontos Por Posição</th>
                         <th>KO's</th>
-                        <th>Pontos KO's</th>
+                        <th>Pontos KO's (1 por KO)</th>
                         <th>Pontuação Total</th>
                     </tr>
                 </thead>
@@ -806,7 +815,7 @@
         
         <div class="jogadores-grid" id="jogadoresGrid">
             <div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">
-                Nenhum jogador na mesa. Importe pelo modo Organização.
+                Nenhum jogador na mesa. Importe pelo modo Administração.
             </div>
         </div>
     </div>
@@ -854,11 +863,13 @@
     <div class="modal-content">
         <h3>⚠️ ELIMINAR JOGADOR</h3>
         <p id="eliminarJogadorNome"></p>
-        <p style="margin: 10px 0;">Tem certeza que deseja eliminar este jogador?</p>
-        <p style="color: #FF6600;">Ao eliminar, ele será removido da mesa e adicionado à classificação.</p>
         <div class="form-group">
             <label>Posição Final (1º ao 20º)</label>
             <input type="number" id="posicaoFinal" min="1" max="20" value="20">
+        </div>
+        <div class="form-group">
+            <label>Quantidade de KO's que o jogador fez</label>
+            <input type="number" id="quantidadeKOs" min="0" value="0">
         </div>
         <div class="modal-buttons">
             <button class="btn btn-danger" id="btnCancelarEliminar">Cancelar</button>
@@ -956,7 +967,8 @@ function inicializarEventos() {
         document.getElementById('telaSelecao').classList.remove('hidden');
     };
     
-    document.getElementById('btnAbrirAdmin').onclick = () => {
+    // Botão Administrar no topo da tela inicial
+    document.getElementById('btnAbrirAdminTopo').onclick = () => {
         document.getElementById('telaSelecao').classList.add('hidden');
         document.getElementById('telaAdmin').classList.remove('hidden');
         atualizarAdminResumo();
@@ -1170,7 +1182,7 @@ window.adicionarRebuy = function(jogadorNome, tipo) {
     
     if (confirm(`Confirmar REBUY ${tipoTexto} para ${jogadorNome}?\nValor adicional: R$ ${valorAdicional},00`)) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-        if (jogador && !jogador.eliminado) {
+        if (jogador) {
             jogador.rebuys = (jogador.rebuys || 0) + quantidade;
             salvarMesas();
         }
@@ -1180,7 +1192,7 @@ window.adicionarRebuy = function(jogadorNome, tipo) {
 window.adicionarAddon = function(jogadorNome) {
     if (confirm(`Confirmar ADDON para ${jogadorNome}?\nValor adicional: R$ ${VALOR_ADDON},00`)) {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorNome);
-        if (jogador && !jogador.eliminado) {
+        if (jogador) {
             jogador.addon = true;
             salvarMesas();
         }
@@ -1204,6 +1216,7 @@ window.eliminarJogador = function(jogadorNome) {
         jogadorEliminando = jogadorNome;
         document.getElementById('eliminarJogadorNome').textContent = jogadorNome;
         document.getElementById('posicaoFinal').value = 20;
+        document.getElementById('quantidadeKOs').value = 0;
         document.getElementById('modalEliminar').classList.add('active');
     }
 };
@@ -1213,6 +1226,8 @@ function confirmarEliminacao() {
         const jogador = mesasData[mesaAtual].find(j => j.nome === jogadorEliminando);
         if (jogador && !jogador.eliminado) {
             const posicao = parseInt(document.getElementById('posicaoFinal').value);
+            const quantidadeKOs = parseInt(document.getElementById('quantidadeKOs').value) || 0;
+            const pontosKOs = quantidadeKOs; // Cada KO vale 1 ponto
             
             // Adicionar à classificação
             const classificacaoItem = {
@@ -1220,22 +1235,23 @@ function confirmarEliminacao() {
                 mesa: mesaAtual === 'preta' ? 'Preta' : 'Amarela',
                 posicao: posicao,
                 pontosPosicao: PONTOS_POSICAO[posicao] || 0,
-                kos: 0,
-                pontosKOs: 0,
-                pontosTotal: PONTOS_POSICAO[posicao] || 0,
+                kos: quantidadeKOs,
+                pontosKOs: pontosKOs,
+                pontosTotal: (PONTOS_POSICAO[posicao] || 0) + pontosKOs,
                 dataEliminacao: new Date().toISOString()
             };
             
             classificacaoData.push(classificacaoItem);
-            
-            // Marcar como eliminado na mesa
-            jogador.eliminado = true;
-            jogador.posicaoFinal = posicao;
-            
-            salvarMesas();
             salvarClassificacao();
             
-            alert(`✅ ${jogador.nome} eliminado na ${posicao}ª posição!`);
+            // Marcar como eliminado na mesa (mas manter na lista)
+            jogador.eliminado = true;
+            jogador.posicaoFinal = posicao;
+            jogador.kos = quantidadeKOs;
+            salvarMesas();
+            
+            alert(`✅ ${jogador.nome} eliminado na ${posicao}ª posição com ${quantidadeKOs} KO(s)!`);
+            atualizarGridJogadores();
         }
     }
     document.getElementById('modalEliminar').classList.remove('active');
@@ -1247,7 +1263,7 @@ window.atualizarKOs = function(jogadorNome, inputElement) {
     const jogadorClassif = classificacaoData.find(j => j.nome === jogadorNome);
     if (jogadorClassif) {
         jogadorClassif.kos = kos;
-        jogadorClassif.pontosKOs = kos * 2; // Cada KO vale 2 pontos
+        jogadorClassif.pontosKOs = kos; // Cada KO vale 1 ponto
         jogadorClassif.pontosTotal = jogadorClassif.pontosPosicao + jogadorClassif.pontosKOs;
         salvarClassificacao();
         atualizarClassificacao();
@@ -1286,18 +1302,18 @@ function atualizarInterface() {
 function atualizarGridJogadores() {
     const grid = document.getElementById('jogadoresGrid');
     const jogadores = mesasData[mesaAtual] || [];
-    const jogadoresAtivos = jogadores.filter(j => !j.eliminado);
     
-    if (jogadoresAtivos.length === 0) {
-        grid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador ativo na mesa.</div>';
+    if (jogadores.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; opacity: 0.7;">Nenhum jogador na mesa. Importe pelo modo Administração.</div>';
         return;
     }
     
-    grid.innerHTML = jogadoresAtivos.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
+    grid.innerHTML = jogadores.sort((a, b) => (a.posicao || 999) - (b.posicao || 999)).map(j => {
         const foto = getFotoJogador(j.nome);
+        const eliminadoClass = j.eliminado ? 'eliminado' : '';
         
         return `
-            <div class="jogador-card">
+            <div class="jogador-card ${eliminadoClass}">
                 <div class="jogador-posicao-numero">${j.posicao || '?'}</div>
                 <img class="jogador-foto" src="${foto}" alt="${j.nome}">
                 <div class="jogador-info">
@@ -1305,14 +1321,17 @@ function atualizarGridJogadores() {
                     <div class="jogador-valores">
                         ${j.rebuys > 0 ? `<span class="badge badge-rebuy">🔄 ${j.rebuys}</span>` : ''}
                         ${j.addon ? '<span class="badge badge-addon">💎 Addon</span>' : ''}
+                        ${j.eliminado ? `<span class="badge badge-eliminado">❌ Eliminado (${j.posicaoFinal}º)</span>` : ''}
                     </div>
                 </div>
                 <div class="jogador-actions">
-                    <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">REBUY</button>
-                    <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">REBUY 2x</button>
-                    ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">ADDON</button>` : ''}
-                    <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
-                    <button class="action-btn btn-eliminar" onclick="window.eliminarJogador('${j.nome}')">❌ ELIMINAR</button>
+                    ${!j.eliminado ? `
+                        <button class="action-btn btn-rebuy" onclick="window.adicionarRebuy('${j.nome}', 'simples')">REBUY</button>
+                        <button class="action-btn btn-rebuy-duplo" onclick="window.adicionarRebuy('${j.nome}', 'duplo')">REBUY 2x</button>
+                        ${!j.addon ? `<button class="action-btn btn-addon" onclick="window.adicionarAddon('${j.nome}')">ADDON</button>` : ''}
+                        <button class="action-btn btn-corrigir" onclick="window.abrirCorrecao('${j.nome}')">✏️</button>
+                        <button class="action-btn btn-eliminar" onclick="window.eliminarJogador('${j.nome}')">❌ ELIMINAR</button>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -1356,11 +1375,11 @@ function calcularTotalJogador(jogador) {
 }
 
 function atualizarAdminResumo() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])].filter(j => !j.eliminado);
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     const tbody = document.getElementById('adminResumoBody');
     
     if (todosJogadores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></table>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum dado</td></tr>';
         document.getElementById('adminTotalGeral').textContent = 'TOTAL GERAL: R$ 0,00';
         return;
     }
@@ -1375,7 +1394,7 @@ function atualizarAdminResumo() {
         
         return `
             <tr>
-                <td>${jogador.nome}</td>
+                <td>${jogador.nome} ${jogador.eliminado ? '❌' : ''}</td>
                 <td>${mesa}</td>
                 <td>${jogador.posicao || '-'}</td>
                 <td>R$ ${VALOR_BUYIN}</td>
@@ -1390,8 +1409,8 @@ function atualizarAdminResumo() {
 }
 
 function atualizarAdminEstatisticas() {
-    const preta = (mesasData.preta || []).filter(j => !j.eliminado);
-    const amarela = (mesasData.amarela || []).filter(j => !j.eliminado);
+    const preta = mesasData.preta || [];
+    const amarela = mesasData.amarela || [];
     const todos = [...preta, ...amarela];
     
     const pretRebuys = preta.reduce((s, j) => s + (j.rebuys || 0), 0);
@@ -1527,7 +1546,7 @@ function aplicarLayoutImportado() {
 }
 
 function exportarCSVSimples() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])].filter(j => !j.eliminado);
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
     let csv = 'Nome,Rebuys,Addons\n';
@@ -1544,7 +1563,7 @@ function exportarCSVSimples() {
 }
 
 function copiarCSVAreaTransferencia() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])].filter(j => !j.eliminado);
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
     let csv = 'Nome,Rebuys,Addons\n';
@@ -1561,7 +1580,7 @@ function copiarCSVAreaTransferencia() {
 }
 
 function exportarCSVCompleto() {
-    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])].filter(j => !j.eliminado);
+    const todosJogadores = [...(mesasData.preta || []), ...(mesasData.amarela || [])];
     if (todosJogadores.length === 0) { alert('Nenhum jogador!'); return; }
     
     let csv = 'Nome,Mesa,Posição,Buy-in,Rebuys,Addon,Total\n';
